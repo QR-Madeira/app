@@ -12,7 +12,7 @@
       <x-input :type="'text'" :name="'title'" :placeholder="'Title'"/>
       <textarea type="text" name="description" placeholder="Description" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black"></textarea>
       <x-input :type="'file'" :name="'image'" :placeholder="'Image'"/>
-      <input type="submit" value="Create" class="p-4 bg-green-700 text-white rounded-lg cursor-pointer">
+      <x-submit :value="'Create'" />
     </form>
   </div>
 @endsection

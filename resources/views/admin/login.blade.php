@@ -8,7 +8,7 @@
       @csrf
       <x-input :type="'text'" :name="'username'" :placeholder="'Username'" />
       <x-input :type="'password'" :name="'password'" :placeholder="'Password'" />
-      <input type="submit" class='p-4 bg-green-700 rounded text-white' value="Signin">
+      <x-submit :value="'Signin'" />
     </form>
   </div>
 @endsection
