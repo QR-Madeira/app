@@ -1,0 +1,1 @@
+<input type="{{$type}}" name="{{$name}}" placeholder="{{$placeholder}}" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black">

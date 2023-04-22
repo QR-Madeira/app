@@ -7,12 +7,12 @@
         <x-a :url="route('admin.list')" :name="'List'"/>
       </div>
     </div>
-    <form class="grid grid-cols-1" action="{{route('admin.create')}}" method="POST" enctype="multipart/form-data">
+    <form class="grid grid-cols-1 gap-4" action="{{route('admin.create')}}" method="POST" enctype="multipart/form-data">
       @csrf
-      <input type="text" name="title" placeholder="Title" class="p-4 bg-black/[.10] text-black rounded-lg my-4 placeholder:text-black">
-      <textarea type="text" name="description" placeholder="Description" class="p-4 bg-black/[.10] text-black rounded-lg my-4 placeholder:text-black"></textarea>
-      <input type="file" name="image" placeholder="Image" class="p-4 bg-black/[.10] text-black rounded-lg my-4">
-      <input type="submit" value="Create" class="p-4 bg-green-700 text-white rounded-lg my-4 cursor-pointer">
+      <x-input :type="'text'" :name="'title'" :placeholder="'Title'"/>
+      <textarea type="text" name="description" placeholder="Description" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black"></textarea>
+      <x-input :type="'file'" :name="'image'" :placeholder="'Image'"/>
+      <input type="submit" value="Create" class="p-4 bg-green-700 text-white rounded-lg cursor-pointer">
     </form>
   </div>
 @endsection
