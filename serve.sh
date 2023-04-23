@@ -4,7 +4,7 @@ if [ "$1" != "--only-serve" ]; then
     composer i && npm i
     rm -rf public/storage
     php artisan storage:link
-    php artisan migrate
+    php artisan migrate:fresh --seed
 fi
 
 stop_commands() {
