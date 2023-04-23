@@ -1,9 +1,11 @@
-<div id="{{$id}}" class="absolute top-1/2 left-1/2 py-4 px-8 bg-black/[.80] text-white rounded" style="display: none; transform: translate(-50%, -50%);">
-  <div class="grid grid-rows-2">
-    <h1 class="text-xl">Are you sure about that?</h1>
-    <div>
-      <a href="{{$route}}" class='p-4 bg-red-500'>Yes</a>
-      <a>No</a>
+<div id="{{$id}}" class='absolute w-screen h-screen bg-black/[.60] top-0 left-0' style="display: none;">
+  <div class="absolute top-12 left-1/2 py-4 px-8 bg-black/[.80] text-white rounded" style="transform: translate(-50%);">
+    <div class="flex flex-col items-center justify-start">
+      <h1 class="text-2xl">Are you sure about that?</h1>
+      <div class='flex justify-end w-full pt-4'>
+        <a href="{{$route}}" class='py-4 px-6 bg-red-500 rounded mr-4'>Yes</a>
+        <a onclick="document.getElementById('{{$id}}').style.display = 'none';" class='py-4 px-6 bg-green-500 rounded'>No</a>
+      </div>
     </div>
   </div>
 </div>

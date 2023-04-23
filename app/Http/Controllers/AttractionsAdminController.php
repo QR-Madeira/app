@@ -9,11 +9,16 @@ use Illuminate\Support\Facades\Storage;
 class AttractionsAdminController extends Controller
 {
   private $qrCodeMakerApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=';
-  private $site = 'www.qr-madeira';
 
-  public function creator()
+  public function creator(Request $request)
   {
-    return view('admin.create');
+    $status = $request->session()->get('status');
+    $route = $request->session()->get('route');
+    $data = array(
+      'created' => $status,
+      'route' => $route
+    );
+    return view('admin.create', $data);
   }
 
   public function create(Request $request)
@@ -31,7 +36,7 @@ class AttractionsAdminController extends Controller
     
     $image_path = explode('/', $image_path)[1];
 
-    $site_url = $this->site.'/'.$this->compileTitle($validatedData['title']).'.com';
+    $site_url = env('APP_URL').$this->compileTitle($validatedData['title']);
 
     $nomeArquivo = 'qr-codes/'.$this->compileTitle($validatedData['title']).'.png';
     $conteudo = file_get_contents($this->qrCodeMakerApiUrl.$site_url);
@@ -49,11 +54,21 @@ class AttractionsAdminController extends Controller
     
     Attraction::create($attraction);
 
-    return redirect()->route('admin.list');
+    $request->session()->flash('status', true);
+    $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));
+    return redirect()->route('admin.creator');
   }
 
   private function compileTitle(String $title)
   {
+    $tabela = array(
+      'Á'=>'A', 'á'=>'a', 'Â'=>'A', 'â'=>'a', 'Ã'=>'A', 'ã'=>'a',
+      'É'=>'E', 'é'=>'e', 'Ê'=>'E', 'ê'=>'e',
+      'Í'=>'I', 'í'=>'i', 'Î'=>'I', 'î'=>'i',
+      'Ó'=>'O', 'ó'=>'o', 'Ô'=>'O', 'ô'=>'o', 'Õ'=>'O', 'õ'=>'o',
+      'Ú'=>'U', 'ú'=>'u', 'Û'=>'U', 'û'=>'u'
+    );
+    $title = strtr($title, $tabela);
     $title = str_replace(" ", "-", $title);
     $title = strtolower($title);
     return $title;
@@ -65,8 +80,8 @@ class AttractionsAdminController extends Controller
     return redirect()->route('admin.list');
   }
 
-  public function list()
-  {
+  public function list(Request $request)
+  {    
     $all_attractions = Attraction::all();
     
     for($i = 0; $i < count($all_attractions); $i++)
