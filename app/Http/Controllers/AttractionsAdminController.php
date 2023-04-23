@@ -24,7 +24,7 @@ class AttractionsAdminController extends Controller
   public function create(Request $request)
   {
     $validatedData = $request->validate([
-      'title' => 'required',
+      'title' => 'required|unique:attractions,title',
       'description' => 'required'
     ]);
 

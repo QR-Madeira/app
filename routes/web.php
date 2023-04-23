@@ -28,7 +28,7 @@ Route::name('admin.')->group(function(){
     Route::get('/list', [AttractionsAdminController::class, 'list'])->name('list');
 
     Route::get('/list_users', [UsersAdminController::class, 'list'])->name('list_users');
-    Route::get('/create_user', [UsersAdminController::class, 'creator'])->name('creator');
+    Route::get('/create_user', [UsersAdminController::class, 'creator'])->name('creator_user');
     Route::post('/create_user', [UsersAdminController::class, 'create'])->name('create_user');
     Route::post('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
 
