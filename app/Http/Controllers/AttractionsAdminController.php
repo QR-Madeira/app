@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 class AttractionsAdminController extends Controller
 {
   private $qrCodeMakerApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=';
-  private $site = 'www.qr-madeira';
 
   public function creator(Request $request)
   {
@@ -37,7 +36,7 @@ class AttractionsAdminController extends Controller
     
     $image_path = explode('/', $image_path)[1];
 
-    $site_url = $this->site.'/'.$this->compileTitle($validatedData['title']).'.com';
+    $site_url = env('APP_URL').$this->compileTitle($validatedData['title']);
 
     $nomeArquivo = 'qr-codes/'.$this->compileTitle($validatedData['title']).'.png';
     $conteudo = file_get_contents($this->qrCodeMakerApiUrl.$site_url);
