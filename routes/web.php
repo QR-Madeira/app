@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttractionsAdminController;
 use App\Http\Controllers\AttractionsViewerController;
+use App\Http\Controllers\UsersAdminController;
 use App\Http\Controllers\SessionController;
 
 /*
@@ -21,12 +22,14 @@ Route::name('admin.')->group(function(){
   Route::prefix('admin')->group(function(){
 
     Route::get('/create', [AttractionsAdminController::class, 'creator'])->name('creator');
-
     Route::post('/create', [AttractionsAdminController::class, 'create'])->name('create');
-  
     Route::get('/delete/{id}', [AttractionsAdminController::class, 'delete'])->name('delete');
-  
     Route::get('/list', [AttractionsAdminController::class, 'list'])->name('list');
+
+    Route::get('/list_users', [UsersAdminController::class, 'list'])->name('list_users');
+    Route::get('/create_user', [UsersAdminController::class, 'creator'])->name('creator');
+    Route::post('/create_user', [UsersAdminController::class, 'create'])->name('create_user');
+    Route::post('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
 
     Route::get('/login', [SessionController::class, 'index'])->name('login');
 
@@ -39,6 +42,6 @@ Route::name('admin.')->group(function(){
 
 Route::get('/', function(){
   return view('viewer.index');
-})->name('view');
+})->name('index');
 
 Route::get('/{title_compiled}', [AttractionsViewerController::class, 'index'])->name('view');
