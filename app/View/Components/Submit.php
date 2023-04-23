@@ -8,13 +8,13 @@ use Illuminate\View\Component;
 
 class Submit extends Component
 {
-  public $value;
+    public $value;
     /**
      * Create a new component instance.
      */
     public function __construct($value)
     {
-      $this->value = $value;
+        $this->value = $value;
     }
 
     /**

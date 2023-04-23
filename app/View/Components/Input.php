@@ -8,17 +8,17 @@ use Illuminate\View\Component;
 
 class Input extends Component
 {
-  public $type;
-  public $name;
-  public $placeholder;
+    public $type;
+    public $name;
+    public $placeholder;
     /**
      * Create a new component instance.
      */
     public function __construct($type, $name, $placeholder)
     {
-      $this->type = $type;
-      $this->name = $name;
-      $this->placeholder = $placeholder;
+        $this->type = $type;
+        $this->name = $name;
+        $this->placeholder = $placeholder;
     }
 
     /**

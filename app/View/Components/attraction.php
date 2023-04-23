@@ -8,13 +8,13 @@ use Illuminate\View\Component;
 
 class attraction extends Component
 {
-  public $attraction;
+    public $attraction;
     /**
      * Create a new component instance.
      */
     public function __construct($attraction)
     {
-      $this->attraction = $attraction;
+        $this->attraction = $attraction;
     }
 
     /**

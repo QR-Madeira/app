@@ -8,13 +8,13 @@ use Illuminate\View\Component;
 
 class LanguageChanger extends Component
 {
-  public $current;
+    public $current;
     /**
      * Create a new component instance.
      */
     public function __construct($current)
     {
-      $this->current = $current;
+        $this->current = $current;
     }
 
     /**

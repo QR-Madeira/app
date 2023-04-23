@@ -8,15 +8,15 @@ use Illuminate\View\Component;
 
 class DeleteAlert extends Component
 {
-  public $route;
-  public $id;
+    public $route;
+    public $id;
     /**
      * Create a new component instance.
      */
     public function __construct($route, $id)
     {
-      $this->route = $route;
-      $this->id = $id;
+        $this->route = $route;
+        $this->id = $id;
     }
 
     /**

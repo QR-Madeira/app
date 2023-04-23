@@ -8,13 +8,13 @@ use Illuminate\View\Component;
 
 class AttractionCreated extends Component
 {
-  public $route;
+    public $route;
     /**
      * Create a new component instance.
      */
     public function __construct($route)
     {
-      $this->route = $route;
+        $this->route = $route;
     }
 
     /**
