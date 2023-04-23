@@ -14,5 +14,8 @@
       <x-input :type="'file'" :name="'image'" :placeholder="'Image'"/>
       <x-submit :value="'Create'" />
     </form>
+    @if($created)
+      <x-attraction-created :route="$route"/>
+    @endif
   </div>
 @endsection

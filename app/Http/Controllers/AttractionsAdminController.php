@@ -11,9 +11,15 @@ class AttractionsAdminController extends Controller
   private $qrCodeMakerApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=';
   private $site = 'www.qr-madeira';
 
-  public function creator()
+  public function creator(Request $request)
   {
-    return view('admin.create');
+    $status = $request->session()->get('status');
+    $route = $request->session()->get('route');
+    $data = array(
+      'created' => $status,
+      'route' => $route
+    );
+    return view('admin.create', $data);
   }
 
   public function create(Request $request)
@@ -49,7 +55,9 @@ class AttractionsAdminController extends Controller
     
     Attraction::create($attraction);
 
-    return redirect()->route('admin.list');
+    $request->session()->flash('status', true);
+    $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));
+    return redirect()->route('admin.creator');
   }
 
   private function compileTitle(String $title)
@@ -65,8 +73,8 @@ class AttractionsAdminController extends Controller
     return redirect()->route('admin.list');
   }
 
-  public function list()
-  {
+  public function list(Request $request)
+  {    
     $all_attractions = Attraction::all();
     
     for($i = 0; $i < count($all_attractions); $i++)

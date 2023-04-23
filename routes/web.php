@@ -39,6 +39,6 @@ Route::name('admin.')->group(function(){
 
 Route::get('/', function(){
   return view('viewer.index');
-})->name('view');
+})->name('index');
 
 Route::get('/{title_compiled}', [AttractionsViewerController::class, 'index'])->name('view');
