@@ -8,7 +8,8 @@ class SessionController extends Controller
 {
   public function index()
   {
-    return view('admin.login');
+    $this->set_default();
+    return view('admin.login', $this->data);
   }
 
   public function signin()
