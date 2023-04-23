@@ -19,7 +19,7 @@ use App\Http\Controllers\SessionController;
 |
 */
 
-Route::name('admin.')->group(function(){
+Route::name('admin.')->group(function () {
 
   Route::prefix('admin')->group(function(){
 
@@ -35,26 +35,24 @@ Route::name('admin.')->group(function(){
     Route::post('/create_user', [UsersAdminController::class, 'create'])->name('create_user');
     Route::get('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
 
-    Route::get('/login', [SessionController::class, 'index'])->name('login');
+        Route::get('/login', [SessionController::class, 'index'])->name('login');
 
-    Route::post('/signin', [SessionController::class, 'signin'])->name('signin');
-    Route::post('/signout', [SessionController::class, 'signout'])->name('signout');
-  
-  });
-  
+        Route::post('/signin', [SessionController::class, 'signin'])->name('signin');
+        Route::post('/signout', [SessionController::class, 'signout'])->name('signout');
+    });
 });
 
-Route::get('/', function(){
-  return view('viewer.index');
+Route::get('/', function () {
+    return view('viewer.index');
 })->name('index');
 
 Route::get('/{title_compiled}', [AttractionsViewerController::class, 'index'])->name('view');
 
 Route::get('/greeting/{locale}', function (string $locale) {
-  if (! in_array($locale, ['en', 'pt'])) {
-    abort(400);
-  }
-  app()->setLocale($locale);
-  session()->put('locale', $locale);
-  return redirect()->back();
+    if (! in_array($locale, ['en', 'pt'])) {
+        abort(400);
+    }
+    app()->setLocale($locale);
+    session()->put('locale', $locale);
+    return redirect()->back();
 })->name('language');

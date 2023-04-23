@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attraction extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $table = 'attractions';
+    protected $table = 'attractions';
 
-  protected $fillable = [
+    protected $fillable = [
     'title_compiled',
     'title',
     'description',
@@ -19,5 +19,5 @@ class Attraction extends Model
     'site_url',
     'qr-code_path',
     'created_by'
-  ];
+    ];
 }

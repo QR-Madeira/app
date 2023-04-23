@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attractions', function (Blueprint $table) {
-          $table->id();
-          $table->string('title_compiled')->unique();
-          $table->string('title')->unique();
-          $table->text('description');
-          $table->string('image_path');
-          $table->string('site_url')->unique();
-          $table->string('qr-code_path');
-          $table->unsignedBigInteger('created_by');
-          $table->foreign('created_by')->references('id')->on('users');
-          $table->timestamps();
+            $table->id();
+            $table->string('title_compiled')->unique();
+            $table->string('title')->unique();
+            $table->text('description');
+            $table->string('image_path');
+            $table->string('site_url')->unique();
+            $table->string('qr-code_path');
+            $table->unsignedBigInteger('created_by');
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->timestamps();
         });
     }
 

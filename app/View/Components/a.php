@@ -8,15 +8,15 @@ use Illuminate\View\Component;
 
 class a extends Component
 {
-  public $name;
-  public $url;
+    public $name;
+    public $url;
     /**
      * Create a new component instance.
      */
     public function __construct($name, $url)
     {
-      $this->name = $name;
-      $this->url = $url;
+        $this->name = $name;
+        $this->url = $url;
     }
 
     /**

@@ -10,17 +10,18 @@ use Illuminate\Support\Facades\App;
 
 class Controller extends BaseController
 {
-  protected $data;
+    protected $data;
 
-  use AuthorizesRequests, ValidatesRequests;
-  
-  protected function set_default()
-  {
-    $this->set_data('current', strtoupper(app()->getLocale()));
-  }
+    use AuthorizesRequests;
+    use ValidatesRequests;
 
-  protected function set_data($key, $value)
-  {
-    $this->data[$key] = $value;
-  }
+    protected function set_default()
+    {
+        $this->set_data('current', strtoupper(app()->getLocale()));
+    }
+
+    protected function set_data($key, $value)
+    {
+        $this->data[$key] = $value;
+    }
 }
