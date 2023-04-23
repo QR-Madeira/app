@@ -13,10 +13,7 @@ class SessionController extends Controller
 
   public function signin()
   {
-    $validatedData = $request->validate([
-      'title' => 'required',
-      'password' => 'required'
-    ]);
+    return redirect()->route('admin.list');
   }
 
   public function signout()

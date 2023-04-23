@@ -1,4 +1,5 @@
 <div class='flex items-center justify-start p-4 border-2 rounded border-black w-full h-36 my-4'>
+  <x-delete-alert :route="route('admin.delete', ['id' => $attraction->id])" :id="$attraction->id"/>
   <div class='w-32 flex items-center justify-center'>
     <div class='w-28 h-28'>
       <img src="{{ asset($attraction['qr-code']) }}" alt="Local Image" class='w-full h-full'>
@@ -19,7 +20,7 @@
       <button onclick="location.href='<?= route('view', ['title_compiled' => $attraction->title_compiled]) ?>'" class='text-xl py-4 px-6 rounded bg-black text-white'>View</button>
     </div>
     <div class='pl-1 text-end'>
-      <button onclick="location.href='<?= route('admin.delete', ['id' => $attraction->id]) ?>'" class='text-xl py-4 px-6 rounded bg-red-600'>Delete</button>
+      <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='text-xl py-4 px-6 rounded bg-red-600'>Delete</button>
     </div>
   </div>
 </div>
