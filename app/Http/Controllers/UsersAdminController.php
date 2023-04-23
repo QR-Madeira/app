@@ -7,20 +7,29 @@ use Illuminate\Http\Request;
 
 class UsersAdminController extends Controller
 {
-    public function creator()
+    public function creator(Request $request)
     {
-        return view('admin.create_user');
+        $this->set_default();
+        $status = $request->session()->get('status');
+        $this->set_data('created', $status);
+        return view('admin.create_user', $this->data);
     }
 
     public function list()
     {
+        $this->set_default();
+
         $all_users = Users::all();
         
-        $data = array(
-            'users' => $all_users
-        );
+        $this->set_data('users', $all_users);
 
-        return view('admin.list_users', $data);
+        return view('admin.list_users', $this->data);
+    }
+
+    public function delete($id)
+    {
+        Users::destroy($id);
+        return redirect()->route('admin.list_users');
     }
 
     public function create(Request $request)
@@ -42,7 +51,6 @@ class UsersAdminController extends Controller
           $status = Users::create($users);
 
           $request->session()->flash('status', true);
-          $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));
           return redirect()->route('admin.creator_user');
 
           return $status;

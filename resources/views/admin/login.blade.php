@@ -8,8 +8,10 @@
       @csrf
       <x-input :type="'text'" :name="'username'" :placeholder="'Username'" />
       <x-input :type="'password'" :name="'password'" :placeholder="'Password'" />
-      <input type="checkbox" name="rememberMe" id="rememberMe">
-      <label for="rememberMe">Remember Me</label>
+      <div class="flex">
+        <p class="text-xl">Remember Me: </p>
+        <input class="w-12" type="checkbox" name="rememberMe" id="rememberMe" />
+      </div>
       <x-submit :value="'Signin'" />
     </form>
   </div>

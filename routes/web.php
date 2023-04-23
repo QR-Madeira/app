@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttractionsAdminController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttractionsViewerController;
 use App\Http\Controllers\UsersAdminController;
 use App\Http\Controllers\SessionController;
@@ -22,6 +23,8 @@ Route::name('admin.')->group(function(){
 
   Route::prefix('admin')->group(function(){
 
+    Route::get('/main', [AdminController::class, 'index'])->name('main');
+
     Route::get('/create', [AttractionsAdminController::class, 'creator'])->name('creator');
     Route::post('/create', [AttractionsAdminController::class, 'create'])->name('create');
     Route::get('/delete/{id}', [AttractionsAdminController::class, 'delete'])->name('delete');
@@ -30,7 +33,7 @@ Route::name('admin.')->group(function(){
     Route::get('/list_users', [UsersAdminController::class, 'list'])->name('list_users');
     Route::get('/create_user', [UsersAdminController::class, 'creator'])->name('creator_user');
     Route::post('/create_user', [UsersAdminController::class, 'create'])->name('create_user');
-    Route::post('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
+    Route::get('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
 
     Route::get('/login', [SessionController::class, 'index'])->name('login');
 

@@ -24,5 +24,8 @@
       <x-input :type="'password'" :name="'password_confirmation'" :placeholder="'Password Confirmation'"/>
       <x-submit :value="'Create'" />
     </form>
+    @if($created)
+      <x-user-created/>
+    @endif
   </div>
 @endsection
