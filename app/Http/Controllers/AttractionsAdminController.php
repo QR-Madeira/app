@@ -33,15 +33,15 @@ class AttractionsAdminController extends Controller
     $description = $validatedData['description'];
 
     $image_path = $request->file('image')->store('attractions', 'public');
-    
+
     $image_path = explode('/', $image_path)[1];
 
-    $site_url = env('APP_URL').$this->compileTitle($validatedData['title']);
+    $site_url = $_SERVER["HTTP_HOST"] . $this->compileTitle($validatedData['title']);
 
     $nomeArquivo = 'qr-codes/'.$this->compileTitle($validatedData['title']).'.png';
     $conteudo = file_get_contents($this->qrCodeMakerApiUrl.$site_url);
     Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
-    
+
     $attraction = [
       'title_compiled' => $this->compileTitle($validatedData['title']),
       'title' => $validatedData['title'],
@@ -51,7 +51,7 @@ class AttractionsAdminController extends Controller
       'qr-code_path' => $this->compileTitle($validatedData['title']).'.png',
       'created_by' => 1
     ];
-    
+
     Attraction::create($attraction);
 
     $request->session()->flash('status', true);
@@ -83,13 +83,13 @@ class AttractionsAdminController extends Controller
   public function list(Request $request)
   {
     $all_attractions = Attraction::all();
-    
+
     for($i = 0; $i < count($all_attractions); $i++)
     {
       $all_attractions[$i]['image'] = asset('storage/attractions/'.$all_attractions[$i]->image_path);
       $all_attractions[$i]['qr-code'] = asset('storage/qr-codes/'.$all_attractions[$i]['qr-code_path']);
     }
-    
+
     $data = array(
       'attractions' => $all_attractions
     );
