@@ -62,6 +62,14 @@ class AttractionsAdminController extends Controller
 
   private function compileTitle(String $title)
   {
+    $tabela = array(
+      'Á'=>'A', 'á'=>'a', 'Â'=>'A', 'â'=>'a', 'Ã'=>'A', 'ã'=>'a',
+      'É'=>'E', 'é'=>'e', 'Ê'=>'E', 'ê'=>'e',
+      'Í'=>'I', 'í'=>'i', 'Î'=>'I', 'î'=>'i',
+      'Ó'=>'O', 'ó'=>'o', 'Ô'=>'O', 'ô'=>'o', 'Õ'=>'O', 'õ'=>'o',
+      'Ú'=>'U', 'ú'=>'u', 'Û'=>'U', 'û'=>'u'
+    );
+    $title = strtr($title, $tabela);
     $title = str_replace(" ", "-", $title);
     $title = strtolower($title);
     return $title;
