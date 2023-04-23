@@ -17,10 +17,10 @@
   </div>
   <div class='w-full flex flex-row items-center justify-end'>
     <div class='pr-1 text-end'>
-      <button onclick="location.href='<?= route('view', ['title_compiled' => $attraction->title_compiled]) ?>'" class='text-xl py-4 px-6 rounded bg-black text-white'>View</button>
+      <button onclick="location.href='<?= route('view', ['title_compiled' => $attraction->title_compiled]) ?>'" class='text-xl py-4 px-6 rounded bg-black text-white'>@lang('View')</button>
     </div>
     <div class='pl-1 text-end'>
-      <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='text-xl py-4 px-6 rounded bg-red-600'>Delete</button>
+      <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='text-xl py-4 px-6 rounded bg-red-600'>@lang('Delete')</button>
     </div>
   </div>
 </div>
