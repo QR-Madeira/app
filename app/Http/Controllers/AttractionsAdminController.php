@@ -12,13 +12,15 @@ class AttractionsAdminController extends Controller
 
   public function creator(Request $request)
   {
+    $this->set_default();
+
     $status = $request->session()->get('status');
     $route = $request->session()->get('route');
-    $data = array(
-      'created' => $status,
-      'route' => $route
-    );
-    return view('admin.create', $data);
+    
+    $this->set_data('created', $status);
+    $this->set_data('route', $route);
+    
+    return view('admin.create', $this->data);
   }
 
   public function create(Request $request)
@@ -82,6 +84,8 @@ class AttractionsAdminController extends Controller
 
   public function list(Request $request)
   {
+    $this->set_default();
+
     $all_attractions = Attraction::all();
     
     for($i = 0; $i < count($all_attractions); $i++)
@@ -90,10 +94,8 @@ class AttractionsAdminController extends Controller
       $all_attractions[$i]['qr-code'] = asset('storage/qr-codes/'.$all_attractions[$i]['qr-code_path']);
     }
     
-    $data = array(
-      'attractions' => $all_attractions
-    );
+    $this->set_data('attractions', $all_attractions);
 
-    return view('admin.list', $data);
+    return view('admin.list', $this->data);
   }
 }
