@@ -1,6 +1,0 @@
-php artisan serve
-npm run dev
-composer i
-rm -rf public/storage
-php artisan storage:link
-php artisan migrate
