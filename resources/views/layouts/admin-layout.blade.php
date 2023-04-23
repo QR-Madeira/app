@@ -5,7 +5,7 @@
 </head>
 <body>
   <div class='absolute top-0 right-0 p-4'>
-    <x-language-changer/>
+    <x-language-changer :current="$current"/>
   </div>
   @yield('body')
 </body>

@@ -11,11 +11,11 @@ class AttractionsViewerController extends Controller
   {
     $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first()->toArray();
     $description = nl2br($attraction['description']);
-    $data = array(
-      'image' => 'storage/attractions/'.$attraction['image_path'],
-      'title' => $attraction['title'],
-      'description' => $description
-    );
-    return view('viewer.get', $data);
+    
+    $this->set_data('image', 'storage/attractions/'.$attraction['image_path']);
+    $this->set_data('title', $attraction['title']);
+    $this->set_data('description', $description);
+
+    return view('viewer.get', $this->data);
   }
 }
