@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttractionsAdminController;
 use App\Http\Controllers\AttractionsViewerController;
@@ -42,3 +43,12 @@ Route::get('/', function(){
 })->name('index');
 
 Route::get('/{title_compiled}', [AttractionsViewerController::class, 'index'])->name('view');
+
+Route::get('/greeting/{locale}', function (string $locale) {
+  if (! in_array($locale, ['en', 'pt'])) {
+    abort(400);
+  }
+  app()->setLocale($locale);
+  session()->put('locale', $locale);
+  return redirect()->back();
+})->name('language');

@@ -81,7 +81,7 @@ class AttractionsAdminController extends Controller
   }
 
   public function list(Request $request)
-  {    
+  {
     $all_attractions = Attraction::all();
     
     for($i = 0; $i < count($all_attractions); $i++)
