@@ -38,7 +38,7 @@ class AttractionsAdminController extends Controller
 
         $image_path = explode('/', $image_path)[1];
 
-        $site_url = ($_SERVER["HTTPS"] ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($validatedData['title']));
+        $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($validatedData['title']));
 
         $nomeArquivo = 'qr-codes/' . $this->compileTitle($validatedData['title']) . '.png';
         $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
