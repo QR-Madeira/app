@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use App\Models\Users;
 use Illuminate\Http\Request;
 
@@ -40,7 +41,7 @@ class UsersAdminController extends Controller
             'password' => 'required|min:4|confirmed'
           ]);
 
-          $pass_hash = password_hash($validatedData['password'], PASSWORD_BCRYPT);
+          $pass_hash = Hash::make($validatedData['password']);
 
           $users = [
             'name' => $validatedData['name'],
