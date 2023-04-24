@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$1" != "--only-serve" ]; then
+if [ "$1" = "--init" ]; then
     composer i && npm i
     rm -rf public/storage
     php artisan storage:link

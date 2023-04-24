@@ -1,0 +1,182 @@
+:root {
+    --ff-s-garamond: Garamond, Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman";
+    --ff-s-primary: var(--ff-s-garamond), ui-sans-serif, sans-serif;
+    --ff-ss-optima: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial;
+    --ff-ss-primary: var(--ff-ss-optima), ui-sans-serif, sans-serif;
+    --ff-monospace: ui-monospace, monospace, monospace;
+
+    --sm: 40em;
+    --md: 48em;
+    --lg: 64em;
+    --xl: 80em;
+    --2xl: 96em;
+
+    --fs-display-1: 7.4375rem;
+    --fs-display-2: 5.5625rem;
+    --fs-header-1: 4.1875rem;
+    --fs-header-2: 3.125rem;
+    --fs-header-3: 2.3125rem;
+    --fs-header-4: 1.75rem;
+    --fs-7: 1.5rem; /* 24px; */
+    --fs-6: 1.3125rem;
+    --fs-5: 1.15625rem; /* 18.5px; */
+    --fs-4: 1rem;
+    --fs-3: .75rem;
+    --fs-2: .5625rem;
+    --fs-1: .4375rem;
+    --fs-0: .3125rem;
+
+    --gap: .75em;
+    --width: (100vw - 40ch);
+    --columns: 5;
+    --shadow: .5em;
+}
+
+body {
+    width: 80ch;
+    margin: auto;
+    font-family: var(--ff-ss-primary);
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1em;
+}
+
+.main > section > h2 {
+    font-size: var(--fs-header-4);
+    font-weight: bold;
+    margin: 1em auto;
+}
+
+.main > aside {
+    border: 1px solid black;
+    border-radius: 1rem;
+    box-shadow: 0 0 .333rem #181818;
+}
+
+.main > aside > figure > figcaption {
+    display: flex;
+    flex-direction: column;
+}
+
+.main > aside > figure > figcaption > * {
+    margin: auto;
+}
+
+.main > aside > figure > figcaption > h1 {
+    font-size: var(--fs-header-1);
+    font-weight: bold;
+    display: none;
+}
+
+.main > aside > figure > figcaption > p:last-child {
+    font-size: var(--fs-header-4);
+    font-weight: bold;
+    display: none;
+}
+
+#share {
+    box-shadow: inset 0 0 .333rem #FFF;
+}
+
+#share:hover {
+    box-shadow: inset 0 0 1rem #FFF;
+}
+
+#attraction-title {
+    font-size: var(--fs-display-2);
+    font-weight: bold;
+    margin: 0.333em auto;
+}
+
+#qr {
+    width: 100vw;
+
+    margin-top: 1em;
+    padding: 1em;
+}
+
+.button {
+    margin: 1em auto;
+    padding: 1em;
+    background-color: #181818;
+    color: #FFF;
+    border-radius: 100vmax;
+}
+
+@media print {
+    *,
+    :after,
+    :before {
+        color: #000 !important;
+        text-shadow: none !important;
+        background: 0 0 !important;
+        box-shadow: none !important;
+    }
+
+    a,
+    a:visited { text-decoration: underline; }
+    a[href]:after { content: " (" attr(href) ")"; }
+    abbr[title]:after { content: " (" attr(title) ")"; }
+
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after { content:""; }
+
+    img, tr { page-break-inside: avoid; }
+
+    img { max-width: 100% !important; }
+
+    h2,
+    h3,
+    p {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 { page-break-after: avoid; }
+
+    body{
+        max-width: initial;
+        font-family: var(--ff-s-primary);
+    }
+
+    body p {
+        text-align: justify;
+    }
+
+    body > header {
+        display: none;
+    }
+
+    .main > section {
+        display: none;
+    }
+
+    .main > aside {
+        position: absolute;
+        margin: 16vmax 8vmax;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    #qr {
+        padding: 4vmax 8vmax;
+    }
+
+    .main > aside > figure > figcaption > * {
+        display: none;
+    }
+
+    .main > aside > figure > figcaption > h1 {
+        display: initial;
+    }
+
+    .main > aside > figure > figcaption > p:last-child {
+        display: initial;
+    }
+}

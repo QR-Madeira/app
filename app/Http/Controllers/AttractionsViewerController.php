@@ -15,6 +15,7 @@ class AttractionsViewerController extends Controller
         $this->set_data('image', 'storage/attractions/' . $attraction['image_path']);
         $this->set_data('title', $attraction['title']);
         $this->set_data('description', $description);
+        $this->set_data('qr', asset('storage/qr-codes/' .  $attraction["qr-code_path"]));
 
         return view('viewer.get', $this->data);
     }
