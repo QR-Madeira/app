@@ -2,7 +2,7 @@
   <x-delete-alert :route="route('admin.delete', ['id' => $attraction->id])" :id="$attraction->id"/>
   <div class='w-32 flex items-center justify-center'>
     <div class='w-28 h-28'>
-      <img src="{{ asset($attraction['qr-code']) }}" alt="Local Image" class='w-full h-full'>
+      <a target="_blank" href="<?=route('view', ['title_compiled' => $attraction->title_compiled])?>?print=true"><img src="{{ asset($attraction['qr-code']) }}" alt="Local Image" class='w-full h-full'></a>
     </div>
   </div>
   <div class='w-full'>

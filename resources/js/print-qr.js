@@ -1,6 +1,11 @@
+const print = new URL(window.location.href).searchParams.get("print");
+
 window.addEventListener("DOMContentLoaded", () => {
-    const print = document.getElementById("share");
-    print.addEventListener("click", () => {
-        window.print()
+    if (print == "true") {
+        window.print();
+    }
+
+    print = document.getElementById("share")?.addEventListener("click", () => {
+        window.print();
     });
 });
