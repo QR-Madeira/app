@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
-use App\Models\Users;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UsersAdminController extends Controller
@@ -20,7 +20,7 @@ class UsersAdminController extends Controller
     {
         $this->set_default();
 
-        $all_users = Users::all();
+        $all_users = User::all();
         
         $this->set_data('users', $all_users);
 
@@ -29,7 +29,7 @@ class UsersAdminController extends Controller
 
     public function delete($id)
     {
-        Users::destroy($id);
+        User::destroy($id);
         return redirect()->route('admin.list_users');
     }
 
@@ -49,7 +49,7 @@ class UsersAdminController extends Controller
             'password' => $pass_hash
           ];
 
-          $status = Users::create($users);
+          $status = User::create($users);
 
           $request->session()->flash('status', true);
           return redirect()->route('admin.creator_user');

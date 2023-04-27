@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class SessionController extends Controller
 {
@@ -17,25 +19,29 @@ class SessionController extends Controller
     public function signin(Request $request)
     {
       $data = $request->validate([
-        'username' => 'required',
+        'email' => 'required|email',
         'password' => 'required'
       ]);
 
-      $given_username = $data['username'];
-      $given_password = $data['password'];
+      if($request->has('remember')){
+          //Checkbox checked
+      }else{
+          //Checkbox not checked
+      }
       
-      $given_password_hash = Hash::make($given_password);
-      
-      $user_get_validated = DB::table('users')->where('username', $given_username)->where('password', $given_password_hash)->first();
-      if(!$user_get_validated)
-        return redirect()->route('admin.login');
+      if (Auth::attempt($data)) {
+        //$request->session()->put('email', $data['email']);
+        return redirect()->route('admin.main');
+      }else{
+        return redirect()->route('login');
+      }
 
-      $request->session()->put('username', $user_get_validated['username']);
-
-      return redirect()->route('admin.list');
     }
 
     public function signout()
     {
+      Session::flush();
+      Auth::logout();
+      return redirect()->route('login');
     }
 }

@@ -4,7 +4,7 @@
     <div class='w-full flex items-center justify-center p-4 relative'>
       <h1 class='text-6xl'>Welcome to Qr-Madeira</h1>
       <div class='absolute right-0 p-4'>
-        <x-a :url="route('admin.login')" :name="'Login'"/>
+        <x-a :url="route('login')" :name="'Login'"/>
       </div>
     </div>
     <div class='w-full flex items-center justify-center'>

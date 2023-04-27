@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttractionsViewerController;
 use App\Http\Controllers\UsersAdminController;
 use App\Http\Controllers\SessionController;
+use App\Http\Middleware\Authenticate;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ use App\Http\Controllers\SessionController;
 |
 */
 
-Route::name('admin.')->group(function () {
+Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
   Route::prefix('admin')->group(function(){
 
@@ -35,12 +36,12 @@ Route::name('admin.')->group(function () {
     Route::post('/create_user', [UsersAdminController::class, 'create'])->name('create_user');
     Route::get('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
 
-        Route::get('/login', [SessionController::class, 'index'])->name('login');
-
-        Route::post('/signin', [SessionController::class, 'signin'])->name('signin');
-        Route::post('/signout', [SessionController::class, 'signout'])->name('signout');
     });
 });
+
+Route::get('/login', [SessionController::class, 'index'])->name('login');
+Route::post('/signin', [SessionController::class, 'signin'])->name('signin');
+Route::get('/signout', [SessionController::class, 'signout'])->name('signout');
 
 Route::get('/', function () {
     return view('viewer.index');
