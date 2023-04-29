@@ -11,8 +11,8 @@ class UsersAdminController extends Controller
     public function creator(Request $request)
     {
         $this->set_default();
-        $status = $request->session()->get('status');
-        $this->set_data('created', $status);
+        //$status = $request->session()->get('status');
+        //$this->set_data('created', $status);
         return view('admin.create_user', $this->data);
     }
 
@@ -39,21 +39,24 @@ class UsersAdminController extends Controller
             'name' => 'required|min:4',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:4|confirmed'
-          ]);
+        ]);
 
-          $pass_hash = Hash::make($validatedData['password']);
+        $pass_hash = Hash::make($validatedData['password']);
 
-          $users = [
+        $users = [
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => $pass_hash
-          ];
+        ];
 
-          $status = User::create($users);
+            $status = User::create($users);
 
-          $request->session()->flash('status', true);
-          return redirect()->route('admin.creator_user');
-
-          return $status;
+        if($status){
+            $request->session()->flash('status', true);
+            return redirect()->route('admin.creator_user');
+        }else{
+            $request->session()->flash('status', false);
+            return redirect()->route('admin.creator_user');
+        }
     }
 }
