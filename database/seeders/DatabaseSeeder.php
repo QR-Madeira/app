@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,8 +24,8 @@ class DatabaseSeeder extends Seeder
         DB::table("users")->insert([
             "id" => 1,
             "name" => "Administrator",
-            "email" => "admni@localhost",
-            "password" => password_hash("!passwdS3cr3t3", PASSWORD_BCRYPT),
+            "email" => "admin@localhost",
+            "password" => Hash::make("admin123"),
         ]);
     }
 }
