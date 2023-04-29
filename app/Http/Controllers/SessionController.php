@@ -22,7 +22,7 @@ class SessionController extends Controller
         'email' => 'required|email',
         'password' => 'required'
       ]);
-      
+
       if (Auth::attempt($data, $request->has('remember'))) {
         $request->session()->regenerate();
         return redirect()->route('admin.main');

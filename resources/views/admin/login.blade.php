@@ -9,7 +9,7 @@
       <x-input :type="'email'" :name="'email'" :placeholder="'Email'" />
       <x-input :type="'password'" :name="'password'" :placeholder="'Password'" />
       <div class="flex">
-        <p class="text-xl">Remember Me: </p>
+        <label for="remember" class="select-none"><p class="text-xl">Remember Me: </p></label>
         <input class="w-12" type="checkbox" name="remember" id="remember" />
       </div>
       <x-submit :value="'Signin'" />
