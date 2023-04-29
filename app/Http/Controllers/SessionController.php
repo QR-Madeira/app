@@ -22,15 +22,9 @@ class SessionController extends Controller
         'email' => 'required|email',
         'password' => 'required'
       ]);
-
-      if($request->has('remember')){
-          //Checkbox checked
-      }else{
-          //Checkbox not checked
-      }
       
-      if (Auth::attempt($data)) {
-        //$request->session()->put('email', $data['email']);
+      if (Auth::attempt($data, $request->has('remember'))) {
+        $request->session()->regenerate();
         return redirect()->route('admin.main');
       }else{
         return redirect()->route('login');

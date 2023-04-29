@@ -1,4 +1,4 @@
-@extends('layouts.admin-layout')
+@extends('layouts.layout')
 @section('body')
   <div class='py-4 px-96'>
     <div class='flex items-center justify-center w-full'>
