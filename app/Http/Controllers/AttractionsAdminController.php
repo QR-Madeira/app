@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attraction;
+use App\Models\User;
+use DateTime;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class AttractionsAdminController extends Controller
 {
@@ -12,6 +16,8 @@ class AttractionsAdminController extends Controller
 
     public function creator(Request $request)
     {
+        Session::put('place', 'admin_attr');
+
         $this->set_default();
 
         $status = $request->session()->get('status');
@@ -26,8 +32,8 @@ class AttractionsAdminController extends Controller
     public function create(Request $request)
     {
         $validatedData = $request->validate([
-        'title' => 'required|unique:attractions,title',
-        'description' => 'required'
+            `'title' => 'required|unique:attractions,title',
+            'description' => 'required'`
         ]);
 
         $title = $validatedData['title'];
@@ -45,13 +51,13 @@ class AttractionsAdminController extends Controller
         Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
 
         $attraction = [
-        'title_compiled' => $this->compileTitle($validatedData['title']),
-        'title' => $validatedData['title'],
-        'description' => $validatedData['description'],
-        'site_url' => $site_url,
-        'image_path' => $image_path,
-        'qr-code_path' => $this->compileTitle($validatedData['title']) . '.png',
-        'created_by' => 1
+            'title_compiled' => $this->compileTitle($validatedData['title']),
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'site_url' => $site_url,
+            'image_path' => $image_path,
+            'qr-code_path' => $this->compileTitle($validatedData['title']) . '.png',
+            'created_by' => Auth::user()->id
         ];
 
         Attraction::create($attraction);
@@ -64,11 +70,11 @@ class AttractionsAdminController extends Controller
     private function compileTitle(string $title)
     {
         $tabela = array(
-        'Á' => 'A', 'á' => 'a', 'Â' => 'A', 'â' => 'a', 'Ã' => 'A', 'ã' => 'a',
-        'É' => 'E', 'é' => 'e', 'Ê' => 'E', 'ê' => 'e',
-        'Í' => 'I', 'í' => 'i', 'Î' => 'I', 'î' => 'i',
-        'Ó' => 'O', 'ó' => 'o', 'Ô' => 'O', 'ô' => 'o', 'Õ' => 'O', 'õ' => 'o',
-        'Ú' => 'U', 'ú' => 'u', 'Û' => 'U', 'û' => 'u'
+            'Á' => 'A', 'á' => 'a', 'Â' => 'A', 'â' => 'a', 'Ã' => 'A', 'ã' => 'a',
+            'É' => 'E', 'é' => 'e', 'Ê' => 'E', 'ê' => 'e',
+            'Í' => 'I', 'í' => 'i', 'Î' => 'I', 'î' => 'i',
+            'Ó' => 'O', 'ó' => 'o', 'Ô' => 'O', 'ô' => 'o', 'Õ' => 'O', 'õ' => 'o',
+            'Ú' => 'U', 'ú' => 'u', 'Û' => 'U', 'û' => 'u'
         );
         $title = strtr($title, $tabela);
         $title = str_replace(" ", "-", $title);
@@ -82,8 +88,11 @@ class AttractionsAdminController extends Controller
         return redirect()->route('admin.list');
     }
 
-    public function list(Request $request)
+    public function list()
     {
+
+        Session::put('place', 'admin_attr');
+
         $this->set_default();
 
         $all_attractions = Attraction::all();
@@ -91,6 +100,10 @@ class AttractionsAdminController extends Controller
         for ($i = 0; $i < count($all_attractions); $i++) {
             $all_attractions[$i]['image'] = asset('storage/attractions/' . $all_attractions[$i]->image_path);
             $all_attractions[$i]['qr-code'] = asset('storage/qr-codes/' . $all_attractions[$i]['qr-code_path']);
+            $creator_name = User::select('name')->where('id', $all_attractions[$i]['created_by'])->first();
+            $all_attractions[$i]['creator_name'] = $creator_name->name;
+            $date = new DateTime($all_attractions[$i]['created_at']);
+            $all_attractions[$i]['created_at_'] = $date->format("Y-m-d");
         }
 
         $this->set_data('attractions', $all_attractions);

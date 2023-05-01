@@ -4,7 +4,7 @@
     <div class='flex items-center justify-center w-full relative'>
       <h1 class='text-center text-5xl py-8'>@lang('Create Attraction')</h1>
       <div class='absolute right-0'>
-        <x-a :url="route('admin.list')" :name="'List'"/>
+        <x-a :url="route('admin.list')" :name="'Attractions List'"/>
       </div>
     </div>
     <form class="grid grid-cols-1 gap-4" action="{{route('admin.create')}}" method="POST" enctype="multipart/form-data">

@@ -24,8 +24,6 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
   Route::prefix('admin')->group(function(){
 
-    Route::get('/main', [AdminController::class, 'index'])->name('main');
-
     Route::get('/create', [AttractionsAdminController::class, 'creator'])->name('creator');
     Route::post('/create', [AttractionsAdminController::class, 'create'])->name('create');
     Route::get('/delete/{id}', [AttractionsAdminController::class, 'delete'])->name('delete');

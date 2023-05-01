@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class UsersAdminController extends Controller
 {
-    public function creator(Request $request)
+    public function creator()
     {
+        Session::put('place', 'admin_usr');
+
         $this->set_default();
         //$status = $request->session()->get('status');
         //$this->set_data('created', $status);
@@ -18,6 +21,9 @@ class UsersAdminController extends Controller
 
     public function list()
     {
+
+        Session::put('place', 'admin_usr');
+        
         $this->set_default();
 
         $all_users = User::all();
@@ -38,7 +44,8 @@ class UsersAdminController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|min:4',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:4|confirmed'
+            'password' => 'required|min:4|confirmed',
+            'user_type'=> 'required'
         ]);
 
         $pass_hash = Hash::make($validatedData['password']);

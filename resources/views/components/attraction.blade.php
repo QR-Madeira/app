@@ -15,6 +15,16 @@
       <p class='text-lg px-4 max-h-28'>{{$attraction->description}}</p>
     </div>
   </div>
+  <div class='w-full'>
+    <div class='overflow-auto'>
+      <p class='text-lg px-4 max-h-28'>Created by: {{$attraction->creator_name}}</p>
+    </div>
+  </div>
+  <div class='w-full'>
+    <div class='overflow-auto'>
+      <p class='text-lg px-4 max-h-28'>Created at: {{$attraction->created_at_}}</p>
+    </div>
+  </div>
   <div class='w-full flex flex-row items-center justify-end'>
     <div class='pr-1 text-end'>
       <button onclick="location.href='<?= route('view', ['title_compiled' => $attraction->title_compiled]) ?>'" class='text-xl py-4 px-6 rounded bg-black text-white'>@lang('View')</button>
