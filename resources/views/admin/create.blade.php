@@ -12,7 +12,7 @@
       <x-input :type="'text'" :name="'title'" :placeholder="'Title'"/>
       <textarea type="text" name="description" placeholder="@lang('Description')" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black"></textarea>
       <x-input :type="'file'" :name="'image'" :placeholder="'Image'"/>
-      <x-submit :value="'Create'" />
+      <x-submit :value="'Create'"/>
     </form>
     @if($created)
       <x-attraction-created :route="$route"/>

@@ -13,29 +13,24 @@ class UsersAdminController extends Controller
     {
         Session::put('place', 'admin_usr');
 
-        $this->set_default();
-
         $status = $request->session()->get('status');
         $message = $request->session()->get('message');
 
-        $this->set_data('status', $status);
-        $this->set_data('message', $message);
+        $this->data->set('status', $status);
+        $this->data->set('message', $message);
 
-        return view('admin.create_user', $this->data);
+        return $this->view('admin.create_user');
     }
 
     public function list()
     {
-
         Session::put('place', 'admin_usr');
-        
-        $this->set_default();
 
         $all_users = User::all();
         
-        $this->set_data('users', $all_users);
+        $this->data->set('users', $all_users);
 
-        return view('admin.list_users', $this->data);
+        return $this->view('admin.list_users');
     }
 
     public function delete($id)
