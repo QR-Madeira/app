@@ -13,7 +13,7 @@ class SessionController extends Controller
     public function index()
     {
       $this->set_default();
-      return view('admin.login', $this->data);
+      return $this->view('admin.login');
     }
 
     public function signin(Request $request)

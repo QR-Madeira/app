@@ -7,16 +7,16 @@ use App\Models\Attraction;
 
 class AttractionsViewerController extends Controller
 {
-    public function index($title_compiled)
-    {
-        $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first()->toArray();
-        $description = nl2br($attraction['description']);
+  public function index($title_compiled)
+  {
+    $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first()->toArray();
+    $description = nl2br($attraction['description']);
 
-        $this->set_data('image', 'storage/attractions/' . $attraction['image_path']);
-        $this->set_data('title', $attraction['title']);
-        $this->set_data('description', $description);
-        $this->set_data('qr', asset('storage/qr-codes/' .  $attraction["qr-code_path"]));
+    $this->set_data('image', 'storage/attractions/' . $attraction['image_path']);
+    $this->set_data('title', $attraction['title']);
+    $this->set_data('description', $description);
+    $this->set_data('qr', asset('storage/qr-codes/' .  $attraction["qr-code_path"]));
 
-        return view('viewer.get', $this->data);
-    }
+    return $this->view('viewer.get');
+  }
 }

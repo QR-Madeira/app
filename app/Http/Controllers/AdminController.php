@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index()
-    {
-        $this->set_default();
-        return view('admin.main', $this->data);
-    }
+  public function index()
+  {
+    $this->set_default();
+    return $this->view('admin.main');
+  }
 }

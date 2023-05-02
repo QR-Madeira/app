@@ -7,21 +7,22 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\App;
+use App\Classes\Data;
 
 class Controller extends BaseController
 {
-    protected $data;
+  protected $data;
 
-    use AuthorizesRequests;
-    use ValidatesRequests;
+  use AuthorizesRequests;
+  use ValidatesRequests;
 
-    protected function set_default()
-    {
-        $this->set_data('current', strtoupper(app()->getLocale()));
-    }
+  protected function view($view)
+  {
+    return view($view, $this->data->get());
+  }
 
-    protected function set_data($key, $value)
-    {
-        $this->data[$key] = $value;
-    }
+  public function __construct()
+  {
+    $this->data = Data::getInstance();
+  }
 }

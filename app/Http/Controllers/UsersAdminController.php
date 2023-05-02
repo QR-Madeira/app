@@ -16,7 +16,7 @@ class UsersAdminController extends Controller
         $this->set_default();
         //$status = $request->session()->get('status');
         //$this->set_data('created', $status);
-        return view('admin.create_user', $this->data);
+        return $this->view('admin.create_user');
     }
 
     public function list()
@@ -30,7 +30,7 @@ class UsersAdminController extends Controller
         
         $this->set_data('users', $all_users);
 
-        return view('admin.list_users', $this->data);
+        return $this->view('admin.list_users');
     }
 
     public function delete($id)
