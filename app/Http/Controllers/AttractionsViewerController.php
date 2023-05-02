@@ -13,6 +13,7 @@ class AttractionsViewerController extends Controller
     $description = nl2br($attraction['description']);
 
     $this->data->set('image', 'storage/attractions/' . $attraction['image_path']);
+    $this->data->set('title_compiled', $title_compiled);
     $this->data->set('title', $attraction['title']);
     $this->data->set('description', $description);
     $this->data->set('qr', asset('storage/qr-codes/' .  $attraction["qr-code_path"]));
