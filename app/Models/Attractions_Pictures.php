@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Attraction extends Model
+class Attractions_Pictures extends Model
 {
     use HasFactory;
 
-    protected $table = 'attractions';
+    protected $table = 'attractions_pictures';
 
     protected $fillable = [
-      'title_compiled',
-      'title',
-      'description',
+      'belonged_attraction',
       'image_path',
-      'site_url',
-      'qr-code_path',
-      'created_by'
+      'description',
     ];
 }

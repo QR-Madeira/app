@@ -13,7 +13,7 @@
       <img src="{{$image}}" alt="Attraction Image">
     </div>
     <div class="w-full flex items-center justify-center p-8">
-      <p class="text-lg">{{$description}}</p>
+      <p class="text-lg"><?= $description ?></p>
     </div>
   </div>
 @endsection
