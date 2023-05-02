@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Attractions_Pictures;
 use Illuminate\Http\Request;
 use App\Models\Attraction;
 use App\Models\User;
 use DateTime;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Auth;
 
 class AttractionsAdminController extends Controller
 {
@@ -30,8 +31,8 @@ class AttractionsAdminController extends Controller
   public function create(Request $request)
   {
     $validatedData = $request->validate([
-        'title' => 'required|unique:attractions,title',
-        'description' => 'required'
+      'title' => 'required|unique:attractions,title',
+      'description' => 'required'
     ]);
 
     $title = $validatedData['title'];
@@ -58,7 +59,18 @@ class AttractionsAdminController extends Controller
       'created_by' => Auth::user()->id
     ];
 
-    Attraction::create($attraction);
+    $attraction = Attraction::create($attraction);
+
+    $gallery = $request->file('gallery');
+    foreach($gallery as $picture)
+    {
+      $image_path = $picture->store('gallery', 'public');
+      $image = array(
+        'belonged_attraction' => $attraction->id,
+        'image_path' => $image_path,
+      );
+      Attractions_Pictures::create($image);
+    }
 
     $request->session()->flash('status', true);
     $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));

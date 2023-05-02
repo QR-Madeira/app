@@ -16,7 +16,6 @@
         <h1 class="text-lg">@lang('Created at'):</h1>
         <h1 class="text-lg">@lang('Actions')</h1>
       </div>
-    @else
       <div class="w-full">
         @foreach ($attractions as $attr)
           <div class="@if(!$loop->last) border-b-0 @else rounded-b @endif border-2 border-black">
@@ -24,6 +23,7 @@
           </div>
         @endforeach
       </div>
+    @else
       <div class="p-4">
         <h1 class='text-2xl'>@lang('There are no attractions created')</h1>
       </div>
