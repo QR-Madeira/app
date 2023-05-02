@@ -101,7 +101,7 @@ class AttractionsAdminController extends Controller
       $all_attractions[$i]['created_at_'] = $date->format("Y-m-d");
     }
 
-    $this->set_data('attractions', $all_attractions);
+    $this->data->set('attractions', $all_attractions);
 
     return $this->view('admin.list');
   }

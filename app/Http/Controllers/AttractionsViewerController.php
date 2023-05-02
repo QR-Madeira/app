@@ -12,10 +12,10 @@ class AttractionsViewerController extends Controller
     $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first()->toArray();
     $description = nl2br($attraction['description']);
 
-    $this->set_data('image', 'storage/attractions/' . $attraction['image_path']);
-    $this->set_data('title', $attraction['title']);
-    $this->set_data('description', $description);
-    $this->set_data('qr', asset('storage/qr-codes/' .  $attraction["qr-code_path"]));
+    $this->data->set('image', 'storage/attractions/' . $attraction['image_path']);
+    $this->data->set('title', $attraction['title']);
+    $this->data->set('description', $description);
+    $this->data->set('qr', asset('storage/qr-codes/' .  $attraction["qr-code_path"]));
 
     return $this->view('viewer.get');
   }
