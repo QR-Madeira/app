@@ -8,7 +8,6 @@ class AdminController extends Controller
 {
   public function index()
   {
-    $this->set_default();
     return $this->view('admin.main');
   }
 }

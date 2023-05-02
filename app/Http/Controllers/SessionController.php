@@ -12,7 +12,6 @@ class SessionController extends Controller
 {
     public function index()
     {
-      $this->set_default();
       return $this->view('admin.login');
     }
 

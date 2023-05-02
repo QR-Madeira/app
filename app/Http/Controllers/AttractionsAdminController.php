@@ -18,8 +18,6 @@ class AttractionsAdminController extends Controller
   {
     Session::put('place', 'admin_attr');
 
-    $this->set_default();
-
     $status = $request->session()->get('status');
     $route = $request->session()->get('route');
 
@@ -90,10 +88,7 @@ class AttractionsAdminController extends Controller
 
   public function list()
   {
-
     Session::put('place', 'admin_attr');
-
-    $this->set_default();
 
     $all_attractions = Attraction::all();
 

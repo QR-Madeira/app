@@ -13,7 +13,6 @@ class UsersAdminController extends Controller
     {
         Session::put('place', 'admin_usr');
 
-        $this->set_default();
         //$status = $request->session()->get('status');
         //$this->set_data('created', $status);
         return $this->view('admin.create_user');
@@ -21,10 +20,7 @@ class UsersAdminController extends Controller
 
     public function list()
     {
-
         Session::put('place', 'admin_usr');
-        
-        $this->set_default();
 
         $all_users = User::all();
         
