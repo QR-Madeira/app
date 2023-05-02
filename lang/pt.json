@@ -1,7 +1,7 @@
 {
   "Are you sure you want to delete this attraction?": "Tens a certeza que queres deletar esta atração?",
-  "Attraction created with success!": "Atração criada com sucesso!",
-  "User created with success!": "Utilizador criada com sucesso!",
+  "Attraction created with success": "Atração criada com sucesso",
+  "User created with success": "Utilizador criada com sucesso",
   "There are no attractions created": "Nenhuma atração foi criada",
   "Attractions List": "Lista de Atrações",
   "Create Attraction": "Criar Atração",
@@ -19,7 +19,10 @@
   "Users List": "Lista de utilizadores",
   "Name": "Nome",
   "Password": "Palavra passe",
-  "Password Confirmation": "Confirmação da palavra passse",
+  "Qr Code": "Código QR",
+  "Created by": "Criado por",
+  "Created at": "Criado dia",
+  "Actions": "Ações",
   "Users list": "Lista de utilizadores"
   
 }

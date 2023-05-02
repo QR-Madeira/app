@@ -8,12 +8,12 @@
       </div>
     </div>
     <div class='grid grid-cols-6 p-4 border-2 rounded border-black w-full'>
-      <h1 class="text-3xl">Qr Code</h1>
-      <h1 class='text-3xl'>Name</h1>
-      <h1 class="text-3xl">Description</h1>
-      <h1 class="text-3xl">Created by:</h1>
-      <h1 class="text-3xl">Created at:</h1>
-      <h1 class="text-3xl">Actions</h1>
+      <h1 class="text-3xl">@lang('Qr Code')</h1>
+      <h1 class='text-3xl'>@lang('Name')</h1>
+      <h1 class="text-3xl">@lang('Description')</h1>
+      <h1 class="text-3xl">@lang('Created by'):</h1>
+      <h1 class="text-3xl">@lang('Created at'):</h1>
+      <h1 class="text-3xl">@lang('Actions')</h1>
     </div>
     <div class="grid gap-4 py-4 w-full">
       @if(count($attractions) != 0)
