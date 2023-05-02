@@ -33,12 +33,8 @@
       </fieldset>
       <x-submit :value="'Create'" />
     </form>
-    @if(Session::has('status'))
-      @if(Session::get('status'))
-        <x-user-created/>
-      @else
-        <p>as</p>
-      @endif
+    @if(Session::has('status') && Session::has('message'))
+      <x-success_error_msg :status="$status" :msg="$message"/>
     @endif
   </div>
 @endsection

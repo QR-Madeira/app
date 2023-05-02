@@ -9,12 +9,16 @@ use Illuminate\Support\Facades\Session;
 
 class UsersAdminController extends Controller
 {
-    public function creator()
+    public function creator(Request $request)
     {
         Session::put('place', 'admin_usr');
 
-        //$status = $request->session()->get('status');
-        //$this->data->set('created', $status);
+        $status = $request->session()->get('status');
+        $message = $request->session()->get('message');
+
+        $this->data->set('status', $status);
+        $this->data->set('message', $message);
+
         return $this->view('admin.create_user');
     }
 
@@ -52,13 +56,15 @@ class UsersAdminController extends Controller
             'password' => $pass_hash
         ];
 
-            $status = User::create($users);
+        $status = User::create($users);
 
         if($status){
             $request->session()->flash('status', true);
+            $request->session()->flash('message', 'User created with success!');
             return redirect()->route('admin.creator_user');
         }else{
             $request->session()->flash('status', false);
+            $request->session()->flash('message', 'Something went wrong when creating the player, try again!');
             return redirect()->route('admin.creator_user');
         }
     }
