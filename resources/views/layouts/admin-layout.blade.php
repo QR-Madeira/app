@@ -26,7 +26,7 @@
         </div>
         <div class="space-y-2">
           <li>
-            <x-language-changer :current="Session::get('locale')"/>
+            <x-language-changer :current="strtoupper(Session::get('locale'))"/>
           </li>
           <li>
             <a href="{{route('signout')}}" class="flex items-center p-2 text-white rounded-lg hover:bg-slate-600">
