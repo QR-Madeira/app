@@ -37,11 +37,13 @@ class AttractionsAdminController extends Controller
         }
 
         if (Auth::id() === $a->created_by) {
-            foreach ([
+            foreach (
+                [
                 "id" => $id,
                 "title" => $a->title,
                 "description" => $a->description,
-            ] as $k => $v) {
+                ] as $k => $v
+            ) {
                 $this->data->set($k, $v);
             }
             return $this->view('admin.update');
