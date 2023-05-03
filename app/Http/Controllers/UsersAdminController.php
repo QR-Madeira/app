@@ -27,7 +27,7 @@ class UsersAdminController extends Controller
         Session::put('place', 'admin_usr');
 
         $all_users = User::all();
-        
+
         $this->data->set('users', $all_users);
 
         return $this->view('admin.list_users');
@@ -45,7 +45,7 @@ class UsersAdminController extends Controller
             'name' => 'required|min:4',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:4|confirmed',
-            'user_type'=> 'required'
+            'user_type' => 'required'
         ]);
 
         $pass_hash = Hash::make($validatedData['password']);
@@ -58,11 +58,11 @@ class UsersAdminController extends Controller
 
         $status = User::create($users);
 
-        if($status){
+        if ($status) {
             $request->session()->flash('status', true);
             $request->session()->flash('message', 'User created with success!');
             return redirect()->route('admin.creator_user');
-        }else{
+        } else {
             $request->session()->flash('status', false);
             $request->session()->flash('message', 'Something went wrong when creating the player, try again!');
             return redirect()->route('admin.creator_user');
