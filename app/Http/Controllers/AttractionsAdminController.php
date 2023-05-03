@@ -61,7 +61,7 @@ class AttractionsAdminController extends Controller
 
     $attraction = Attraction::create($attraction);
 
-    $gallery = $request->file('gallery');
+    /*$gallery = $request->file('gallery');
     foreach($gallery as $picture)
     {
       $image_path = $picture->store('gallery', 'public');
@@ -70,7 +70,7 @@ class AttractionsAdminController extends Controller
         'image_path' => $image_path,
       );
       Attractions_Pictures::create($image);
-    }
+    }*/
 
     $request->session()->flash('status', true);
     $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));
