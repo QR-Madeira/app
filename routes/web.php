@@ -42,10 +42,12 @@ Route::post('/signin', [SessionController::class, 'signin'])->name('signin');
 Route::get('/signout', [SessionController::class, 'signout'])->name('signout');
 
 Route::get('/', function () {
-    return view('viewer.index');
+  return view('viewer.index');
 })->name('index');
 
 Route::get('/{title_compiled}', [AttractionsViewerController::class, 'index'])->name('view');
+Route::get('/{title_compiled}/gallery', [AttractionsViewerController::class, 'gallery'])->name('view.gallery');
+Route::get('/{title_compiled}/map', [AttractionsViewerController::class, 'map'])->name('view.map');
 
 Route::get('/greeting/{locale}', function (string $locale) {
     if (! in_array($locale, ['en', 'pt'])) {

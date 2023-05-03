@@ -12,6 +12,7 @@
       <x-input :type="'text'" :name="'title'" :placeholder="'Title'"/>
       <textarea type="text" name="description" placeholder="@lang('Description')" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black"></textarea>
       <x-input :type="'file'" :name="'image'" :placeholder="'Image'"/>
+      <x-input :type="'file'" :name="'gallery[]'" :placeholder="'Gallery'" :multiple="TRUE"/>
       <h2 class='text-center text-3xl py-8'>@lang('Close locations')</h2>
       <label for="close_icon">Chose an icon: </label>
       <select name="close_icon" id="close_icon">
