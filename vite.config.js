@@ -29,17 +29,21 @@ export default defineConfig({
  * @ignore
  */
 function ip() {
-  const ifaces = networkInterfaces();
+    const ifaces = networkInterfaces();
 
-  for (const iface in ifaces) {
-    /*
-     * Normaly interface's name starts with "e" or "w" depending if it is;
-     * ethernet or wireless.
-     */
-    if (iface[0] === "e" || iface[0] === "w") {
-      return ifaces[iface][0].address;
+    for (const iface in ifaces) {
+        /*
+         * Normaly interface's name starts with "e" or "w" depending if it is;
+         * ethernet or wireless.
+         */
+        if (iface.startsWith("e") || iface.startsWith("w")) {
+            for (const i of ifaces[iface]) {
+                if (i.family === "IPv4") {
+                    return i.address;
+                }
+            }
+        }
     }
-  }
 
-  return "127.0.0.1";
+    return "127.0.0.1";
 }

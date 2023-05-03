@@ -28,12 +28,36 @@ class AttractionsAdminController extends Controller
         return $this->view('admin.create');
     }
 
-    public function create(Request $request, $id)
+    public function updater(Request $req, string $id)
+    {
+        $a = Attraction::find($id);
+
+        if (!$a || !$id) {
+            throw new \RuntimeException("no attraction found");
+        }
+
+        if (Auth::id() === $a->created_by) {
+            foreach ([
+                "id" => $id,
+                "title" => $a->title,
+                "description" => $a->description,
+            ] as $k => $v) {
+                $this->data->set($k, $v);
+            }
+            return $this->view('admin.update');
+        } else {
+            throw new \RuntimeException("not the owner of the attraction");
+        }
+    }
+
+    public function create(Request $request, ?string $id)
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:attractions,title',
             'description' => 'required'
         ]);
+
+        dd($validatedData);
 
         $image = $request->file('image');
         $gallery = $request->file('gallery');
@@ -72,8 +96,12 @@ class AttractionsAdminController extends Controller
             case "PUT":
                 $a = Attraction::find($id);
 
+                if (!$a || !$id) {
+                    throw new \RuntimeException("no attraction found");
+                }
+
                 if ($a->created_by === Auth::id()) {
-                    $toDel = array_map(static fn (Attractions_Pictures $i) => $i->image_path, Attractions_Pictures::where("belonged_attraction", $id)->get());
+                    $toDel = Attractions_Pictures::where("belonged_attraction", $id)->get()->map(static fn (Attractions_Pictures $i) => $i->image_path);
                     $toDel[] = $a->image_path;
 
                     if ($a->title_compiled != $this->compileTitle($validatedData['title'])) {
@@ -82,27 +110,32 @@ class AttractionsAdminController extends Controller
                         Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
                     }
 
+dd($a);
                     $a->update([
                         'title_compiled' => $this->compileTitle($validatedData['title']),
                         'title' => $validatedData['title'],
                         'description' => $validatedData['description'],
                         'site_url' => $site_url,
-                        'image_path' => explode("/", $image->store('attractions', 'public'))[1],
+                        //'image_path' => explode("/", $image->store('attractions', 'public'))[1],
                         'qr-code_path' => $this->compileTitle($validatedData['title']) . '.png',
                     ]);
+dd($a);
 
-                    foreach ($gallery as $picture) {
-                        $image_path = $picture->store('gallery', 'public');
-                        $image = array(
-                            'belonged_attraction' => $id,
-                            'image_path' => $image_path,
-                        );
-                        Attractions_Pictures::create($image);
+                    if (is_iterable($gallery)) {
+                        foreach ($gallery as $picture) {
+                            $image_path = $picture->store('gallery', 'public');
+                            $image = array(
+                                'belonged_attraction' => $id,
+                                'image_path' => $image_path,
+                            );
+                            Attractions_Pictures::create($image);
+                        }
                     }
 
                     Storage::disk("public")->delete($toDel);
+                    //return redirect()->route("admin.updater", $id);
                 } else {
-                    throw new \RuntimeException("Not the owner of the attraction");
+                    throw new \RuntimeException("Not the owner of /the attraction");
                 }
 
                 break;

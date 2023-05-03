@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
   <h1 class='flex flex-row items-center text-xl max-h-28'>{{$attraction->created_at_}}</h1>
   <div class='flex flex-row items-center w-full justify-start space-x-2'>
     <?php if (Auth::user()->name === $attraction->creator_name): ?>
-    <p><a>Update</a></p>
+    <p><a href="<?= route("admin.updater", $attraction->id) ?>">Update</a></p>
     <?php endif; ?>
     <button onclick="location.href='<?= route('view', ['title_compiled' => $attraction->title_compiled]) ?>'" class='text-xl py-4 px-6 rounded bg-black text-white'>@lang('View')</button>
     <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='text-xl py-4 px-6 rounded bg-red-600'>@lang('Delete')</button>
