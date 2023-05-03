@@ -11,18 +11,18 @@ use App\Classes\Data;
 
 class Controller extends BaseController
 {
-  protected $data;
+    protected $data;
 
-  use AuthorizesRequests;
-  use ValidatesRequests;
+    use AuthorizesRequests;
+    use ValidatesRequests;
 
-  protected function view($view)
-  {
-    return view($view, $this->data->get());
-  }
+    protected function view($view)
+    {
+        return view($view, $this->data->get());
+    }
 
-  public function __construct()
-  {
-    $this->data = Data::getInstance();
-  }
+    public function __construct()
+    {
+        $this->data = Data::getInstance();
+    }
 }
