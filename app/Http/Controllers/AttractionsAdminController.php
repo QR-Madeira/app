@@ -52,14 +52,14 @@ class AttractionsAdminController extends Controller
         }
     }
 
-    public function create(Request $request, ?string $id)
+    public function create(Request $request, ?string $id = null)
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:attractions,title',
             'description' => 'required'
         ]);
 
-        dd($validatedData);
+        //dd($validatedData);
 
         $image = $request->file('image');
         $gallery = $request->file('gallery');

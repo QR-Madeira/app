@@ -1,5 +1,5 @@
 <label for="close_icon">Chose an icon for this location: </label>
-<select name="close_icon" id="close_icon" class="w-28 h-auto material-symbols-rounded fs-48">
+<select name="close_location[close_icon]" id="close_icon" class="w-28 h-auto material-symbols-rounded fs-48">
     <option value="local_hospital">local_hospital</option>
     <option  value="shopping_cart">shopping_cart</option>
     <option value="account_balance">account_balance</option>

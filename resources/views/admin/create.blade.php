@@ -16,7 +16,8 @@
       <x-input :type="'file'" :name="'gallery[]'" :placeholder="'Gallery'" :multiple="TRUE"/>
       <!-- CLOSE LOCATIONS -->
       <h2 class='text-center text-3xl py-8'>@lang('Close locations')</h2>
-      <button class="bg-black/[.10] text-black flex justify-center items-center rounded border-2 border-black/[.10] hover:bg-black/[.16] p-3 mb-8" id="add" onclick="event.preventDefault(); var a = 'x-close_location'; this.parentNode. "><span class="material-symbols-rounded h-full">add</span>Add new location</button>
+      <div class="flex flex-col space-y-4" id="location_form" style="display: none;"><x-close_location/></div>
+      <button class="bg-black/[.10] text-black flex justify-center items-center rounded border-2 border-black/[.10] hover:bg-black/[.16] p-3 mb-8" id="add" onclick="event.preventDefault(); document.querySelector('#location_form').style.display = 'flex'; this.disabled = true"><span class="material-symbols-rounded h-full">add</span>Add new location</button>
        <!-- /CLOSE LOCATIONS -->
       <x-submit :value="'Create'"/>
     </form>
