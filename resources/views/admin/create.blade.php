@@ -16,21 +16,7 @@
       <x-input :type="'file'" :name="'gallery[]'" :placeholder="'Gallery'" :multiple="TRUE"/>
       <!-- CLOSE LOCATIONS -->
       <h2 class='text-center text-3xl py-8'>@lang('Close locations')</h2>
-      <button class="bg-black/[.10] text-black flex justify-center items-center rounded border-2 border-black/[.10] hover:bg-black/[.16] p-3 mb-12" id="add" onclick="event.preventDefault(); document.getElementById('add_close_location').style.display == 'block'?document.getElementById('add_close_location').style.display = 'none':document.getElementById('add_close_location').style.display = 'block';"><span class="material-symbols-rounded h-full">add</span>Add new location</button>
-      <!--<div >-->
-      <fieldset id="add_close_location" style="display: none">
-        <label for="close_icon">Chose an icon for this location: </label>
-        <select name="close_icon" id="close_icon" class="w-28 h-auto material-symbols-rounded fs-48">
-          <option value="local_hospital">local_hospital</option>
-          <option  value="shopping_cart">shopping_cart</option>
-          <option value="account_balance">account_balance</option>
-          <option value="hotel">hotel</option>
-        </select>
-        <x-input :type="'text'" :name="'close_name'" :placeholder="'Place name'"/>
-        <x-input :type="'text'" :name="'close_location'" :placeholder="'Place location'"/>
-        <x-input :type="'text'" :name="'close_phone'" :placeholder="'Place phone'"/>
-        <button class="bg-black/[.10] text-black flex justify-center items-center rounded border-2 border-black/[.10] hover:bg-black/[.16] p-3 mb-12" id="add" onclick=""><span class="material-symbols-rounded h-full">add</span>Add new location</button>
-      </fieldset>
+      <button class="bg-black/[.10] text-black flex justify-center items-center rounded border-2 border-black/[.10] hover:bg-black/[.16] p-3 mb-8" id="add" onclick="event.preventDefault(); var a = 'x-close_location'; this.parentNode. "><span class="material-symbols-rounded h-full">add</span>Add new location</button>
        <!-- /CLOSE LOCATIONS -->
       <x-submit :value="'Create'"/>
     </form>

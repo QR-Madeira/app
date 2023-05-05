@@ -52,14 +52,12 @@ class AttractionsAdminController extends Controller
         }
     }
 
-    public function create(Request $request, ?string $id)
+    public function create(Request $request)
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:attractions,title',
             'description' => 'required'
         ]);
-
-        dd($validatedData);
 
         $image = $request->file('image');
         $gallery = $request->file('gallery');
@@ -68,78 +66,31 @@ class AttractionsAdminController extends Controller
 
         $nomeArquivo = 'qr-codes/' . $this->compileTitle($validatedData['title']) . '.png';
 
-        switch ($request->getMethod()) {
-            case "POST":
-                $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
-                Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
-                $image->store('attractions', 'public');
-                $attraction = Attraction::create([
-                    'title_compiled' => $this->compileTitle($validatedData['title']),
-                    'title' => $validatedData['title'],
-                    'description' => $validatedData['description'],
-                    'site_url' => $site_url,
-                    'image_path' => explode("/", $image->store('attractions', 'public'))[1],
-                    'qr-code_path' => $this->compileTitle($validatedData['title']) . '.png',
-                    'created_by' => Auth::id()
-                ]);
+        $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
+        Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
+        $image->store('attractions', 'public');
+        $attraction = Attraction::create([
+            'title_compiled' => $this->compileTitle($validatedData['title']),
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'site_url' => $site_url,
+            'image_path' => explode("/", $image->store('attractions', 'public'))[1],
+            'qr-code_path' => $this->compileTitle($validatedData['title']) . '.png',
+            'created_by' => Auth::id()
+        ]);
 
-                foreach ($gallery as $picture) {
-                    $image_path = $picture->store('gallery', 'public');
-                    $image = array(
-                        'belonged_attraction' => $attraction->id,
-                        'image_path' => $image_path,
-                    );
-                    Attractions_Pictures::create($image);
-                }
-
-                $request->session()->flash('status', true);
-                $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));
-                return redirect()->route('admin.creator');
-            case "PUT":
-                $a = Attraction::find($id);
-
-                if (!$a || !$id) {
-                    throw new \RuntimeException("no attraction found");
-                }
-
-                if ($a->created_by === Auth::id()) {
-                    $toDel = Attractions_Pictures::where("belonged_attraction", $id)->get()->map(static fn (Attractions_Pictures $i) => $i->image_path);
-                    $toDel[] = $a->image_path;
-
-                    if ($a->title_compiled != $this->compileTitle($validatedData['title'])) {
-                        $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
-                        Storage::disk('public')->delete("qr-codes/$a->title_compiled.png");
-                        Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
-                    }
-
-                    $a->update([
-                        'title_compiled' => $this->compileTitle($validatedData['title']),
-                        'title' => $validatedData['title'],
-                        'description' => $validatedData['description'],
-                        'site_url' => $site_url,
-                        //'image_path' => explode("/", $image->store('attractions', 'public'))[1],
-                        'qr-code_path' => $this->compileTitle($validatedData['title']) . '.png',
-                    ]);
-
-                    if (is_iterable($gallery)) {
-                        foreach ($gallery as $picture) {
-                            $image_path = $picture->store('gallery', 'public');
-                            $image = array(
-                                'belonged_attraction' => $id,
-                                'image_path' => $image_path,
-                            );
-                            Attractions_Pictures::create($image);
-                        }
-                    }
-
-                    Storage::disk("public")->delete($toDel);
-                    //return redirect()->route("admin.updater", $id);
-                } else {
-                    throw new \RuntimeException("Not the owner of /the attraction");
-                }
-
-                break;
+        foreach ($gallery as $picture) {
+            $image_path = $picture->store('gallery', 'public');
+            $image = array(
+                'belonged_attraction' => $attraction->id,
+                'image_path' => $image_path,
+            );
+            Attractions_Pictures::create($image);
         }
+
+        $request->session()->flash('status', true);
+        $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));
+        return redirect()->route('admin.creator');
     }
 
     private function compileTitle(string $title)
