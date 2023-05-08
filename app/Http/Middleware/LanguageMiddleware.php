@@ -17,10 +17,10 @@ class LanguageMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Session::has('locale')) {
+        if (Session::has('locale'))
           App::setLocale(Session::get('locale'));
-        }
-        App::setLocale('en');
+        else
+          session()->put('locale', 'en');
 
         return $next($request);
     }
