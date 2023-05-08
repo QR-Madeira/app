@@ -26,8 +26,10 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
     Route::get('/create', [AttractionsAdminController::class, 'creator'])->name('creator');
     Route::get('/update/{id}', [AttractionsAdminController::class, 'updater'])->name('updater');
+
     Route::post('/create', [AttractionsAdminController::class, 'create'])->name('create');
-    Route::put('/create/{id}', [AttractionsAdminController::class, 'create'])->name('update');
+    Route::put('/create/{id}', [AttractionsAdminController::class, 'update'])->name('update');
+
     Route::get('/delete/{id}', [AttractionsAdminController::class, 'delete'])->name('delete');
     Route::get('/list', [AttractionsAdminController::class, 'list'])->name('list');
 
