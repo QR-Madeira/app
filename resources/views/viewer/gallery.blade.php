@@ -10,10 +10,7 @@
       <h1 class="text-5xl">{{$title}}</h1>
     </div>
     <div class="flex items-center justify-center">
-      <img src="{{$image}}" alt="Attraction Image">
-    </div>
-    <div class="w-full flex items-center justify-center p-8">
-      <p class="text-lg"><?= $description ?></p>
+      <img src="{{$images[0]['image_path']}}" alt="Attraction Image">
     </div>
   </div>
 @endsection

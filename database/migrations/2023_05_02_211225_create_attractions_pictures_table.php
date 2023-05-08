@@ -16,7 +16,6 @@ return new class extends Migration
           $table->unsignedBigInteger('belonged_attraction');
           $table->foreign('belonged_attraction')->references('id')->on('attractions');
           $table->string('image_path');
-          $table->string('description');
           $table->timestamps();
         });
     }
