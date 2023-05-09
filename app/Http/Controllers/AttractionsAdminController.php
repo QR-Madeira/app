@@ -57,7 +57,7 @@ class AttractionsAdminController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:attractions,title',
-            'description' => 'required'
+            'description' => 'required',
         ]);
 
         $image = $request->file('image');
@@ -77,7 +77,9 @@ class AttractionsAdminController extends Controller
             'site_url' => $site_url,
             'image_path' => explode("/", $image->store('attractions', 'public'))[1],
             'qr-code_path' => $this->compileTitle($validatedData['title']) . '.png',
-            'created_by' => Auth::id()
+            'created_by' => Auth::id(),
+            "lat" => $request->input("lat"),
+            "lon" => $request->post("lon"),
         ]);
 
         foreach ($gallery as $picture) {
