@@ -178,8 +178,9 @@ class AttractionsAdminController extends Controller
 
     public function delete($id)
     {
-        Attraction::destroy($id);
-        return redirect()->route('admin.list');
+      Attractions_Pictures::where('belonged_attraction', $id)->delete();
+      Attraction::destroy($id);
+      return redirect()->route('admin.list');
     }
 
     public function list()
