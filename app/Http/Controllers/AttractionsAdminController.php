@@ -190,12 +190,8 @@ class AttractionsAdminController extends Controller
         $all_attractions = Attraction::all();
 
         for ($i = 0; $i < count($all_attractions); $i++) {
-            $all_attractions[$i]['image'] = asset('storage/attractions/' . $all_attractions[$i]->image_path);
-            $all_attractions[$i]['qr-code'] = asset('storage/qr-codes/' . $all_attractions[$i]['qr-code_path']);
-            $creator_name = User::select('name')->where('id', $all_attractions[$i]['created_by'])->first();
-            $all_attractions[$i]['creator_name'] = $creator_name->name;
-            $date = new DateTime($all_attractions[$i]['created_at']);
-            $all_attractions[$i]['created_at_'] = $date->format("Y-m-d");
+          $all_attractions[$i]['image'] = asset('storage/attractions/' . $all_attractions[$i]->image_path);
+          $all_attractions[$i]['qr-code'] = asset('storage/qr-codes/' . $all_attractions[$i]['qr-code_path']);
         }
 
         $this->data->set('attractions', $all_attractions);
