@@ -54,6 +54,13 @@ if ("geolocation" in navigator) {
 const map = L.map("map").fitWorld();
 
 document.addEventListener("DOMContentLoaded", () => {
+  const lat_in = document.getElementById("lat");
+  const lon_in = document.getElementById("lon");
+
+  if (lat_in === null || lon_in === null) {
+    throw new Error(/* TODO */);
+  }
+
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
