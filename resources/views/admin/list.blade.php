@@ -4,7 +4,7 @@
     <div class='flex items-center justify-center w-full relative'>
       <h1 class='text-5xl py-8'>@lang('Attractions List')</h1>
       <div class='absolute right-0'>
-        <x-a :url="route('admin.create')" :name="'Create Attraction'"/>
+        <x-a :url="route('admin.creator')" :name="'Create Attraction'"/>
       </div>
     </div>
     @if(count($attractions) != 0)
