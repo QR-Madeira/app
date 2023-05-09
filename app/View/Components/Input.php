@@ -10,15 +10,17 @@ class Input extends Component
 {
     public $type;
     public $name;
+    public $value;
     public $multiple;
     public $placeholder;
     /**
      * Create a new component instance.
      */
-    public function __construct($type, $name, $placeholder, $multiple = false)
+    public function __construct($type, $name, $value = null, $placeholder = null, $multiple = false)
     {
         $this->type = $type;
         $this->name = $name;
+        $this->value = $value;
         $this->multiple = $multiple;
         $this->placeholder = $placeholder;
     }

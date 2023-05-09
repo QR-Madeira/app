@@ -8,13 +8,10 @@
       </div>
     </div>
     @if(count($attractions) != 0)
-      <div class='grid grid-cols-6 p-4 border-2 rounded-t border-black border-b-0 w-full'>
+      <div class='grid grid-cols-5 p-4 border-2 rounded-t border-black border-b-0 w-full'>
         <h1 class="text-lg">@lang('Qr Code')</h1>
         <h1 class='text-lg'>@lang('Name')</h1>
         <h1 class="text-lg">@lang('Description')</h1>
-        <h1 class="text-lg">@lang('Created by'):</h1>
-        <h1 class="text-lg">@lang('Created at'):</h1>
-        <h1 class="text-lg">@lang('Actions')</h1>
       </div>
       <div class="w-full">
         @foreach ($attractions as $attr)

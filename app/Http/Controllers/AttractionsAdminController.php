@@ -42,7 +42,7 @@ class AttractionsAdminController extends Controller
                 "id" => $id,
                 "title" => $a->title,
                 "description" => $a->description,
-                "img" => $a->image_path,
+                "img" => '/storage/attractions/'.$a->image_path,
                 ] as $k => $v
             ) {
                 $this->data->set($k, $v);
@@ -83,7 +83,7 @@ class AttractionsAdminController extends Controller
         ]);
 
         foreach ($gallery as $picture) {
-            $image_path = $picture->store('gallery', 'public');
+            $image_path = explode("/", $picture->store('gallery', 'public'))[1];
             $image = array(
                 'belonged_attraction' => $attraction->id,
                 'image_path' => $image_path,
@@ -180,27 +180,26 @@ class AttractionsAdminController extends Controller
 
     public function delete($id)
     {
-        Attraction::destroy($id);
-        return redirect()->route('admin.list');
+      Attractions_Pictures::where('belonged_attraction', $id)->delete();
+      Attraction::destroy($id);
+      return redirect()->route('admin.list');
     }
 
     public function list()
     {
-        Session::put('place', 'admin_attr');
+      Session::put('place', 'admin_attr');
 
-        $all_attractions = Attraction::all();
+      $all_attractions = Attraction::all();
 
-        for ($i = 0; $i < count($all_attractions); $i++) {
-            $all_attractions[$i]['image'] = asset('storage/attractions/' . $all_attractions[$i]->image_path);
-            $all_attractions[$i]['qr-code'] = asset('storage/qr-codes/' . $all_attractions[$i]['qr-code_path']);
-            $creator_name = User::select('name')->where('id', $all_attractions[$i]['created_by'])->first();
-            $all_attractions[$i]['creator_name'] = $creator_name->name;
-            $date = new DateTime($all_attractions[$i]['created_at']);
-            $all_attractions[$i]['created_at_'] = $date->format("Y-m-d");
-        }
+      for ($i = 0; $i < count($all_attractions); $i++) {
+        $all_attractions[$i]['image'] = asset('storage/attractions/' . $all_attractions[$i]->image_path);
+        $all_attractions[$i]['qr-code'] = asset('storage/qr-codes/' . $all_attractions[$i]['qr-code_path']);
+        $creator_name = User::select('name')->where('id', $all_attractions[$i]['created_by'])->first();
+        $all_attractions[$i]['creator_name'] = $creator_name->name;
+      }
 
-        $this->data->set('attractions', $all_attractions);
+      $this->data->set('attractions', $all_attractions);
 
-        return $this->view('admin.list');
-    }
+      return $this->view('admin.list');
+  }
 }
