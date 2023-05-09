@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('attractions_close_locations', function (Blueprint $table) {
           $table->id();
+          $table->unsignedBigInteger('belonged_attraction');
           $table->foreign('belonged_attraction')->references('id')->on('attractions');
           $table->string('icon_path');
           $table->string('name');
           $table->string('location');
-          $table->string('phone');
+          $table->string('phone')->nullable();
           $table->timestamps();
         });
     }

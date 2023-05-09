@@ -87,6 +87,7 @@ class AttractionsAdminController extends Controller
                     $image_path = $picture->store('gallery', 'public');
                     $image = array(
                         'belonged_attraction' => $attraction->id,
+                        'description' => 'default description',
                         'image_path' => $image_path,
                     );
                     Attractions_Pictures::create($image);
@@ -94,7 +95,7 @@ class AttractionsAdminController extends Controller
 
                 $request->session()->flash('status', true);
                 $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));
-                return redirect()->route('admin.creator');
+                return redirect()->route('admin.creator_location', $attraction->id);
             case "PUT":
                 $a = Attraction::find($id);
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttractionsAdminController;
+use App\Http\Controllers\AttractionLocationsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttractionsViewerController;
 use App\Http\Controllers\UsersAdminController;
@@ -30,6 +31,11 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
     Route::put('/create/{id}', [AttractionsAdminController::class, 'create'])->name('update');
     Route::get('/delete/{id}', [AttractionsAdminController::class, 'delete'])->name('delete');
     Route::get('/list', [AttractionsAdminController::class, 'list'])->name('list');
+
+    Route::get('/create_location/{id}', [AttractionLocationsController::class, 'creator'])->name('creator_location');
+    Route::post('/create_location/{id}', [AttractionLocationsController::class, 'create'])->name('create_location');
+    Route::put('/update_location/{id}', [AttractionLocationsController::class, 'update'])->name('update_location');
+    Route::get('/delete_location/{id}', [AttractionLocationsController::class, 'delete'])->name('delete_location');
 
     Route::get('/list_users', [UsersAdminController::class, 'list'])->name('list_users');
     Route::get('/create_user', [UsersAdminController::class, 'creator'])->name('creator_user');

@@ -7,15 +7,7 @@
         <x-a :url="route('admin.list_users')" :name="'Users list'"/>
       </div>
     </div>
-    @if ($errors->any())
-      <div class="alert alert-danger">
-          <ul>
-              @foreach ($errors->all() as $error)
-                  <li>{{ $error }}</li>
-              @endforeach
-          </ul>
-      </div>
-    @endif
+    <x-show-required :errors="$errors"/>
     <form class="grid grid-cols-1 gap-4" action="{{route('admin.create_user')}}" method="POST" enctype="multipart/form-data">
       @csrf
       <x-input :type="'text'" :name="'name'" :placeholder="'Name'"/>
