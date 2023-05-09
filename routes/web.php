@@ -36,6 +36,7 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
       /* Actions */
         Route::get('/delete/{id}', [AttractionsAdminController::class, 'delete'])->name('delete');
+        Route::get('/delete/{id}/gallery', [GalleryAdminController::class, 'delete'])->name('delete_image');
         Route::post('/create', [AttractionsAdminController::class, 'create'])->name('create');
         Route::put('/create/{id}', [AttractionsAdminController::class, 'update'])->name('update');
       /* //Actions */

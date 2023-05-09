@@ -16,7 +16,7 @@
   <div class='flex flex-row items-center w-full justify-end space-x-2 col-span-2'>
     <x-a :url="route('view', ['title_compiled' => $attraction->title_compiled])" :name="__('View')"/>
     @if (Auth::user()->name === $attraction->creator_name)
-      <x-a :url="route('admin.updater', ['id' => $attraction->id])" :name="__('Edit')" :color="'blue-400'"/>
+      <x-a :url="route('admin.updater', ['id' => $attraction->id])" :name="__('Edit')"/>
     @endif
     <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='py-4 px-6 rounded bg-red-600 text-white'>@lang('Delete')</button>
   </div>
