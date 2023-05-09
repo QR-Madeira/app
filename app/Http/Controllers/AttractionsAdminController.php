@@ -42,7 +42,7 @@ class AttractionsAdminController extends Controller
                 "id" => $id,
                 "title" => $a->title,
                 "description" => $a->description,
-                "img" => $a->image_path,
+                "img" => '/storage/attractions/'.$a->image_path,
                 ] as $k => $v
             ) {
                 $this->data->set($k, $v);
