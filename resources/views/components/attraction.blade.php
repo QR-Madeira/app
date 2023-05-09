@@ -14,10 +14,10 @@
   </div>
 
   <div class='flex flex-row items-center w-full justify-end space-x-2 col-span-2'>
+    <button onclick="location.href='<?= route('view', ['title_compiled' => $attraction->title_compiled]) ?>'" class='text-xl py-4 px-6 rounded bg-black text-white'>@lang('View')</button>
     @if (Auth::user()->name === $attraction->creator_name)
       <a class="px-6 py-4 text-xl bg-yellow-300 rounded" href="{{route("admin.updater", $attraction->id)}}">Update</a>
     @endif
-    <button onclick="location.href='<?= route('view', ['title_compiled' => $attraction->title_compiled]) ?>'" class='text-xl py-4 px-6 rounded bg-black text-white'>@lang('View')</button>
     <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='text-xl py-4 px-6 rounded bg-red-600'>@lang('Delete')</button>
   </div>
 </div>
