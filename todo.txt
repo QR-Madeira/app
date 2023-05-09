@@ -1,4 +1,4 @@
-auth permissions
-	com isso, ver se o user pode gerir 		"users"
-
-update, user info, attraction info
+mobile
+edit page
+view
+map

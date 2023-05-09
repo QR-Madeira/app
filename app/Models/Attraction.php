@@ -12,12 +12,14 @@ class Attraction extends Model
     protected $table = 'attractions';
 
     protected $fillable = [
-      'title_compiled',
-      'title',
-      'description',
-      'image_path',
-      'site_url',
-      'qr-code_path',
-      'created_by'
+        'title_compiled',
+        'title',
+        'description',
+        'image_path',
+        'site_url',
+        'qr-code_path',
+        'created_by',
+        "lat",
+        "lon",
     ];
 }

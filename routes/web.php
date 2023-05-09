@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttractionsAdminController;
 use App\Http\Controllers\AttractionLocationsController;
+use App\Http\Controllers\GalleryAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttractionsViewerController;
 use App\Http\Controllers\UsersAdminController;
@@ -25,22 +26,51 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
   Route::prefix('admin')->group(function(){
 
-    Route::get('/create', [AttractionsAdminController::class, 'creator'])->name('creator');
-    Route::get('/update/{id}', [AttractionsAdminController::class, 'updater'])->name('updater');
-    Route::post('/create', [AttractionsAdminController::class, 'create'])->name('create');
-    Route::put('/create/{id}', [AttractionsAdminController::class, 'create'])->name('update');
-    Route::get('/delete/{id}', [AttractionsAdminController::class, 'delete'])->name('delete');
-    Route::get('/list', [AttractionsAdminController::class, 'list'])->name('list');
+    /* Attractions */
 
-    Route::get('/create_location/{id}', [AttractionLocationsController::class, 'creator'])->name('creator_location');
-    Route::post('/create_location/{id}', [AttractionLocationsController::class, 'create'])->name('create_location');
-    Route::put('/update_location/{id}', [AttractionLocationsController::class, 'update'])->name('update_location');
-    Route::get('/delete_location/{id}', [AttractionLocationsController::class, 'delete'])->name('delete_location');
+      /* Pages */
+        Route::get('/create', [AttractionsAdminController::class, 'creator'])->name('creator');
+        Route::get('/edit/{id}', [AttractionsAdminController::class, 'updater'])->name('updater');
+        Route::get('/edit/{id}/gallery', [GalleryAdminController::class, 'list'])->name('updater.gallery');
+        Route::get('/list', [AttractionsAdminController::class, 'list'])->name('list');
+      /* //Pages */
 
-    Route::get('/list_users', [UsersAdminController::class, 'list'])->name('list_users');
-    Route::get('/create_user', [UsersAdminController::class, 'creator'])->name('creator_user');
-    Route::post('/create_user', [UsersAdminController::class, 'create'])->name('create_user');
-    Route::get('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
+      /* Actions */
+        Route::get('/delete/{id}', [AttractionsAdminController::class, 'delete'])->name('delete');
+        Route::get('/delete/{id}/gallery', [GalleryAdminController::class, 'delete'])->name('delete_image');
+        Route::post('/create', [AttractionsAdminController::class, 'create'])->name('create');
+        Route::put('/create/{id}', [AttractionsAdminController::class, 'update'])->name('update');
+      /* //Actions */
+
+    /* //Attractions */
+
+    /* Users */
+
+      /* Pages */
+        Route::get('/list_users', [UsersAdminController::class, 'list'])->name('list_users');
+        Route::get('/create_user', [UsersAdminController::class, 'creator'])->name('creator_user');
+      /* //Pages */
+
+      /* Actions */
+        Route::post('/create_user', [UsersAdminController::class, 'create'])->name('create_user');
+        Route::get('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
+      /* //Actions */
+
+    /* //Users */
+
+    /* Locations */
+
+      /* Pages */
+        Route::get('/create_location/{id}', [AttractionLocationsController::class, 'creator'])->name('creator_location');
+      /* //Pages */
+
+      /* Actions */
+        Route::put('/update_location/{id}', [AttractionLocationsController::class, 'update'])->name('update_location');
+        Route::post('/create_location/{id}', [AttractionLocationsController::class, 'create'])->name('create_location');
+        Route::get('/delete_location/{id}', [AttractionLocationsController::class, 'delete'])->name('delete_location');
+      /* //Actions */
+
+    /* //Locations */
 
     });
 });
@@ -58,10 +88,10 @@ Route::get('/{title_compiled}/gallery', [AttractionsViewerController::class, 'ga
 Route::get('/{title_compiled}/map', [AttractionsViewerController::class, 'map'])->name('view.map');
 
 Route::get('/greeting/{locale}', function (string $locale) {
-    if (! in_array($locale, ['en', 'pt'])) {
-        abort(400);
-    }
-    app()->setLocale($locale);
-    session()->put('locale', $locale);
-    return redirect()->back();
+  if (! in_array($locale, ['en', 'pt'])) {
+    abort(400);
+  }
+  app()->setLocale($locale);
+  session()->put('locale', $locale);
+  return redirect()->back();
 })->name('language');

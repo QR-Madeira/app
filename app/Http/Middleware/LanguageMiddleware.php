@@ -19,6 +19,8 @@ class LanguageMiddleware
     {
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
+        } else {
+            session()->put('locale', 'en');
         }
 
         return $next($request);

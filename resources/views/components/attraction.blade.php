@@ -1,23 +1,23 @@
-<?php
+<?php use Illuminate\Support\Facades\Auth; ?>
 
-use Illuminate\Support\Facades\Auth;
-?>
-<div class='grid grid-cols-6 p-4 w-full h-36'>
+<div class='grid grid-cols-5 p-4 w-full h-36'>
   <x-delete-alert :route="route('admin.delete', ['id' => $attraction->id])" :id="$attraction->id"/>
+
   <div class="h-28 w-28 flex flex-row items-center">
     <a target="_blank" href="{{asset($attraction['qr-code'])}}" download="{{$attraction->title}}"><img src="{{ asset($attraction['qr-code']) }}" alt="Local Image" class='w-full h-full'></a>
   </div>
+
   <h1 class='flex flex-row items-center text-xl'>{{$attraction->title}}</h1>
-  <div class="overflow-auto">
-    <h1 class='flex flex-row items-center text-xl max-h-28'>{{$attraction->description}}</h1>
+
+  <div class="overflow-auto py-4">
+    <p class='flex flex-row items-center text-xl max-h-28'>{{$attraction->description}}</p>
   </div>
-  <h1 class='flex flex-row items-center text-xl max-h-28'>{{$attraction->creator_name}}</h1>
-  <h1 class='flex flex-row items-center text-xl max-h-28'>{{$attraction->created_at_}}</h1>
-  <div class='flex flex-row items-center w-full justify-start space-x-2'>
-    <?php if (Auth::user()->name === $attraction->creator_name): ?>
-    <p><a href="<?= route("admin.updater", $attraction->id) ?>">Update</a></p>
-    <?php endif; ?>
-    <button onclick="location.href='<?= route('view', ['title_compiled' => $attraction->title_compiled]) ?>'" class='text-xl py-4 px-6 rounded bg-black text-white'>@lang('View')</button>
-    <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='text-xl py-4 px-6 rounded bg-red-600'>@lang('Delete')</button>
+
+  <div class='flex flex-row items-center w-full justify-end space-x-2 col-span-2'>
+    <x-a :url="route('view', ['title_compiled' => $attraction->title_compiled])" :name="__('View')"/>
+    @if (Auth::user()->name === $attraction->creator_name)
+      <x-a :url="route('admin.updater', ['id' => $attraction->id])" :name="__('Edit')"/>
+    @endif
+    <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='py-4 px-6 rounded bg-red-600 text-white'>@lang('Delete')</button>
   </div>
 </div>
