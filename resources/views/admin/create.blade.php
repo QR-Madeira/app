@@ -19,6 +19,70 @@
       <div class="flex flex-col space-y-4" id="location_form" style="display: none;"><x-close_location/></div>
       <button class="bg-black/[.10] text-black flex justify-center items-center rounded border-2 border-black/[.10] hover:bg-black/[.16] p-3 mb-8" id="add" onclick="event.preventDefault(); document.querySelector('#location_form').style.display = 'flex'; this.disabled = true"><span class="material-symbols-rounded h-full">add</span>Add new location</button>
        <!-- /CLOSE LOCATIONS -->
+
+<fieldset>
+
+<legend>Coordinates</legend>
+
+<input id="lat" type="hidden" name="lat" />
+<input id="lon" type="hidden" name="lon" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+  crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+  crossorigin=""></script>
+
+<div id="map"></div>
+<style>
+#map {
+    aspect-ratio: 4/3;
+}
+</style>
+<script>
+let lat = lon = 0;
+const ZOOM = 1;
+if ("geolocation" in navigator) {
+  navigator.geolocation.getCurrentPosition((pos) => {
+    const {latitude, longitude} = pos.coords;
+    lat = latitude;
+    lon = longitude;
+  }, (err) => {}, { maximumAge: Infinity });
+}
+
+const map = L.map("map").setView([lat, lon], ZOOM);
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lat_in = document.getElementById("lat");
+  const lon_in = document.getElementById("lon");
+
+  if (lat_in === null || lon_in === null) {
+    throw new Error(/* TODO */);
+  }
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+
+  const marker = L.marker([lat, lon]);
+  let marker_added = false;
+  map.on("click", (e) => {
+    lat_in.value = e.latlng.lat;
+    lon_in.value = e.latlng.lng;
+
+    marker.setLatLng(e.latlng);
+
+    if (!marker_added) {
+      marker.addTo(map);
+    }
+  });
+});
+</script>
+
+</fieldset>
+
       <x-submit :value="'Create'"/>
     </form>
     @if($created)
