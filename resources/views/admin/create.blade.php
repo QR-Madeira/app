@@ -42,7 +42,7 @@
 </style>
 <script>
 let lat = lon = 0;
-const ZOOM = 1;
+const ZOOM = 13;
 if ("geolocation" in navigator) {
   navigator.geolocation.getCurrentPosition((pos) => {
     const {latitude, longitude} = pos.coords;
@@ -51,23 +51,24 @@ if ("geolocation" in navigator) {
   }, (err) => {}, { maximumAge: Infinity });
 }
 
-const map = L.map("map").setView([lat, lon], ZOOM);
+const map = L.map("map").fitWorld();
 
 document.addEventListener("DOMContentLoaded", () => {
-  const lat_in = document.getElementById("lat");
-  const lon_in = document.getElementById("lon");
-
-  if (lat_in === null || lon_in === null) {
-    throw new Error(/* TODO */);
-  }
-
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
 
-  const marker = L.marker([lat, lon]);
+  const marker = L.marker([lat, lon], {alt: "Attraction location"});
   let marker_added = false;
+  map.locate({setView: true, maxZoom: ZOOM});
+  map.on('locationfound', (e) => {
+    marker.setLatLng(e.latlng);
+
+    if (!marker_added) {
+      marker.addTo(map);
+    }
+  });
   map.on("click", (e) => {
     lat_in.value = e.latlng.lat;
     lon_in.value = e.latlng.lng;
