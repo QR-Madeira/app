@@ -11,7 +11,7 @@
     </div>
     <div class="w-full grid grid-cols-3 gap-4 p-4">
       @foreach ($images as $img)
-        <img src="{{$img['image_path']}}" alt="Attraction Image" class="h-full">
+        <img src="{{$img['image_path']}}" alt="Attraction Image" class="h-full rounded">
       @endforeach
     </div>
   </div>
