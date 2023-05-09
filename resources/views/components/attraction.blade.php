@@ -9,8 +9,8 @@
 
   <h1 class='flex flex-row items-center text-xl'>{{$attraction->title}}</h1>
 
-  <div class="overflow-auto">
-    <h1 class='flex flex-row items-center text-xl max-h-28'>{{$attraction->description}}</h1>
+  <div class="overflow-auto py-4">
+    <p class='flex flex-row items-center text-xl max-h-28'>{{$attraction->description}}</p>
   </div>
 
   <div class='flex flex-row items-center w-full justify-end space-x-2 col-span-2'>
