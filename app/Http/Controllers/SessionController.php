@@ -15,7 +15,7 @@ class SessionController extends Controller
     if(Auth::check())
       return redirect()->route('admin.list');
 
-    return $this->view('admi|n.login');
+    return $this->view('admin.login');
   }
 
   public function signin(Request $request)

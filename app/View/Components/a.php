@@ -10,13 +10,15 @@ class a extends Component
 {
     public $name;
     public $url;
+    public $color;
     /**
      * Create a new component instance.
      */
-    public function __construct($name, $url)
+    public function __construct($name, $url, $color = 'black')
     {
         $this->name = $name;
         $this->url = $url;
+        $this->color = $color;
     }
 
     /**
