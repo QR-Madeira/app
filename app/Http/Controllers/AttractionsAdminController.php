@@ -81,7 +81,7 @@ class AttractionsAdminController extends Controller
         ]);
 
         foreach ($gallery as $picture) {
-            $image_path = $picture->store('gallery', 'public');
+            $image_path = explode("/", $picture->store('gallery', 'public'))[1];
             $image = array(
                 'belonged_attraction' => $attraction->id,
                 'image_path' => $image_path,
