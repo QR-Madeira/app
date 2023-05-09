@@ -29,8 +29,8 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
       /* Pages */
         Route::get('/create', [AttractionsAdminController::class, 'creator'])->name('creator');
-        Route::get('/update/{id}', [AttractionsAdminController::class, 'updater'])->name('updater');
-        Route::get('/update/{id}/gallery', [GalleryAdminController::class, 'list'])->name('updater.gallery');
+        Route::get('/edit/{id}', [AttractionsAdminController::class, 'updater'])->name('updater');
+        Route::get('/edit/{id}/gallery', [GalleryAdminController::class, 'list'])->name('updater.gallery');
         Route::get('/list', [AttractionsAdminController::class, 'list'])->name('list');
       /* //Pages */
 
