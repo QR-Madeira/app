@@ -34,6 +34,7 @@
   </form>
   <div class="w-full">
     <x-a :url="route('admin.updater.gallery', ['id' => $id])" :name="'Update Gallery'"/>
+    <x-a :url="route('admin.creator_location', ['id' => $id])" :name="'Update Close Locations'"/>
   </div>
 </main>
 

@@ -62,8 +62,8 @@ class AttractionsAdminController extends Controller
         checkOrThrow(Auth::user(), P_CREATE_ATTRACTION);
 
         $validatedData = $request->validate([
-            'title' => 'required|unique:attractions,title',
-            'description' => 'required',
+          'title' => 'required|unique:attractions,title',
+          'description' => 'required',
         ]);
 
         $image = $request->file('image');

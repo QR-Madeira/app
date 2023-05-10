@@ -77,10 +77,10 @@ class AttractionLocationsController extends Controller
         $loc = Attractions_Close_Locations::find($id);
 
         if (!$loc || !$id) {
-            throw new \RuntimeException("location not found");
+            throw new \RuntimeException("Location not found");
         }
 
         Attractions_Close_Locations::destroy($id);
-        return redirect()->route('admin.creator_location');
+        return redirect()->back();
     }
 }

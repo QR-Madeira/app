@@ -13,6 +13,16 @@
           </div>
         </div>
       @endforeach
+      <div>
+        <form action="{{route('admin.create_image')}}" method="POST" enctype="multipart/form-data">
+          @csrf
+          <div class="grid gap-4">
+            <x-input :type="'hidden'" :name="'belonged_attraction'" :value="$image['belonged_attraction']"/>
+            <x-input :type="'file'" :name="'image'"/>
+            <x-submit :value="__('Create')"/>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 @endsection
