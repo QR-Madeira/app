@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-use function App\Classes\Auth\getPermissionsHash;
-use function App\Classes\Auth\grant;
+use const App\Auth\P_CREATE_USER;
+
+use function App\Auth\checkOrThrow;
+use function App\Auth\getPermissionsHash;
+use function App\Auth\grant;
 
 class UsersAdminController extends Controller
 {
@@ -45,6 +49,8 @@ class UsersAdminController extends Controller
 
     public function create(Request $request)
     {
+        checkOrThrow(Auth::user(), P_CREATE_USER);
+
         $validatedData = $request->validate([
             'name' => 'required|min:4',
             'email' => 'required|email|unique:users,email',

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\Auth;
+namespace App\Auth;
 
 use App\Models\User;
 
@@ -29,6 +29,15 @@ const P_ALL = P_ALL_ATTRACTION | P_ALL_USER;
 function check(User $u, int $permissions): bool
 {
     return ($u->permissions & $permissions) === $permissions;
+}
+
+function checkOrThrow(User $u, int $permissions): true
+{
+    if (!check($u, $permissions)) {
+        throw new NoPermissionsException($permissions);
+    }
+
+    return true;
 }
 
 function grant(User &$u, int ...$permissions): bool
@@ -70,4 +79,15 @@ function getPermissionsHash(bool $extendo = false): array
         "users" => P_ALL_USER,
         "all" => P_ALL,
     ];
+}
+
+function getPermissionKey(int $permission): ?string
+{
+    foreach (getPermissionsHash(true) as $k => $v) {
+        if ($v === $permission) {
+            return $k;
+        }
+    }
+
+    return null;
 }

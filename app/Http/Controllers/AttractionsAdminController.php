@@ -9,7 +9,11 @@ use App\Models\Attractions_Pictures;
 use Illuminate\Http\Request;
 use App\Models\Attraction;
 use App\Models\User;
-use DateTime;
+
+use function App\Auth\checkOrThrow;
+
+use const App\Auth\P_CREATE_ATTRACTION;
+use const App\Auth\P_UPDATE_ATTRACTION;
 
 class AttractionsAdminController extends Controller
 {
@@ -39,10 +43,10 @@ class AttractionsAdminController extends Controller
         if (Auth::id() === $a->created_by) {
             foreach (
                 [
-                "id" => $id,
-                "title" => $a->title,
-                "description" => $a->description,
-                "img" => '/storage/attractions/' . $a->image_path,
+                    "id" => $id,
+                    "title" => $a->title,
+                    "description" => $a->description,
+                    "img" => '/storage/attractions/' . $a->image_path,
                 ] as $k => $v
             ) {
                 $this->data->set($k, $v);
@@ -55,6 +59,8 @@ class AttractionsAdminController extends Controller
 
     public function create(Request $request)
     {
+        checkOrThrow(Auth::user(), P_CREATE_ATTRACTION);
+
         $validatedData = $request->validate([
             'title' => 'required|unique:attractions,title',
             'description' => 'required',
@@ -98,6 +104,8 @@ class AttractionsAdminController extends Controller
 
     public function update(Request $request, ?string $id = null)
     {
+        checkOrThrow(Auth::user(), P_UPDATE_ATTRACTION);
+
         $validatedData = $request->validate([
             'title' => 'required',
             'description' => 'required'

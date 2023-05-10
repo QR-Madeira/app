@@ -26,11 +26,14 @@
         "psr-4": {
             "App\\": "app/",
             "App\\Classes\\": "app/Classes/",
-            "App\\Classes\\Auth": "app/Classes/auth",
+            "App\\Auth\\": "app/Auth/",
             "App\\Helpers\\": "app/Helpers/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Auth/permissions_manager.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

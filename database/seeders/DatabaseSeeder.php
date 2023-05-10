@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-use const App\Classes\Auth\P_ALL;
+use const App\Auth\P_ALL;
 
 class DatabaseSeeder extends Seeder
 {

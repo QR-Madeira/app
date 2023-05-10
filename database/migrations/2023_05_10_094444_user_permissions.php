@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use const App\Classes\Auth\P_ZERO;
+use const App\Auth\P_ZERO;
 
 return new class extends Migration
 {
