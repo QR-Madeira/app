@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Classes\PermissionsManager;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -26,6 +28,7 @@ class DatabaseSeeder extends Seeder
             "name" => "Administrator",
             "email" => "admin@localhost",
             "password" => Hash::make("admin123"),
+            "permissions" => PermissionsManager::P_ALL,
         ]);
     }
 }
