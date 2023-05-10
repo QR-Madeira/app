@@ -18,6 +18,6 @@
     @if (Auth::user()->name === $attraction->creator_name)
       <x-a :url="route('admin.updater', ['id' => $attraction->id])" :name="__('Edit')"/>
     @endif
-    <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='py-4 px-6 rounded bg-red-600 text-white'>@lang('Delete')</button>
+    <button onclick="document.getElementById('{{$attraction->id}}').style.display = 'block';" class='py-4 px-6 rounded border-red-600 border-2 text-red-600 hover:text-white hover:bg-red-600'>@lang('Delete')</button>
   </div>
 </div>
