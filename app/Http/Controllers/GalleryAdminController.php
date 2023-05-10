@@ -22,6 +22,13 @@ class GalleryAdminController extends Controller
 
   public function delete($id)
   {
-    
+    $loc = Attractions_Pictures::find($id);
+      
+    if (!$loc || !$id) {
+      throw new \RuntimeException("Image not found");
+    }
+
+    Attractions_Pictures::destroy($id);
+    return redirect()->back();
   }
 }
