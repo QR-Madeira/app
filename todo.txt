@@ -1,5 +1,9 @@
-mobile
-edit page
-view
-map
-erros para atração não existe
+Adds:
+  Translate
+  Email
+  Mobile version
+
+Erros:
+  Verificar se exite
+  Mensagens de erros de criação
+  Mensagens de erros de listagem

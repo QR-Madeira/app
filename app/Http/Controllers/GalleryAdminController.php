@@ -10,15 +10,17 @@ class GalleryAdminController extends Controller
     public function create(Request $request)
     {
       $validated = $request->validate([
-      'belonged_attraction' => 'required'
+        'belonged_attraction' => 'required'
       ]);
+
       $image = $request->file('image');
       $image_path = explode("/", $image->store('gallery', 'public'))[1];
 
       $image = array(
-      'belonged_attraction' => $validated['belonged_attraction'],
-      'image_path' => $image_path,
+        'belonged_attraction' => $validated['belonged_attraction'],
+        'image_path' => $image_path,
       );
+
       Attractions_Pictures::create($image);
       return redirect()->back();
     }
@@ -29,6 +31,7 @@ class GalleryAdminController extends Controller
       foreach ($images as $key => $value) {
         $images[$key]['image_path'] = '/storage/gallery/' . $value['image_path'];
       }
+      
       $this->data->set('images', $images);
 
       return $this->view('admin.list_gallery');
