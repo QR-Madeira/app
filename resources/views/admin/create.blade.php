@@ -14,25 +14,25 @@
 
     <div class="grid gap-4">
       <div class="grid">
-        <h1 class="text-xl">Title</h1>
+        <h1 class="text-xl">@lang('Title')</h1>
         <x-input :type="'text'" :name="'title'" :placeholder="'Title'"/>
       </div>
       <div class="grid">
-        <h1 class="text-xl">Description</h1>
+        <h1 class="text-xl">@lang('Description')</h1>
         <textarea type="text" name="description" placeholder="@lang('Description')" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black"></textarea>
       </div>
       <div class="grid">
-        <h1 class="text-xl">Attraction Image</h1>
+        <h1 class="text-xl">@lang('Attraction Image')</h1>
         <x-input :type="'file'" :name="'image'" :placeholder="'Image'"/>
       </div>
       <div class="grid">
-        <h1 class="text-xl">Attraction Gallery</h1>
+        <h1 class="text-xl">@lang('Attraction Gallery')</h1>
         <x-input :type="'file'" :name="'gallery[]'" :placeholder="'Gallery'" :multiple="TRUE"/>
       </div>
     </div>
 
     <fieldset>
-      <legend class="text-xl">Coordinates</legend>
+      <legend class="text-xl">@lang('Coordinates')</legend>
 
       <input id="lat" type="hidden" name="lat" />
       <input id="lon" type="hidden" name="lon" />
@@ -100,7 +100,7 @@
       </script>
     </fieldset>
     <div class="col-span-2 grid">
-      <x-submit :value="'Create'"/>
+      <x-submit :value="__('Create')"/>
     </div>
   </form>
   @if($created)
