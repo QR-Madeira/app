@@ -2,3 +2,4 @@ mobile
 edit page
 view
 map
+erros para atração não existe
