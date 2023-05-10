@@ -8,11 +8,11 @@
     <div class="h-full px-3 py-4 overflow-y-auto bg-slate-500 flex flex-col">
       <div class="w-auto h-auto rounded-lg bg-slate-700 items-center text-left mb-4 p-2">
         <p class="ml-2 mr-2 w-auto h-auto break-all text-white">{{Auth::user()->name}}</p>
-      </div>  
+      </div>
        <ul class="space-y-2 font-medium flex flex-col justify-between h-full">
         <div class="space-y-2">
           <li>
-              <a href="{{route('admin.list')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'admin_attr') bg-slate-700 @endif hover:bg-slate-600">
+              <a href="{{route('admin.list.attraction')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'admin_attr') bg-slate-700 @endif hover:bg-slate-600">
                 <span class="material-symbols-rounded fs-36">distance</span>
                 <span class="flex-1 ml-3 whitespace-nowrap">@lang('Attractions')</span>
               </a>

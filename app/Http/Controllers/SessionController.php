@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\User;
 
 class SessionController extends Controller
 {
     public function index()
     {
         if (Auth::check()) {
-            return redirect()->route('admin.list');
+            return redirect()->route('admin.list.attraction');
         }
 
         return $this->view('admin.login');

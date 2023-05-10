@@ -5,11 +5,11 @@
   <div class='flex items-center justify-center w-full relative'>
     <h1 class='text-center text-5xl py-8'>@lang('Create Attraction')</h1>
     <div class='absolute right-0'>
-      <x-a :url="route('admin.list')" :name="'Attractions List'"/>
+      <x-a :url="route('admin.list.attraction')" :name="'Attractions List'"/>
     </div>
   </div>
   <x-show-required :errors="$errors"/>
-  <form class="grid grid-cols-2 gap-4" action="{{route('admin.create')}}" method="POST" enctype="multipart/form-data">
+  <form class="grid grid-cols-2 gap-4" action="{{route('admin.create.attraction')}}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="grid gap-4">
@@ -75,7 +75,7 @@
 
           const marker = L.marker([lat, lon], {alt: "Attraction location"});
           let marker_added = false;
-          
+
           map.locate({setView: true, maxZoom: ZOOM});
           map.on('locationfound', (e) => {
             marker.setLatLng(e.latlng);

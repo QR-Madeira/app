@@ -99,7 +99,7 @@ class AttractionsAdminController extends Controller
 
         $request->session()->flash('status', true);
         $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));
-        return redirect()->route('admin.creator');
+        return redirect()->route('admin.creator.attraction');
     }
 
     public function update(Request $request, ?string $id = null)
@@ -165,7 +165,7 @@ class AttractionsAdminController extends Controller
 
             Storage::disk("public")->delete($toDel);
 
-            return redirect(status: 204)->route("admin.updater", $id);
+            return redirect(status: 204)->route("admin.edit.attraction", $id);
         } else {
             throw new \RuntimeException("Not the owner of /the attraction");
         }

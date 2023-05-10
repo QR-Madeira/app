@@ -2,7 +2,7 @@
 @section('body')
 <main class="flex justify-start items-center flex-col space-y-8 w-full px-24 py-4">
   <h1 class="text-6xl">@lang('Update Attraction')</h1>
-  <form method="POST" enctype="multipart/form-data" action="{{route("admin.update", $id)}}" class="w-full space-y-4 grid grid-cols-2 gap-4">
+  <form method="POST" enctype="multipart/form-data" action="{{route("admin.update.attraction", $id)}}" class="w-full space-y-4 grid grid-cols-2 gap-4">
     @csrf
     @method("PUT")
     <input type="hidden" value="{{$id}}"/>
@@ -12,12 +12,12 @@
         <label for="title" class="text-4xl">@lang('Title'):</label>
         <x-input :type="'text'" :name="'title'" :value="$title" :id="'title'"/>
       </div>
-      
+
       <div class="grid">
         <label for="description" class="text-4xl">@lang('Description'):</label>
         <textarea type="text" name="description" placeholder="@lang('Description')" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black">{{$description}}</textarea>
       </div>
-      
+
       <div class="w-full grid max-h-min">
         <label for="image" class="text-4xl">@lang('Image'):</label>
         <x-input :type="'file'" :name="'image'" :id="'image'"/>
@@ -33,7 +33,7 @@
     </div>
   </form>
   <div class="w-full">
-    <x-a :url="route('admin.updater.gallery', ['id' => $id])" :name="'Update Gallery'"/>
+    <x-a :url="route('admin.edit.attraction.gallery', ['id' => $id])" :name="'Update Gallery'"/>
     <x-a :url="route('admin.creator_location', ['id' => $id])" :name="'Update Close Locations'"/>
   </div>
 </main>
