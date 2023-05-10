@@ -18,6 +18,8 @@ class AttractionsViewerController extends Controller
         $this->data->set('title', $attraction['title']);
         $this->data->set('description', $description);
         $this->data->set('qr', asset('storage/qr-codes/' .  $attraction["qr-code_path"]));
+        $this->data->set("lat", $attraction["lat"]);
+        $this->data->set("lon", $attraction["lon"]);
 
         return $this->view('viewer.get');
     }
