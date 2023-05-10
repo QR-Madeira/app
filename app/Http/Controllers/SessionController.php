@@ -27,7 +27,7 @@ class SessionController extends Controller
         if (Auth::attempt($data, $request->has('remember'))) {
             $request->session()->regenerate();
             Session::put('place', 'admin_attr');
-            return redirect()->route('admin.list');
+            return redirect()->route('admin.list.attraction');
         } else {
             return redirect()->route('login');
         }

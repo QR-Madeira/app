@@ -18,7 +18,7 @@
               </a>
           </li>
           <li>
-              <a href="{{route('admin.list_users')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'admin_usr') bg-slate-700 @endif hover:bg-slate-600">
+              <a href="{{route('admin.list.users')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'admin_usr') bg-slate-700 @endif hover:bg-slate-600">
                 <span class="material-symbols-rounded fs-36">group</span>
                 <span class="flex-1 ml-3 whitespace-nowrap">@lang('Users')</span>
               </a>

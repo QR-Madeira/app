@@ -32,6 +32,7 @@ use App\Http\Middleware\Authenticate;
   /admin/list/attractions
   /admin/create/attraction
   /admin/edit/attraction/{id}
+  /admin/update/attraction/{id}
   /admin/delete/attraction/{id}
 
   Exemplo de como as rotas funcionam agora:
@@ -48,64 +49,44 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
     Route::prefix('admin')->group(function () {
 
-        Route::prefix('list')->group(function () {
-          // Pages
-            Route::get('/attraction', [AttractionsAdminController::class, 'list'])->name('list.attraction');
-        });
+      Route::prefix('list')->group(function () {
+        // Pages
+          Route::get('/attraction', [AttractionsAdminController::class, 'list'])->name('list.attraction');
+          Route::get('/users', [UsersAdminController::class, 'list'])->name('list.users');
+      });
 
-        Route::prefix('create')->group(function () {
-          // Pages
-            Route::get('/attraction', [AttractionsAdminController::class, 'creator'])->name('creator.attraction');
+      Route::prefix('create')->group(function () {
+        // Pages
+          Route::get('/attraction', [AttractionsAdminController::class, 'creator'])->name('creator.attraction');
+          Route::get('/user', [UsersAdminController::class, 'creator'])->name('creator.user');
+          Route::get('/location/{id}', [AttractionLocationsController::class, 'creator'])->name('creator.location');
 
-          // Actions
-            Route::post('/attraction', [AttractionsAdminController::class, 'create'])->name('create.attraction');
-            Route::post('/gallery/image', [GalleryAdminController::class, 'create'])->name('create.image');
-        });
+        // Actions
+          Route::post('/attraction', [AttractionsAdminController::class, 'create'])->name('create.attraction');
+          Route::post('/gallery/image', [GalleryAdminController::class, 'create'])->name('create.image');
+          Route::post('/user', [UsersAdminController::class, 'create'])->name('create.user');
+          Route::post('/location/{id}', [AttractionLocationsController::class, 'create'])->name('create.location');
+      });
 
-        Route::prefix('edit')->group(function () {
-          // Pages
-            Route::get('/attraction/{id}', [AttractionsAdminController::class, 'updater'])->name('edit.attraction');
-            Route::get('/gallery/{id}', [GalleryAdminController::class, 'list'])->name('edit.attraction.gallery');
-        });
+      Route::prefix('edit')->group(function () {
+        // Pages
+          Route::get('/attraction/{id}', [AttractionsAdminController::class, 'updater'])->name('edit.attraction');
+          Route::get('/gallery/{id}', [GalleryAdminController::class, 'list'])->name('edit.attraction.gallery');
+      });
 
-        Route::prefix('update')->group(function () {
-          // Actions
-            Route::put('/attraction/{id}', [AttractionsAdminController::class, 'update'])->name('update.attraction');
-        });
+      Route::prefix('update')->group(function () {
+        // Actions
+          Route::put('/attraction/{id}', [AttractionsAdminController::class, 'update'])->name('update.attraction');
+          Route::put('/location/{id}', [AttractionLocationsController::class, 'update'])->name('update.location');
+      });
 
-        Route::prefix('delete')->group(function () {
-          // Actions
-            Route::get('/attraction/{id}', [AttractionsAdminController::class, 'delete'])->name('delete.attraction');
-            Route::get('/image/{id}', [GalleryAdminController::class, 'delete'])->name('delete.image');
-        });
-
-      /* Users */
-
-        /* Pages */
-        Route::get('/list_users', [UsersAdminController::class, 'list'])->name('list_users');
-        Route::get('/create_user', [UsersAdminController::class, 'creator'])->name('creator_user');
-        /* //Pages */
-
-        /* Actions */
-        Route::post('/create_user', [UsersAdminController::class, 'create'])->name('create_user');
-        Route::get('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
-        /* //Actions */
-
-      /* //Users */
-
-      /* Locations */
-
-        /* Pages */
-        Route::get('/create_location/{id}', [AttractionLocationsController::class, 'creator'])->name('creator_location');
-        /* //Pages */
-
-        /* Actions */
-        Route::put('/update_location/{id}', [AttractionLocationsController::class, 'update'])->name('update_location');
-        Route::post('/create_location/{id}', [AttractionLocationsController::class, 'create'])->name('create_location');
-        Route::get('/delete_location/{id}', [AttractionLocationsController::class, 'delete'])->name('delete_location');
-        /* //Actions */
-
-      /* //Locations */
+      Route::prefix('delete')->group(function () {
+        // Actions
+          Route::get('/attraction/{id}', [AttractionsAdminController::class, 'delete'])->name('delete.attraction');
+          Route::get('/image/{id}', [GalleryAdminController::class, 'delete'])->name('delete.image');
+          Route::get('/user/{id}', [UsersAdminController::class, 'delete'])->name('delete.user');
+          Route::get('/location/{id}', [AttractionLocationsController::class, 'delete'])->name('delete.location');
+      });
     });
 });
 

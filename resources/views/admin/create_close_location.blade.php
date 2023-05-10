@@ -4,7 +4,7 @@
     <div class='flex items-center justify-center w-full relative'>
       <h1 class='text-center text-5xl py-8'>@lang('Add close locations')</h1>
       <div class='absolute right-0'>
-        <x-a :url="route('admin.list')" :name="'Attractions List'"/>
+        <x-a :url="route('admin.list.attraction')" :name="'Attractions List'"/>
       </div>
     </div>
     <h2 class='text-center text-3xl py-6'>Attraction: <b>{{$attraction->title}}</b></h2>
@@ -43,7 +43,7 @@
       </div>
     @endif
     <x-show-required :errors="$errors"/>
-    <form class="grid grid-cols-1 gap-4" action="{{route('admin.create_location', ['id' => $attraction->id])}}" method="POST" enctype="multipart/form-data">
+    <form class="grid grid-cols-1 gap-4" action="{{route('admin.create.location', ['id' => $attraction->id])}}" method="POST" enctype="multipart/form-data">
         @csrf
         <label for="close_icon">Choose  an icon for your location: </label>
         <select name="icon" id="close_icon" class="w-28 h-auto material-symbols-rounded fs-48">

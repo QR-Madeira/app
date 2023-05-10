@@ -190,7 +190,7 @@ class AttractionsAdminController extends Controller
     {
         Attractions_Pictures::where('belonged_attraction', $id)->delete();
         Attraction::destroy($id);
-        return redirect()->route('admin.list');
+        return redirect()->route('admin.list.attraction');
     }
 
     public function list()

@@ -4,11 +4,11 @@
     <div class='flex items-center justify-center w-full relative'>
       <h1 class='text-center text-5xl py-8'>@lang('Create User')</h1>
       <div class='absolute right-0'>
-        <x-a :url="route('admin.list_users')" :name="'Users list'"/>
+        <x-a :url="route('admin.list.users')" :name="'Users list'"/>
       </div>
     </div>
     <x-show-required :errors="$errors"/>
-    <form class="grid grid-cols-1 gap-4" action="{{route('admin.create_user')}}" method="POST" enctype="multipart/form-data">
+    <form class="grid grid-cols-1 gap-4" action="{{route('admin.create.user')}}" method="POST" enctype="multipart/form-data">
       @csrf
       <x-input :type="'text'" :name="'name'" :placeholder="'Name'"/>
       <x-input :type="'email'" :name="'email'" :placeholder="'Email'"/>

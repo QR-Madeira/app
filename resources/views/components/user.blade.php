@@ -1,5 +1,5 @@
 <div class='flex items-center justify-start p-4 border-2 rounded border-black w-full h-36 my-4'>
-    <x-delete-alert :route="route('admin.delete_user', ['id' => $user->id])" :id="$user->id"/>
+    <x-delete-alert :route="route('admin.delete.user', ['id' => $user->id])" :id="$user->id"/>
     <div class='w-full'>
       <div class='px-4'>
         <h1 class='text-3xl px-4'>{{$user->name}}</h1>

@@ -44,7 +44,7 @@ class UsersAdminController extends Controller
     public function delete($id)
     {
         User::destroy($id);
-        return redirect()->route('admin.list_users');
+        return redirect()->route('admin.list.users');
     }
 
     public function create(Request $request)

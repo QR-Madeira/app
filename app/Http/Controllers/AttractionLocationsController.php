@@ -64,11 +64,11 @@ class AttractionLocationsController extends Controller
         if ($status) {
             Session::flash('status', true);
             Session::flash('message', 'Location created with success.');
-            return redirect()->route('admin.creator_location', ['id' => $id]);
+            return redirect()->route('admin.creator.location', ['id' => $id]);
         } else {
             Session::flash('status', false);
             Session::flash('message', 'Something went wrong with the creation');
-            return redirect()->route('admin.creator_location', ['id' => $id]);
+            return redirect()->route('admin.creator.location', ['id' => $id]);
         }
     }
 
