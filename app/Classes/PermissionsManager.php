@@ -39,7 +39,7 @@ final class PermissionsManager
             $u->permissions |= $p;
         }
 
-        return $u->update();
+        return $u->save();
     }
 
     public static function revoke(User &$u, int ...$permissions): bool
@@ -48,6 +48,29 @@ final class PermissionsManager
             $u->permissions &= ~$p;
         }
 
-        return $u->update();
+        return $u->save();
+    }
+
+    public static function getPermissionsHash(bool $extendo = false): array
+    {
+        return $extendo ? [
+            "no" => self::P_ZERO,
+            "view_attractions" => self::P_VIEW_ATTRACTION,
+            "create_attractions" => self::P_CREATE_ATTRACTION,
+            "update_attractions" => self::P_UPDATE_ATTRACTION,
+            "delete_attractions" => self::P_DELETE_ATTRACTION,
+            "attractions" => self::P_ALL_ATTRACTION,
+            "view_users" => self::P_VIEW_USER,
+            "create_users" => self::P_CREATE_USER,
+            "update_users" => self::P_UPDATE_USER,
+            "delete_users" => self::P_DELETE_USER,
+            "users" => self::P_ALL_USER,
+            "all" => self::P_ALL,
+        ] : [
+            "no" => self::P_ZERO,
+            "attractions" => self::P_ALL_ATTRACTION,
+            "users" => self::P_ALL_USER,
+            "all" => self::P_ALL,
+        ];
     }
 }

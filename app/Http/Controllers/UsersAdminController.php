@@ -19,6 +19,7 @@ class UsersAdminController extends Controller
 
         $this->data->set('status', $status);
         $this->data->set('message', $message);
+        $this->data->set('permissions', PermissionsManager::getPermissionsHash());
 
         return $this->view('admin.create_user');
     }
@@ -46,21 +47,17 @@ class UsersAdminController extends Controller
             'name' => 'required|min:4',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:4|confirmed',
-            'user_type' => 'required'
         ]);
 
         $pass_hash = Hash::make($validatedData['password']);
 
-        $users = [
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => $pass_hash,
-            "permissions" => PermissionsManager::P_ZERO,
-        ];
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->password = $pass_hash;
+        PermissionsManager::grant($user, ...$request->post("permissions"));
 
-        $status = User::create($users);
-
-        if ($status) {
+        if ($user->save()) {
             $request->session()->flash('status', true);
             $request->session()->flash('message', 'User created with success!');
             return redirect()->route('admin.creator_user');

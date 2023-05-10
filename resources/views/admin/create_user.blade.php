@@ -14,15 +14,16 @@
       <x-input :type="'email'" :name="'email'" :placeholder="'Email'"/>
       <x-input :type="'password'" :name="'password'" :placeholder="'Password'"/>
       <x-input :type="'password'" :name="'password_confirmation'" :placeholder="'Password Confirmation'"/>
-      <fieldset>
-        <legend>User permission: </legend>
-        <input type="radio" class="peer/standart" name="user_type" id="standart">
-        <label class="select-none" for="standart">@lang('Standart')</label>
-        <input type="radio" class="ml-12 peer/admin" name="user_type" id="admin">
-        <label class="select-none" for="admin">@lang('Admin')</label>
-        <div class="hidden peer-checked/standart:block">Standart users can only create, update and delete their attractions.</div>
-        <div class="hidden peer-checked/admin:block">Admins can manage everything about atrractions and users.</div>
-      </fieldset>
+<fieldset>
+
+<legend>User permission: </legend>
+
+<?php $first = true; ?>
+<?php foreach($permissions as $k => $v): ?>
+  <p><label class="select-none"><?=ucfirst($k)?> <input type="checkbox" class="peer/standart" name="permissions[<?=$k?>]" value="<?=$v?>" <?php if ($first): ?>checked<?php $first = false; ?><?php endif; ?> /></label></p>
+<?php endforeach; ?>
+
+</fieldset>
       <x-submit :value="'Create'" />
     </form>
     @if(Session::has('status') && Session::has('message'))
