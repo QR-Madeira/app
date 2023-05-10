@@ -1,4 +1,4 @@
-@extends('layouts.layout')        
+@extends('layouts.basic')        
 @section('body')
   <div class='flex flex-col items-start justify-start'>
     <div class='w-full flex items-center justify-center p-4 relative'>
