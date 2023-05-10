@@ -22,14 +22,14 @@
           </thead>
           <tbody>
             @foreach($attraction_locations as $attr_loc)
-              <x-delete-alert :route="route('admin.delete_location', ['id' => $attr_loc->id])" :id="$attr_loc->id"/>
+              <x-delete-alert :route="route('admin.delete.location', ['id' => $attr_loc->id])" :id="$attr_loc->id"/>
               <tr>
                 <td><span class="material-symbols-rounded fs-36">{{$attr_loc->icon_path}}</span></td>
                 <td>{{$attr_loc->name}}</td>
                 <td>{{$attr_loc->location}}</td>
                 <td>{{$attr_loc->phone}}</td>
                 <td>
-                  <x-a :url="route('admin.update_location', ['id' => $attr_loc->id])" :name="__('Edit')"/>
+                  <x-a :url="route('admin.update.location', ['id' => $attr_loc->id])" :name="__('Edit')"/>
                     <button onclick="document.getElementById('{{$attr_loc->id}}').style.display = 'block';" class='py-4 px-6 rounded bg-red-600 text-white'>@lang('Delete')</button>
                 </td>
               </tr>
