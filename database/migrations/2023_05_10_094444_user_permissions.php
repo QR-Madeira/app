@@ -1,9 +1,10 @@
 <?php
 
-use App\Classes\PermissionsManager;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
+use const App\Classes\Auth\P_ZERO;
 
 return new class extends Migration
 {
@@ -13,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table("users", static function (Blueprint $table) {
-            $table->integer("permissions", unsigned: false)->default(PermissionsManager::P_ZERO);
+            $table->integer("permissions", unsigned: false)->default(P_ZERO);
         });
     }
 

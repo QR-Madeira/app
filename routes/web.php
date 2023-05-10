@@ -24,54 +24,53 @@ use App\Http\Middleware\Authenticate;
 
 Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
-  Route::prefix('admin')->group(function(){
+    Route::prefix('admin')->group(function () {
 
-    /* Attractions */
+      /* Attractions */
 
-      /* Pages */
+        /* Pages */
         Route::get('/create', [AttractionsAdminController::class, 'creator'])->name('creator');
         Route::get('/edit/{id}', [AttractionsAdminController::class, 'updater'])->name('updater');
         Route::get('/edit/{id}/gallery', [GalleryAdminController::class, 'list'])->name('updater.gallery');
         Route::get('/list', [AttractionsAdminController::class, 'list'])->name('list');
-      /* //Pages */
+        /* //Pages */
 
-      /* Actions */
+        /* Actions */
         Route::get('/delete/{id}', [AttractionsAdminController::class, 'delete'])->name('delete');
         Route::get('/delete/{id}/gallery', [GalleryAdminController::class, 'delete'])->name('delete_image');
         Route::post('/create', [AttractionsAdminController::class, 'create'])->name('create');
         Route::put('/create/{id}', [AttractionsAdminController::class, 'update'])->name('update');
-      /* //Actions */
+        /* //Actions */
 
-    /* //Attractions */
+      /* //Attractions */
 
-    /* Users */
+      /* Users */
 
-      /* Pages */
+        /* Pages */
         Route::get('/list_users', [UsersAdminController::class, 'list'])->name('list_users');
         Route::get('/create_user', [UsersAdminController::class, 'creator'])->name('creator_user');
-      /* //Pages */
+        /* //Pages */
 
-      /* Actions */
+        /* Actions */
         Route::post('/create_user', [UsersAdminController::class, 'create'])->name('create_user');
         Route::get('/delete_user/{id}', [UsersAdminController::class, 'delete'])->name('delete_user');
-      /* //Actions */
+        /* //Actions */
 
-    /* //Users */
+      /* //Users */
 
-    /* Locations */
+      /* Locations */
 
-      /* Pages */
+        /* Pages */
         Route::get('/create_location/{id}', [AttractionLocationsController::class, 'creator'])->name('creator_location');
-      /* //Pages */
+        /* //Pages */
 
-      /* Actions */
+        /* Actions */
         Route::put('/update_location/{id}', [AttractionLocationsController::class, 'update'])->name('update_location');
         Route::post('/create_location/{id}', [AttractionLocationsController::class, 'create'])->name('create_location');
         Route::get('/delete_location/{id}', [AttractionLocationsController::class, 'delete'])->name('delete_location');
-      /* //Actions */
+        /* //Actions */
 
-    /* //Locations */
-
+      /* //Locations */
     });
 });
 
@@ -80,7 +79,7 @@ Route::post('/signin', [SessionController::class, 'signin'])->name('signin');
 Route::get('/signout', [SessionController::class, 'signout'])->name('signout');
 
 Route::get('/', function () {
-  return view('viewer.index');
+    return view('viewer.index');
 })->name('index');
 
 Route::get('/{title_compiled}', [AttractionsViewerController::class, 'index'])->name('view');
@@ -88,10 +87,10 @@ Route::get('/{title_compiled}/gallery', [AttractionsViewerController::class, 'ga
 Route::get('/{title_compiled}/map', [AttractionsViewerController::class, 'map'])->name('view.map');
 
 Route::get('/greeting/{locale}', function (string $locale) {
-  if (! in_array($locale, ['en', 'pt'])) {
-    abort(400);
-  }
-  app()->setLocale($locale);
-  session()->put('locale', $locale);
-  return redirect()->back();
+    if (! in_array($locale, ['en', 'pt'])) {
+        abort(400);
+    }
+    app()->setLocale($locale);
+    session()->put('locale', $locale);
+    return redirect()->back();
 })->name('language');

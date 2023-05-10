@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\PermissionsManager;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+
+use function App\Classes\Auth\getPermissionsHash;
+use function App\Classes\Auth\grant;
 
 class UsersAdminController extends Controller
 {
@@ -19,7 +21,7 @@ class UsersAdminController extends Controller
 
         $this->data->set('status', $status);
         $this->data->set('message', $message);
-        $this->data->set('permissions', PermissionsManager::getPermissionsHash());
+        $this->data->set('permissions', getPermissionsHash());
 
         return $this->view('admin.create_user');
     }
@@ -55,7 +57,7 @@ class UsersAdminController extends Controller
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         $user->password = $pass_hash;
-        PermissionsManager::grant($user, ...$request->post("permissions"));
+        grant($user, ...$request->post("permissions"));
 
         if ($user->save()) {
             $request->session()->flash('status', true);

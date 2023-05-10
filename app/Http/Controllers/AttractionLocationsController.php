@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class AttractionLocationsController extends Controller
 {
-    public function listLocationsById($id){
+    public function listLocationsById($id)
+    {
 
         Session::put('place', 'admin_attr');
 
@@ -69,11 +70,10 @@ class AttractionLocationsController extends Controller
             Session::flash('message', 'Something went wrong with the creation');
             return redirect()->route('admin.creator_location', ['id' => $id]);
         }
-
     }
 
     public function delete($id)
-    {   
+    {
         $loc = Attractions_Close_Locations::find($id);
 
         if (!$loc || !$id) {

@@ -8,7 +8,6 @@ use Illuminate\View\Component;
 
 class showRequired extends Component
 {
-
     public $errors;
 
     public function __construct($errors)
