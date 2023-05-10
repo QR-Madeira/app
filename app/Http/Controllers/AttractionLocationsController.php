@@ -74,13 +74,13 @@ class AttractionLocationsController extends Controller
 
     public function delete($id)
     {   
-        $loc = Attractions_Close_Locations::find($id);
+      $loc = Attractions_Close_Locations::find($id);
+      
+      if (!$loc || !$id) {
+        throw new \RuntimeException("Location not found");
+      }
 
-        if (!$loc || !$id) {
-            throw new \RuntimeException("location not found");
-        }
-
-        Attractions_Close_Locations::destroy($id);
-        return redirect()->route('admin.creator_location');
+      Attractions_Close_Locations::destroy($id);
+      return redirect()->back();
     }
 }
