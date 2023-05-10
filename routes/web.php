@@ -71,13 +71,14 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
       Route::prefix('edit')->group(function () {
         // Pages
           Route::get('/attraction/{id}', [AttractionsAdminController::class, 'updater'])->name('edit.attraction');
+          Route::get('/location/{id}/{id_2}', [AttractionLocationsController::class, 'updater'])->name('edit.location');
           Route::get('/gallery/{id}', [GalleryAdminController::class, 'list'])->name('edit.attraction.gallery');
       });
 
       Route::prefix('update')->group(function () {
         // Actions
           Route::put('/attraction/{id}', [AttractionsAdminController::class, 'update'])->name('update.attraction');
-          Route::put('/location/{id}', [AttractionLocationsController::class, 'update'])->name('update.location');
+          Route::put('/location/{id}/{id_2}', [AttractionLocationsController::class, 'create'])->name('update.location');
       });
 
       Route::prefix('delete')->group(function () {

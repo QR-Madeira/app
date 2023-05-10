@@ -29,8 +29,8 @@
                 <td>{{$attr_loc->location}}</td>
                 <td>{{$attr_loc->phone}}</td>
                 <td>
-                  <x-a :url="route('admin.update.location', ['id' => $attr_loc->id])" :name="__('Edit')"/>
-                    <button onclick="document.getElementById('{{$attr_loc->id}}').style.display = 'block';" class='py-4 px-6 rounded bg-red-600 text-white'>@lang('Delete')</button>
+                  <x-a :url="route('admin.edit.location', ['id' => $attraction->id, 'id_2' => $attr_loc->id])" :name="__('Edit')"/>
+                  <button onclick="document.getElementById('{{$attr_loc->id}}').style.display = 'block';" class='py-4 px-6 rounded bg-red-600 text-white'>@lang('Delete')</button>
                 </td>
               </tr>
             @endforeach
@@ -43,8 +43,11 @@
       </div>
     @endif
     <x-show-required :errors="$errors"/>
-    <form class="grid grid-cols-1 gap-4" action="{{route('admin.create.location', ['id' => $attraction->id])}}" method="POST" enctype="multipart/form-data">
+    <form class="grid grid-cols-1 gap-4" action="{{route('admin.'.((isset($isPUT) && $isPUT)?'update':'create').'.location', $arr)}}" method="POST" enctype="multipart/form-data">
         @csrf
+        @if(isset($isPUT) && $isPUT)
+          @method("PUT")
+        @endif
         <label for="close_icon">Choose  an icon for your location: </label>
         <select name="icon" id="close_icon" class="w-28 h-auto material-symbols-rounded fs-48">
             <option value="other_houses">other_houses</option>
@@ -54,10 +57,10 @@
             <option value="hotel">hotel</option>
         </select>
         <label for="close_icon">If you can't find an icon that fits with your location simply leave the first one.</label>
-        <x-input :type="'text'" :name="'name'" :placeholder="'Place name'"/>
-        <x-input :type="'text'" :name="'location'" :placeholder="'Place location'"/>
-        <x-input :type="'text'" :name="'phone'" :placeholder="'Place phone (Optional)'"/>
-        <x-submit :value="'Add location'" />
+        <x-input :type="'text'" :name="'name'" :value="isset($name)?$name:''" :placeholder="'Place name' "/>
+        <x-input :type="'text'" :name="'location'" :value="isset($location)?$location:''" :placeholder="'Place location'"/>
+        <x-input :type="'text'" :name="'phone'" :value="isset($phone)?$phone:''" :placeholder="'Place phone (Optional)'"/>
+        <x-submit :value="isset($isPUT)?$isPUT?'Save':'Add location':'Add location'" />
     </form>
     @if(Session::has('status') && Session::has('message'))
       <x-success_error_msg :status="Session::get('status')" :msg="Session::get('message')"/>

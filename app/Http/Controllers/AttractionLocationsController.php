@@ -27,8 +27,6 @@ class AttractionLocationsController extends Controller
             throw new \RuntimeException("no attraction found");
         }
 
-        Session::put('place', 'admin_attr');
-
         $attrLoc = $this->listLocationsById($id);
 
         $status = $request->session()->get('status');
@@ -38,12 +36,15 @@ class AttractionLocationsController extends Controller
         $this->data->set('route', $route);
         $this->data->set('attraction', $attr);
         $this->data->set('attraction_locations', $attrLoc);
+        $arr = ['id' => $id];
+        $this->data->set('arr', $arr);
 
         return $this->view('admin.create_close_location');
     }
 
-    public function create(Request $request, $id)
+    public function create(Request $request, $id, $id_2 = null)
     {
+
         $validatedData = $request->validate([
             'icon' => 'required',
             'name' => 'required',
@@ -52,24 +53,65 @@ class AttractionLocationsController extends Controller
         ]);
 
         $location = [
-            'belonged_attraction' => $id,
             'icon_path' => $validatedData['icon'],
             'name' => $validatedData['name'],
             'location' => $validatedData['location'],
             'phone' => $validatedData['phone'],
         ];
 
-        $status = Attractions_Close_Locations::create($location);
+        $status = false;
+        $method = "";
 
-        if ($status) {
-            Session::flash('status', true);
-            Session::flash('message', 'Location created with success.');
-            return redirect()->route('admin.creator.location', ['id' => $id]);
-        } else {
-            Session::flash('status', false);
-            Session::flash('message', 'Something went wrong with the creation');
-            return redirect()->route('admin.creator.location', ['id' => $id]);
+        switch($request->method()){
+            case 'POST': {
+                $location['belonged_attraction'] = $id;
+                $method = "created";
+                $status = Attractions_Close_Locations::create($location);
+
+                break;
+            }
+            case "PUT":{
+                $loc = Attractions_Close_Locations::find($id_2);
+                $method = "updated";
+                $status = $loc->update($location);
+
+                break;
+            }
         }
+        Session::flash('status', $status == true);
+        Session::flash('message', $status == true? "Location $method with success." : "Something went wrong.");
+        return redirect()->route('admin.creator.location', ['id' => $id]);
+    }
+
+    public function updater($id, $id_2)
+    {
+        $attr = Attraction::find($id);
+        $loc = Attractions_Close_Locations::find($id_2);
+
+
+        if (!$loc || !$id || !$attr) {
+            throw new \RuntimeException("no location found");
+        }
+
+        $attrLoc = $this->listLocationsById($id);
+
+        foreach ([
+            "id" => $id_2,
+            "icon_path" => $loc->icon_path,
+            "name" => $loc->name,
+            "location" => $loc->location,
+            "phone" => $loc->phone,
+        ] as $k => $v) {
+            $this->data->set($k, $v);
+        }
+
+        $this->data->set('attraction', $attr);
+        $this->data->set('attraction_locations', $attrLoc);
+        $arr = ['id' => $id, 'id_2' => $id_2];
+        $this->data->set('arr', $arr);
+        $this->data->set('isPUT', true);
+
+        return $this->view('admin.create_close_location');
     }
 
     public function delete($id)
@@ -81,6 +123,6 @@ class AttractionLocationsController extends Controller
         }
 
         Attractions_Close_Locations::destroy($id);
-        return redirect()->back();
+        return redirect()->route('admin.list.attraction');
     }
 }

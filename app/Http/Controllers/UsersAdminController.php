@@ -68,11 +68,11 @@ class UsersAdminController extends Controller
         if ($user->save()) {
             $request->session()->flash('status', true);
             $request->session()->flash('message', 'User created with success!');
-            return redirect()->route('admin.creator_user');
+            return redirect()->route('admin.creator.user');
         } else {
             $request->session()->flash('status', false);
             $request->session()->flash('message', 'Something went wrong when creating the player, try again!');
-            return redirect()->route('admin.creator_user');
+            return redirect()->route('admin.creator.user');
         }
     }
 }
