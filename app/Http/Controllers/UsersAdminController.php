@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\PermissionsManager;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -53,7 +54,8 @@ class UsersAdminController extends Controller
         $users = [
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'password' => $pass_hash
+            'password' => $pass_hash,
+            "permissions" => PermissionsManager::P_ZERO,
         ];
 
         $status = User::create($users);
