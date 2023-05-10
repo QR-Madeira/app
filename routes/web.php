@@ -44,6 +44,19 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
     /* //Attractions */
 
+    /* Gallery */
+
+      /* Pages */
+        Route::get('/edit/{id}/gallery', [GalleryAdminController::class, 'list'])->name('updater.gallery');
+      /* //Pages */
+
+      /* Actions */
+        Route::get('/delete/{id}/gallery', [GalleryAdminController::class, 'delete'])->name('delete_image');
+        Route::post('/create/gallery/image', [GalleryAdminController::class, 'create'])->name('create_image');
+      /* //Actions */
+
+    /* //Gallery */
+
     /* Users */
 
       /* Pages */

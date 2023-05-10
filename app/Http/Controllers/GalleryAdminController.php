@@ -9,6 +9,22 @@ use App\Models\Attraction;
 
 class GalleryAdminController extends Controller
 {
+  public function create(Request $request)
+  {
+    $validated = $request->validate([
+      'belonged_attraction' => 'required'
+    ]);
+    $image = $request->file('image');
+    $image_path = explode("/", $image->store('gallery', 'public'))[1];
+    
+    $image = array(
+      'belonged_attraction' => $validated['belonged_attraction'],
+      'image_path' => $image_path,
+    );
+    Attractions_Pictures::create($image);
+    return redirect()->back();
+  }
+
   public function list($id)
   {
     $images = Attractions_Pictures::where('belonged_attraction', '=', $id)->get()->toArray();

@@ -56,8 +56,8 @@ class AttractionsAdminController extends Controller
     public function create(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|unique:attractions,title',
-            'description' => 'required',
+          'title' => 'required|unique:attractions,title',
+          'description' => 'required',
         ]);
 
         $image = $request->file('image');
