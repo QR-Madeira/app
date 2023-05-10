@@ -9,12 +9,12 @@
         <div class="relative">
           <img src="{{$image['image_path']}}" alt="Gallery image" class="h-full rounded">
           <div class="absolute top-4 right-0">
-            <x-a :url="route('admin.delete_image', ['id' => $image['id']])" :name="__('Delete')"/>
+            <x-a :url="route('admin.delete.image', ['id' => $image['id']])" :name="__('Delete')"/>
           </div>
         </div>
       @endforeach
       <div>
-        <form action="{{route('admin.create_image')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('admin.create.image')}}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="grid gap-4">
             <x-input :type="'hidden'" :name="'belonged_attraction'" :value="$image['belonged_attraction']"/>
