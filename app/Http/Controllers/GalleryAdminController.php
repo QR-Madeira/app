@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attractions_Pictures;
 use Illuminate\Http\Request;
+use App\Models\Attraction;
 
 class GalleryAdminController extends Controller
 {
@@ -26,6 +27,7 @@ class GalleryAdminController extends Controller
 
     public function list($id)
     {
+      $title = Attraction::where('id', '=', $id)->first()->toArray()['title'];
       $images = Attractions_Pictures::where('belonged_attraction', '=', $id)->get()->toArray();
       foreach ($images as $key => $value) {
         $images[$key]['image_path'] = '/storage/gallery/' . $value['image_path'];
@@ -33,6 +35,8 @@ class GalleryAdminController extends Controller
       
       $this->data->set('images', $images);
       $this->data->set('belonged_attraction', $id);
+      $this->data->set('id', $id);
+      $this->data->set('title', $title);
 
       return $this->view('admin.list_gallery');
     }
