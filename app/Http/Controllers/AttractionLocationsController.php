@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Attraction;
 use App\Models\Attractions_Close_Locations;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use function App\Auth\check;
+
+use const App\Auth\P_MANAGE_ATTRACTION;
 
 class AttractionLocationsController extends Controller
 {
@@ -85,6 +90,10 @@ class AttractionLocationsController extends Controller
 
     public function updater($id, $id_2)
     {
+
+        if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
+
         $attr = Attraction::find($id);
         $loc = Attractions_Close_Locations::find($id_2);
 
@@ -116,7 +125,7 @@ class AttractionLocationsController extends Controller
 
     public function delete($id, $id_2)
     {   
-        $attr = Attraction::find($id);    
+        $attr = Attraction::find($id);  
 
         $loc = Attractions_Close_Locations::find($id_2);
 
