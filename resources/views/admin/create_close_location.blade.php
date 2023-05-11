@@ -3,11 +3,15 @@
   <div class='py-4 px-24'>
     <div class='flex items-center justify-center w-full relative'>
       <h1 class='text-center text-5xl py-8'>@lang('Add close locations')</h1>
-      <div class='absolute right-0'>
-        <x-a :url="route('admin.list.attraction')" :name="'Attractions List'"/>
+      <div class='absolute left-0'>
+        <x-a :url="route('admin.edit.attraction', ['id' => $attraction->id])" :name="$attraction->title"/>
       </div>
+      <div class='absolute right-0'>
+        <x-a :url="route('admin.list.attraction')" :name="__('Attractions list')"/>
+      </div>
+
     </div>
-    <h2 class='text-center text-3xl py-6'>Attraction: <b>{{$attraction->title}}</b></h2>
+    <h2 class='text-center text-3xl py-6'>@lang('Attraction'): <b>{{$attraction->title}}</b></h2>
     @if(count($attraction_locations) != 0)
       <div>
         <table class="border border-slate-500 w-full">

@@ -1,7 +1,14 @@
 @extends('layouts.admin-layout')
 @section('body')
-<main class="flex justify-start items-center flex-col space-y-8 w-full px-24 py-4">
-  <h1 class="text-6xl">@lang('Update Attraction')</h1>
+<div class="pt-2 px-24">
+  <div class='flex items-center justify-center w-full relative'>
+    <h1 class='text-center text-5xl py-8'>@lang('Update Attraction')</h1>
+    <div class='absolute right-0'>
+      <x-a :url="route('admin.list.attraction')" :name="__('Attractions list')"/>
+    </div>
+  </div>
+</div>
+<div class="flex justify-start items-center flex-col space-y-8 w-full px-24 py-4">
   <form method="POST" enctype="multipart/form-data" action="{{route("admin.update.attraction", $id)}}" class="w-full space-y-4 grid grid-cols-2 gap-4">
     @csrf
     @method("PUT")
@@ -36,7 +43,7 @@
     <x-a :url="route('admin.edit.attraction.gallery', ['id' => $id])" :name="'Update Gallery'"/>
     <x-a :url="route('admin.creator.location', ['id' => $id])" :name="'Update Close Locations'"/>
   </div>
-</main>
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", async function() {

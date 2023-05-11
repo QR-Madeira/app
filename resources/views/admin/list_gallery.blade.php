@@ -1,8 +1,14 @@
 @extends('layouts.admin-layout')
 @section('body')
   <div class="px-24 py-4 space-y-4">
-    <div class="flex flex-row justify-center items-center">
+    <div class="flex flex-row justify-center items-center relative">
       <h1 class="text-6xl py-4">@lang('Gallery')</h1>
+      <div class='absolute left-0'>
+        <x-a :url="route('admin.edit.attraction', ['id' => $id])" :name="$title"/>
+      </div>
+      <div class='absolute right-0'>
+        <x-a :url="route('admin.list.attraction')" :name="__('Attractions list')"/>
+      </div>
     </div>
     <div class="grid grid-cols-3 gap-4">
       @foreach ($images as $image)
