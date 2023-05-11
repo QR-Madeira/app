@@ -114,15 +114,17 @@ class AttractionLocationsController extends Controller
         return $this->view('admin.create_close_location');
     }
 
-    public function delete($id)
-    {
-        $loc = Attractions_Close_Locations::find($id);
+    public function delete($id, $id_2)
+    {   
+        $attr = Attraction::find($id);    
 
-        if (!$loc || !$id) {
+        $loc = Attractions_Close_Locations::find($id_2);
+
+        if (!$loc || !$attr) {
             throw new \RuntimeException("Location not found");
         }
 
-        Attractions_Close_Locations::destroy($id);
-        return redirect()->route('admin.list.attraction');
+        Attractions_Close_Locations::destroy($id_2);
+        return redirect()->route('admin.create.location', $id);
     }
 }

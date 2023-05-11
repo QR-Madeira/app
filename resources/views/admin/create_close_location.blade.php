@@ -22,11 +22,11 @@
           </thead>
           <tbody>
             @foreach($attraction_locations as $attr_loc)
-              <x-delete-alert :route="route('admin.delete.location', ['id' => $attr_loc->id])" :id="$attr_loc->id"/>
+              <x-delete-alert :route="route('admin.delete.location', ['id' => $attraction->id, 'id_2' => $attr_loc->id])" :id="$attr_loc->id"/>
               <tr>
                 <td><span class="material-symbols-rounded fs-36">{{$attr_loc->icon_path}}</span></td>
-                <td>{{$attr_loc->name}}</td>
-                <td>{{$attr_loc->location}}</td>
+                <td>{{Str::limit($attr_loc->name, 20)}}</td>
+                <td>{{Str::limit($attr_loc->location, 60)}}</td>
                 <td>{{$attr_loc->phone}}</td>
                 <td>
                   <x-a :url="route('admin.edit.location', ['id' => $attraction->id, 'id_2' => $attr_loc->id])" :name="__('Edit')"/>

@@ -86,7 +86,7 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
           Route::get('/attraction/{id}', [AttractionsAdminController::class, 'delete'])->name('delete.attraction');
           Route::get('/image/{id}', [GalleryAdminController::class, 'delete'])->name('delete.image');
           Route::get('/user/{id}', [UsersAdminController::class, 'delete'])->name('delete.user');
-          Route::get('/location/{id}', [AttractionLocationsController::class, 'delete'])->name('delete.location');
+          Route::get('/location/{id}/{id_2}', [AttractionLocationsController::class, 'delete'])->name('delete.location');
       });
     });
 });
