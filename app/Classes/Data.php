@@ -6,10 +6,10 @@ class Data
 {
   // Singleton
     private static $instance;
-    public static function getInstance(): Data
+    public static function getInstance(): static
     {
-        if (empty(self::$instance)) {
-            self::$instance = new Data();
+        if (!isset(self::$instance)) {
+            self::$instance = new static();
         }
 
         return self::$instance;
@@ -29,8 +29,8 @@ class Data
 
     public function format(): void
     {
-        $this->data = array();
-        $this->fillable = array();
+        $this->data = [];
+        $this->fillable = [];
     }
 
     public function get(): array
@@ -43,7 +43,7 @@ class Data
         return $data;
     }
 
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         $this->data[$key] = $value;
     }
