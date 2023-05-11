@@ -12,8 +12,7 @@ use App\Models\User;
 
 use function App\Auth\checkOrThrow;
 
-use const App\Auth\P_CREATE_ATTRACTION;
-use const App\Auth\P_UPDATE_ATTRACTION;
+use const App\Auth\P_MANAGE_ATTRACTION;
 
 class AttractionsAdminController extends Controller
 {
@@ -59,7 +58,7 @@ class AttractionsAdminController extends Controller
 
     public function create(Request $request)
     {
-        checkOrThrow(Auth::user(), P_CREATE_ATTRACTION);
+        checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
 
         $validatedData = $request->validate([
           'title' => 'required|unique:attractions,title',
@@ -104,7 +103,7 @@ class AttractionsAdminController extends Controller
 
     public function update(Request $request, ?string $id = null)
     {
-        checkOrThrow(Auth::user(), P_UPDATE_ATTRACTION);
+        checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
 
         $validatedData = $request->validate([
             'title' => 'required',

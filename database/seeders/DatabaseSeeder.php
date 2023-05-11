@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             "email" => "admin@localhost",
             "password" => Hash::make("admin123"),
             "permissions" => P_ALL,
+            "super" => true,
         ]);
     }
 }
