@@ -22,7 +22,7 @@ function check(User $u, int $permissions): bool
 function checkOrThrow(User $u, int $permissions): bool
 {
     if (!check($u, $permissions)) {
-        throw new NoPermissionsException($permissions);
+        throw new NoPermissionsException($u, $permissions);
     }
 
     return true;
