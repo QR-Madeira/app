@@ -10,9 +10,10 @@ use Illuminate\Http\Request;
 use App\Models\Attraction;
 use App\Models\User;
 
-use function App\Auth\checkOrThrow;
+use function App\Auth\check;
 
 use const App\Auth\P_MANAGE_ATTRACTION;
+use const App\Auth\P_VIEW_ATTRACTION;
 
 class AttractionsAdminController extends Controller
 {
@@ -20,6 +21,9 @@ class AttractionsAdminController extends Controller
 
     public function creator(Request $request)
     {
+        if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
+
         Session::put('place', 'admin_attr');
 
         $status = $request->session()->get('status');
@@ -33,19 +37,22 @@ class AttractionsAdminController extends Controller
 
     public function updater(Request $req, string $id)
     {
-        $a = Attraction::find($id);
+        if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
 
-        if (!$a || !$id) {
-            throw new \RuntimeException("no attraction found");
+        $attr = Attraction::find($id);
+
+        if (!$attr) {
+            return redirect()->back();
         }
 
-        if (Auth::id() === $a->created_by) {
+        if (Auth::id() === $attr->created_by) {
             foreach (
                 [
                     "id" => $id,
-                    "title" => $a->title,
-                    "description" => $a->description,
-                    "img" => '/storage/attractions/' . $a->image_path,
+                    "title" => $attr->title,
+                    "description" => $attr->description,
+                    "img" => '/storage/attractions/' . $attr->image_path,
                 ] as $k => $v
             ) {
                 $this->data->set($k, $v);
@@ -58,16 +65,18 @@ class AttractionsAdminController extends Controller
 
     public function create(Request $request)
     {
-        checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
+        if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
 
         $validatedData = $request->validate([
           'title' => 'required|unique:attractions,title',
           'description' => 'required',
+          'image' => 'required',
         ]);
 
         $image = $request->file('image');
         $gallery = $request->file('gallery');
-
+     
         $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($validatedData['title']));
 
         $nomeArquivo = 'qr-codes/' . $this->compileTitle($validatedData['title']) . '.png';
@@ -87,15 +96,16 @@ class AttractionsAdminController extends Controller
             "lon" => $request->post("lon"),
         ]);
 
-        foreach ($gallery as $picture) {
-            $image_path = explode("/", $picture->store('gallery', 'public'))[1];
-            $image = array(
-                'belonged_attraction' => $attraction->id,
-                'image_path' => $image_path,
-            );
-            Attractions_Pictures::create($image);
+        if(is_iterable($gallery)){
+            foreach ($gallery as $picture) {
+                $image_path = explode("/", $picture->store('gallery', 'public'))[1];
+                $image = array(
+                    'belonged_attraction' => $attraction->id,
+                    'image_path' => $image_path,
+                );
+                Attractions_Pictures::create($image);
+            }
         }
-
         $request->session()->flash('status', true);
         $request->session()->flash('route', route('view', ['title_compiled' => $this->compileTitle($validatedData['title'])]));
         return redirect()->route('admin.creator.attraction');
@@ -103,7 +113,8 @@ class AttractionsAdminController extends Controller
 
     public function update(Request $request, ?string $id = null)
     {
-        checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
+        if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
 
         $validatedData = $request->validate([
             'title' => 'required',
@@ -117,19 +128,19 @@ class AttractionsAdminController extends Controller
 
         $nomeArquivo = 'qr-codes/' . $this->compileTitle($validatedData['title']) . '.png';
 
-        $a = Attraction::find($id);
+        $attr = Attraction::find($id);
 
-        if (!$a || !$id) {
-            throw new \RuntimeException("no attraction found");
+        if (!$attr) {
+            return redirect()->back();
         }
 
-        if ($a->created_by === Auth::id()) {
+        if ($attr->created_by === Auth::id()) {
             $toDel = Attractions_Pictures::where("belonged_attraction", $id)->get()->map(static fn (Attractions_Pictures $i) => $i->image_path);
-            $main_img = $a->image_path;
+            $main_img = $attr->image_path;
 
-            if ($a->title_compiled != $this->compileTitle($validatedData['title'])) {
+            if ($attr->title_compiled != $this->compileTitle($validatedData['title'])) {
                 $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
-                Storage::disk('public')->delete("qr-codes/$a->title_compiled.png");
+                Storage::disk('public')->delete("qr-codes/$attr->title_compiled.png");
                 Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
             }
 
@@ -145,7 +156,7 @@ class AttractionsAdminController extends Controller
                 $raw["image_path"] = explode("/", $image->store("attractions", "public"))[1];
             }
 
-            $a->update($raw);
+            $attr->update($raw);
 
             if ($image != null) {
                 Storage::disk("public")->delete("attractions/$main_img");
@@ -187,6 +198,12 @@ class AttractionsAdminController extends Controller
 
     public function delete($id)
     {
+        $attr = Attraction::find($id);
+
+        if (!$attr) {
+            return redirect()->back();
+        }
+        
         Attractions_Pictures::where('belonged_attraction', $id)->delete();
         Attraction::destroy($id);
         return redirect()->route('admin.list.attraction');
@@ -194,6 +211,9 @@ class AttractionsAdminController extends Controller
 
     public function list()
     {
+        if(!check(Auth::user(), P_VIEW_ATTRACTION))
+            return redirect()->back();
+
         Session::put('place', 'admin_attr');
 
         $all_attractions = Attraction::all();

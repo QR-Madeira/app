@@ -11,7 +11,6 @@
   <x-show-required :errors="$errors"/>
   <form class="grid grid-cols-2 gap-4" action="{{route('admin.create.attraction')}}" method="POST" enctype="multipart/form-data">
     @csrf
-
     <div class="grid gap-4">
       <div class="grid">
         <h1 class="text-xl">@lang('Title')</h1>

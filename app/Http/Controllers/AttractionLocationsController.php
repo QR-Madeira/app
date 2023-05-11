@@ -16,7 +16,7 @@ class AttractionLocationsController extends Controller
 {
     public function listLocationsById($id)
     {
-
+        
         Session::put('place', 'admin_attr');
 
         $attrList = Attractions_Close_Locations::where("belonged_attraction", $id)->get();
@@ -26,10 +26,13 @@ class AttractionLocationsController extends Controller
 
     public function creator(Request $request, $id)
     {
+        if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
+            
         $attr = Attraction::find($id);
 
-        if (!$attr || !$id) {
-            throw new \RuntimeException("no attraction found");
+        if (!$attr) {
+            return redirect()->back();
         }
 
         $attrLoc = $this->listLocationsById($id);
@@ -49,6 +52,8 @@ class AttractionLocationsController extends Controller
 
     public function create(Request $request, $id, $id_2 = null)
     {
+        if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
 
         $validatedData = $request->validate([
             'icon' => 'required',
@@ -90,7 +95,6 @@ class AttractionLocationsController extends Controller
 
     public function updater($id, $id_2)
     {
-
         if(!check(Auth::user(), P_MANAGE_ATTRACTION))
             return redirect()->back();
 
@@ -98,8 +102,8 @@ class AttractionLocationsController extends Controller
         $loc = Attractions_Close_Locations::find($id_2);
 
 
-        if (!$loc || !$id || !$attr) {
-            throw new \RuntimeException("no location found");
+        if (!$loc || !$attr) {
+            return redirect()->back();
         }
 
         $attrLoc = $this->listLocationsById($id);
@@ -125,12 +129,15 @@ class AttractionLocationsController extends Controller
 
     public function delete($id, $id_2)
     {   
-        $attr = Attraction::find($id);  
+        if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
+            
+        $attr = Attraction::find($id);
 
         $loc = Attractions_Close_Locations::find($id_2);
 
         if (!$loc || !$attr) {
-            throw new \RuntimeException("Location not found");
+            return redirect()->back();
         }
 
         Attractions_Close_Locations::destroy($id_2);
