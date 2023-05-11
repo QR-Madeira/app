@@ -53,7 +53,7 @@ class AttractionsAdminController extends Controller
 
         $a = Attraction::find($id);
 
-        if (!$a || !$id) {
+        if (!$a) {
             return redirect()->back();
         }
 
@@ -90,12 +90,13 @@ class AttractionsAdminController extends Controller
           'description' => 'required',
           'lat' => 'required',
           'lon' => 'required',
+          //'image' => 'required',
         ]);
 
         $image = $request->file('image');
         $gallery = $request->file('gallery');
-
-        $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($validatedData['title']));
+     
+        $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($in['title']));
 
         $nomeArquivo = 'qr-codes/' . $this->compileTitle($in['title']) . '.png';
 
@@ -115,15 +116,17 @@ class AttractionsAdminController extends Controller
         Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
         $image->store('attractions', 'public');
 
-        foreach ($gallery as $picture) {
-            $image_path = explode("/", $picture->store('gallery', 'public'))[1];
-            $image = array(
-                'belonged_attraction' => $attraction->id,
-                'image_path' => $image_path,
-            );
-            Attractions_Pictures::create($image);
+        if(is_iterable($gallery)){
+            foreach ($gallery as $picture) {
+                $image_path = explode("/", $picture->store('gallery', 'public'))[1];
+                $image = array(
+                    'belonged_attraction' => $attraction->id,
+                    'image_path' => $image_path,
+                );
+                Attractions_Pictures::create($image);
+            }
         }
-
+        
         $request->session()->flash('status', true);
         $request->session()->flash('route', route('view', [
             'title_compiled' => $this->compileTitle($in['title'])
@@ -147,20 +150,20 @@ class AttractionsAdminController extends Controller
             return redirect()->back();
         }
 
-        $in = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'lat' => 'required',
-            'lon' => 'required',
-        ]);
-
-        $image = $request->file('image');
-
-        $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($validatedData['title']));
-
-        $nomeArquivo = "qr-codes/" . $this->compileTitle($in["title"]) . ".png";
-
         if ($a->created_by === Auth::id() || Auth::user()->super) {
+            $in = $request->validate([
+                'title' => 'required',
+                'description' => 'required',
+                'lat' => 'required',
+                'lon' => 'required',
+            ]);
+
+            $image = $request->file('image');
+
+            $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($in['title']));
+
+            $nomeArquivo = "qr-codes/" . $this->compileTitle($in["title"]) . ".png";
+
             $main_img = $a->image_path;
 
             if ($a->title_compiled != $this->compileTitle($in['title'])) {
@@ -217,6 +220,11 @@ class AttractionsAdminController extends Controller
             checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
         } catch (NoPermissionsException $e) {
             $e->__toString(); // ERROR MESSAGE CAN BE USED
+        }
+
+        $attr = Attraction::find($id);
+
+        if (!$attr) {
             return redirect()->back();
         }
         
@@ -227,9 +235,8 @@ class AttractionsAdminController extends Controller
 
     public function list()
     {
-        if (check(Auth::user(), P_VIEW_ATTRACTION)) {
+        if(!check(Auth::user(), P_VIEW_ATTRACTION))
             return redirect()->back();
-        }
 
         Session::put('place', 'admin_attr');
 

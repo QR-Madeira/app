@@ -8,16 +8,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-use const App\Auth\P_MANAGE_USER;
+use function App\Auth\check;
 
-use function App\Auth\checkOrThrow;
+use const App\Auth\P_MANAGE_USER;
+use const App\Auth\P_VIEW_USER;
+
 use function App\Auth\getPermissionsHash;
 use function App\Auth\grant;
 
 class UsersAdminController extends Controller
 {
     public function creator(Request $request)
-    {
+    {   
+        if(!check(Auth::user(), P_MANAGE_USER))
+            return redirect()->back();
+
         Session::put('place', 'admin_usr');
 
         $status = $request->session()->get('status');
@@ -31,7 +36,10 @@ class UsersAdminController extends Controller
     }
 
     public function list()
-    {
+    {   
+        if(!check(Auth::user(), P_VIEW_USER))
+            return redirect()->back();
+
         Session::put('place', 'admin_usr');
 
         $all_users = User::all();
@@ -43,14 +51,24 @@ class UsersAdminController extends Controller
 
     public function delete($id)
     {
+        if(!check(Auth::user(), P_MANAGE_USER))
+            return redirect()->back();
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->back();
+        }    
+
         User::destroy($id);
         return redirect()->route('admin.list.users');
     }
 
     public function create(Request $request)
     {
-        checkOrThrow(Auth::user(), P_MANAGE_USER);
-
+        if(!check(Auth::user(), P_MANAGE_USER))
+            return redirect()->back();
+        
         $validatedData = $request->validate([
             'name' => 'required|min:4',
             'email' => 'required|email|unique:users,email',

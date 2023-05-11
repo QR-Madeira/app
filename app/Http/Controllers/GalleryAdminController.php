@@ -5,11 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Attractions_Pictures;
 use Illuminate\Http\Request;
 use App\Models\Attraction;
+use Illuminate\Support\Facades\Auth;
+
+use function App\Auth\check;
+
+use const App\Auth\P_MANAGE_ATTRACTION;
+use const App\Auth\P_VIEW_ATTRACTION;
 
 class GalleryAdminController extends Controller
 {
     public function create(Request $request)
     {
+      if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
+
       $validated = $request->validate([
         'belonged_attraction' => 'required'
       ]);
@@ -27,6 +36,15 @@ class GalleryAdminController extends Controller
 
     public function list($id)
     {
+      if(!check(Auth::user(), P_VIEW_ATTRACTION))
+            return redirect()->back();
+
+      $attr = Attraction::find($id);
+
+      if (!$attr) {
+          return redirect()->back();
+      }
+
       $title = Attraction::where('id', '=', $id)->first()->toArray()['title'];
       $images = Attractions_Pictures::where('belonged_attraction', '=', $id)->get()->toArray();
       foreach ($images as $key => $value) {
@@ -43,10 +61,13 @@ class GalleryAdminController extends Controller
 
     public function delete($id)
     {
-      $loc = Attractions_Pictures::find($id);
+      if(!check(Auth::user(), P_MANAGE_ATTRACTION))
+            return redirect()->back();
 
-      if (!$loc || !$id) {
-        throw new \RuntimeException("Image not found");
+      $attr = Attractions_Pictures::find($id);
+
+      if (!$attr) {
+          return redirect()->back();
       }
 
       Attractions_Pictures::destroy($id);
