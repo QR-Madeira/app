@@ -2,7 +2,7 @@
 @section('body')
   <div class="px-24 py-4 space-y-4">
     <div class="flex flex-row justify-center items-center">
-      <h1 class="text-6xl py-4">Gallery</h1>
+      <h1 class="text-6xl py-4">@lang('Gallery')</h1>
     </div>
     <div class="grid grid-cols-3 gap-4">
       @foreach ($images as $image)
@@ -17,8 +17,8 @@
         <form action="{{route('admin.create.image')}}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="grid gap-4">
-            <x-input :type="'hidden'" :name="'belonged_attraction'" :value="$image['belonged_attraction']"/>
-            <x-input :type="'file'" :name="'image'"/>
+            <x-input :type="'hidden'" :name="'belonged_attraction'" :value="$belonged_attraction"/>
+            <x-input :type="'file'" :name="'gallery[]'" :multiple="TRUE"/>
             <x-submit :value="__('Create')"/>
           </div>
         </form>

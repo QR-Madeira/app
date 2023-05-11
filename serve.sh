@@ -5,6 +5,7 @@ if [ "$1" = "--init" ]; then
     rm -rf public/storage
     rm -rf storage/app/public/*
     php artisan storage:link
+    #echo "CREATE DATABASE `qr-madeira`" > mysql -u root -p 
     php artisan migrate:fresh --seed
 fi
 

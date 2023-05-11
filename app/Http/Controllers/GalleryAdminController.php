@@ -13,15 +13,14 @@ class GalleryAdminController extends Controller
         'belonged_attraction' => 'required'
       ]);
 
-      $image = $request->file('image');
-      $image_path = explode("/", $image->store('gallery', 'public'))[1];
+      $gallery = $request->file('gallery');
+      
+      foreach($gallery as $img)
+        Attractions_Pictures::create(array(
+          'belonged_attraction' => $validated['belonged_attraction'],
+          'image_path' => explode("/", $img->store('gallery', 'public'))[1],
+        ));
 
-      $image = array(
-        'belonged_attraction' => $validated['belonged_attraction'],
-        'image_path' => $image_path,
-      );
-
-      Attractions_Pictures::create($image);
       return redirect()->back();
     }
 
@@ -33,6 +32,7 @@ class GalleryAdminController extends Controller
       }
       
       $this->data->set('images', $images);
+      $this->data->set('belonged_attraction', $id);
 
       return $this->view('admin.list_gallery');
     }
