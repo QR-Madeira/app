@@ -31,7 +31,7 @@ function check(User $u, int $permissions): bool
     return ($u->permissions & $permissions) === $permissions;
 }
 
-function checkOrThrow(User $u, int $permissions): true
+function checkOrThrow(User $u, int $permissions): bool
 {
     if (!check($u, $permissions)) {
         throw new NoPermissionsException($permissions);
