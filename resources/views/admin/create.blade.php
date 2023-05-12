@@ -4,7 +4,7 @@
 <div class='py-4 px-24'>
   <div class='flex items-center justify-center w-full relative'>
     <h1 class='text-center text-5xl py-8'>@lang('Create Attraction')</h1>
-    <div class='hidden sm:visible sm:absolute right-0'>
+    <div class='hidden xl:block absolute right-0'>
       <x-a :url="route('admin.list.attraction')" :name="'Attractions List'"/>
     </div>
   </div>

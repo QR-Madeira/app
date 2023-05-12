@@ -1,14 +1,14 @@
 @extends('layouts.admin-layout')
 @section('body')
-<div class="lg:px-24 px-4 py-4 grid grid-rows-auto grid-cols-1 justify-items-center">
-  <div class='flex lg:flex-row flex-col items-center justify-center w-full relative'>
+<div class="xl:px-24 px-4 py-4 grid grid-rows-auto grid-cols-1 justify-items-center">
+  <div class='flex xl:flex-row flex-col items-center justify-center w-full relative'>
     <h1 class='text-5xl text-center py-8'>@lang('Update Attraction')</h1>
-    <div class='lg:absolute lg:right-0'>
+    <div class='xl:absolute xl:right-0'>
       <x-a :url="route('admin.list.attraction')" :name="__('Attractions list')"/>
     </div>
   </div>
 </div>
-<div class="flex justify-start items-center flex-col space-y-8 w-full px-6 lg:px-24 py-4">
+<div class="flex justify-start items-center flex-col space-y-8 w-full px-6 xl:px-24 py-4">
   <form method="POST" enctype="multipart/form-data" action="{{route("admin.update.attraction", $id)}}" class="w-full space-y-4 grid  grid-cols-1 gap-4">
     @csrf
     @method("PUT")
@@ -97,7 +97,7 @@
       <x-submit :value="'Update'"/>
     </div>
   </form>
-  <div class="w-full lg:w-auto grid grid-row-2 gap-4 lg:grid-cols-2">
+  <div class="w-full xl:w-auto grid grid-row-2 gap-4 xl:grid-cols-2">
     <x-a :url="route('admin.edit.attraction.gallery', ['id' => $id])" :name="__('Update Gallery')"/>
     <x-a :url="route('admin.creator.location', ['id' => $id])" :name="__('Update Close Locations')"/>
   </div>

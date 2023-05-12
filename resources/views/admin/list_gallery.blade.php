@@ -1,16 +1,16 @@
 @extends('layouts.admin-layout')
 @section('body')
-  <div class="lg:px-24 lg:py-4 px-4 space-y-4">
-    <div class="lg:flex lg:flex-row lg:justify-center lg:items-center lg:relative grid grid-cols-2 grid-rows-2">
+  <div class="xl:px-24 xl:py-4 px-4 space-y-4">
+    <div class="xl:flex xl:flex-row xl:justify-center xl:items-center xl:relative grid grid-cols-2 grid-rows-2">
       <h1 class="text-6xl py-4 col-span-2 text-center">@lang('Gallery')</h1>
-      <div class='lg:absolute lg:left-0 flex items-center justify-center'>
+      <div class='xl:absolute xl:left-0 flex items-center justify-center'>
         <x-a :url="route('admin.edit.attraction', ['id' => $id])" :name="$title"/>
       </div>
-      <div class='lg:absolute lg:right-0 flex items-center justify-center'>
+      <div class='xl:absolute xl:right-0 flex items-center justify-center'>
         <x-a :url="route('admin.list.attraction')" :name="__('Attractions list')"/>
       </div>
     </div>
-    <div class="grid lg:grid-cols-3 grid-cols-1 gap-4">
+    <div class="grid xl:grid-cols-3 grid-cols-1 gap-4">
       @foreach ($images as $image)
         <div class="relative">
           <img src="{{$image['image_path']}}" alt="Gallery image" class="h-full rounded">

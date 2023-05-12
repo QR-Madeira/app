@@ -4,7 +4,7 @@
     <div class="w-full flex items-center justify-center p-8">
       <h1 class="text-5xl">{{$title}}</h1>
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 px-8">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 px-8">
       <div class="flex items-center justify-center">
         <img src="{{$image}}" alt="Attraction Image" class="rounded">
       </div>
