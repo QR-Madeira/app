@@ -6,23 +6,28 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
 use App\Classes\Data;
 
 class Controller extends BaseController
 {
-    protected $data;
+  protected $data;
 
-    use AuthorizesRequests;
-    use ValidatesRequests;
+  use AuthorizesRequests;
+  use ValidatesRequests;
 
-    protected function view($view)
-    {
-        return view($view, $this->data->get());
-    }
+  protected function view($view)
+  {
+    $this->data->set('isLogged', Auth::check());
+    
+    $this->data->set('userName', Auth::check() ? Auth::user()->name : null);
 
-    public function __construct()
-    {
-        $this->data = Data::getInstance();
-    }
+    return view($view, $this->data->get());
+  }
+
+  public function __construct()
+  {
+    $this->data = Data::getInstance();
+  }
 }

@@ -17,7 +17,7 @@
       <div class="w-full">
         @foreach ($attractions as $attr)
           <div class="@if(!$loop->last) border-b-0 @else rounded-b @endif border-2 border-black">
-            <x-attraction :attraction="$attr"/>
+            <x-attraction :attraction="$attr" :userName="$userName"/>
           </div>
         @endforeach
       </div>
