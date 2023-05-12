@@ -3,7 +3,7 @@
   <div class='py-4 px-24'>
     <div class='flex items-center justify-center w-full relative'>
       <h1 class='text-center text-5xl py-8'>@lang('Create User')</h1>
-      <div class='absolute right-0'>
+    <div class='hidden sm:visible sm:absolute right-0'>
         <x-a :url="route('admin.list.users')" :name="'Users list'"/>
       </div>
     </div>
