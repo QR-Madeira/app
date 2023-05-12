@@ -98,8 +98,8 @@
     </div>
   </form>
   <div class="w-full lg:w-auto grid grid-row-2 gap-4 lg:grid-cols-2">
-    <x-a :url="route('admin.edit.attraction.gallery', ['id' => $id])" :name="'Update Gallery'"/>
-    <x-a :url="route('admin.creator.location', ['id' => $id])" :name="'Update Close Locations'"/>
+    <x-a :url="route('admin.edit.attraction.gallery', ['id' => $id])" :name="__('Update Gallery')"/>
+    <x-a :url="route('admin.creator.location', ['id' => $id])" :name="__('Update Close Locations')"/>
   </div>
 </div>
 

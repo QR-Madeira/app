@@ -18,10 +18,14 @@
 
 <legend>User permission: </legend>
 
-<?php $first = true; ?>
-<?php foreach($permissions as $k => $v): ?>
-  <p><label class="select-none"><?=ucfirst($k)?> <input type="checkbox" class="peer/standart" name="permissions[<?=$k?>]" value="<?=$v?>" <?php if ($first): ?>checked<?php $first = false; ?><?php endif; ?> /></label></p>
-<?php endforeach; ?>
+@foreach($permissions as $k => $v)
+  <p>
+    <label class="select-none">
+      @lang(ucfirst($k))
+      <input type="checkbox" class="peer/standart" name="permissions[{{$k}}]" value="{{$v}}" @if($loop->first) checked @endif/>
+    </label>
+  </p>
+@endforeach
 
 </fieldset>
       <x-submit :value="'Create'" />
