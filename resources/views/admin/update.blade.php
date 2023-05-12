@@ -1,15 +1,15 @@
 @extends('layouts.admin-layout')
 @section('body')
-<div class="pt-2 px-24">
-  <div class='flex items-center justify-center w-full relative'>
-    <h1 class='text-center text-5xl py-8'>@lang('Update Attraction')</h1>
-    <div class='absolute right-0'>
+<div class="lg:px-24 px-4 py-4 grid grid-rows-auto grid-cols-1 justify-items-center">
+  <div class='flex lg:flex-row flex-col items-center justify-center w-full relative'>
+    <h1 class='text-5xl text-center py-8'>@lang('Update Attraction')</h1>
+    <div class='lg:absolute lg:right-0'>
       <x-a :url="route('admin.list.attraction')" :name="__('Attractions list')"/>
     </div>
   </div>
 </div>
-<div class="flex justify-start items-center flex-col space-y-8 w-full px-24 py-4">
-  <form method="POST" enctype="multipart/form-data" action="{{route("admin.update.attraction", $id)}}" class="w-full space-y-4 grid grid-cols-2 gap-4">
+<div class="flex justify-start items-center flex-col space-y-8 w-full px-6 lg:px-24 py-4">
+  <form method="POST" enctype="multipart/form-data" action="{{route("admin.update.attraction", $id)}}" class="w-full space-y-4 grid  grid-cols-1 gap-4">
     @csrf
     @method("PUT")
     <input type="hidden" value="{{$id}}"/>
@@ -29,6 +29,13 @@
         <label for="image" class="text-4xl">@lang('Image'):</label>
         <x-input :type="'file'" :name="'image'" :id="'image'"/>
       </div>
+
+      <div class="col-end-2">
+        <img src="{{$img}}" alt="@lang('Attraction Image')" class="rounded">
+      </div>
+
+      <div>
+    </div>
 
       <fieldset>
       <legend class="text-xl">@lang('Coordinates')</legend>
@@ -87,17 +94,10 @@
         });
       </script>
     </fieldset>
-
       <x-submit :value="'Update'"/>
     </div>
-
-    <div>
-      <div class="">
-        <img src="{{$img}}" alt="@lang('Attraction Image')" class="rounded">
-      </div>
-    </div>
   </form>
-  <div class="w-full">
+  <div class="w-full lg:w-auto grid grid-row-2 gap-4 lg:grid-cols-2">
     <x-a :url="route('admin.edit.attraction.gallery', ['id' => $id])" :name="'Update Gallery'"/>
     <x-a :url="route('admin.creator.location', ['id' => $id])" :name="'Update Close Locations'"/>
   </div>

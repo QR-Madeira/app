@@ -11,7 +11,7 @@
     <p class='flex flex-row items-center text-xl max-h-28'>{{$attraction->description}}</p>
   </div>
 
-  <div class='flex lg:flex-row flex-col lg:items-center items-end w-full justify-end space-x-2 lg:col-span-2'>
+  <div class='flex flex-col lg:flex-row lg:items-center items-end w-full justify-end space-x-2 lg:col-span-2'>
     <x-a :url="route('view', ['title_compiled' => $attraction->title_compiled])" :name="__('View')"/>
     @if ($userName === $attraction->creator_name)
       <x-a :url="route('admin.edit.attraction', ['id' => $attraction->id])" :name="__('Edit')"/>

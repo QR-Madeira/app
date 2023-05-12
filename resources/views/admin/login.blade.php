@@ -1,6 +1,6 @@
 @extends('layouts.basic')
 @section('body')
-  <div class='py-4 px-96'>
+  <div class='py-4 sm:px-96 px-4'>
     <div class='flex items-center justify-center w-full'>
       <h1 class='text-center text-5xl py-8'>Login</h1>
     </div>
