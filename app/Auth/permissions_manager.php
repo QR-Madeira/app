@@ -49,14 +49,14 @@ function revoke(User &$u, int ...$permissions): bool
 function getPermissionsHash(bool $extendo = false): array
 {
     return $extendo ? [
-        "no" => P_ZERO,
+        "none" => P_ZERO,
         "view_attractions" => P_VIEW_ATTRACTION,
         "manage_attractions" => P_MANAGE_ATTRACTION,
         "view_users" => P_VIEW_USER,
         "manage_users" => P_MANAGE_USER,
         "all" => P_ALL,
     ] : [
-        "no" => P_ZERO,
+        "none" => P_ZERO,
         "attractions" => P_MANAGE_ATTRACTION,
         "users" => P_MANAGE_USER,
         "all" => P_ALL,
