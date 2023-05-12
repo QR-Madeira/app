@@ -128,7 +128,7 @@ class AttractionLocationsController extends Controller
     }
 
     public function delete($id, $id_2)
-    {   
+    {
         if(!check(Auth::user(), P_MANAGE_ATTRACTION))
             return redirect()->back();
             

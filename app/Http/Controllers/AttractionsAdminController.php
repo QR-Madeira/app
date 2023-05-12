@@ -154,9 +154,10 @@ class AttractionsAdminController extends Controller
             $in = $request->validate([
                 'title' => 'required',
                 'description' => 'required',
-                'lat' => 'required',
-                'lon' => 'required',
             ]);
+
+            $lat = !$request->post("lat")?$a['lat']:$request->post("lat");
+            $lon = !$request->post("lon")?$a['lon']:$request->post("lon");
 
             $image = $request->file('image');
 
@@ -178,8 +179,8 @@ class AttractionsAdminController extends Controller
                 'description' => $in['description'],
                 'site_url' => $site_url,
                 'qr-code_path' => $this->compileTitle($in['title']) . '.png',
-                "lat" => $request->post("lat"),
-                "lon" => $request->post("lon"),
+                "lat" => $lat,
+                "lon" => $lon,
             ];
 
             if ($image !== null) {
