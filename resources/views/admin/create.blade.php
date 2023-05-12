@@ -4,12 +4,12 @@
 <div class='py-4 px-24'>
   <div class='flex items-center justify-center w-full relative'>
     <h1 class='text-center text-5xl py-8'>@lang('Create Attraction')</h1>
-    <div class='absolute right-0'>
+    <div class='hidden sm:visible sm:absolute right-0'>
       <x-a :url="route('admin.list.attraction')" :name="'Attractions List'"/>
     </div>
   </div>
   <x-show-required :errors="$errors"/>
-  <form class="grid grid-cols-2 gap-4" action="{{route('admin.create.attraction')}}" method="POST" enctype="multipart/form-data">
+  <form class="sm:grid sm:grid-cols-2 gap-4" action="{{route('admin.create.attraction')}}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="grid gap-4">
       <div class="grid">

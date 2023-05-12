@@ -9,12 +9,14 @@ use Illuminate\View\Component;
 class attraction extends Component
 {
     public $attraction;
+    public $userName;
     /**
      * Create a new component instance.
      */
-    public function __construct($attraction)
+    public function __construct($attraction, $userName)
     {
         $this->attraction = $attraction;
+        $this->userName = $userName;
     }
 
     /**

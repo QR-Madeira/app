@@ -1,9 +1,9 @@
 @extends('layouts.admin-layout')
 @section('body')
-  <div class='lg:px-24 px-2 py-4 grid grid-rows-auto grid-cols-1 justify-items-center'>
-    <div class='flex lg:flex-row flex-col items-center justify-center w-full relative pb-12'>
+  <div class='px-4 lg:px-24 py-4 grid grid-rows-auto grid-cols-1 justify-items-center'>
+    <div class='flex lg:flex-row flex-col flex-gap-1 items-center justify-center w-full relative pb-12'>
       <h1 class='text-5xl text-center py-8'>@lang('Attractions List')</h1>
-      <div class='lg:absolute lg:right-0'>
+      <div class='py-8 lg:absolute sm:right-0'>
         <x-a :url="route('admin.create.attraction')" :name="'Create Attraction'"/>
       </div>
     </div>
@@ -17,7 +17,7 @@
       <div class="w-full">
         @foreach ($attractions as $attr)
           <div class="@if(!$loop->last) border-b-0 @else rounded-b @endif border-2 border-black">
-            <x-attraction :attraction="$attr"/>
+            <x-attraction :attraction="$attr" :userName="$userName"/>
           </div>
         @endforeach
       </div>
