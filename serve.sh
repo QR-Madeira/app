@@ -1,6 +1,7 @@
 #!/bin/sh
 
 if [ "$1" = "--init" ]; then
+    git pull
     composer i && npm i
     rm -rf public/storage
     rm -rf storage/app/public/*
