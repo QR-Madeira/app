@@ -42,14 +42,14 @@ class AttractionsViewerController extends Controller
 
     public function map($title_compiled)
     {
-      $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first()->toArray();
-      $locations = Attractions_Close_Locations::where("belonged_attraction", $attraction['id'])->get();
+        $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first()->toArray();
+        $locations = Attractions_Close_Locations::where("belonged_attraction", $attraction['id'])->get();
 
-      $this->data->set('title_compiled', $title_compiled);
-      $this->data->set("lat", $attraction["lat"]);
-      $this->data->set("lon", $attraction["lon"]);
-      $this->data->set("locations", $locations);
+        $this->data->set('title_compiled', $title_compiled);
+        $this->data->set("lat", $attraction["lat"]);
+        $this->data->set("lon", $attraction["lon"]);
+        $this->data->set("locations", $locations);
 
-      return $this->view('viewer.map');
+        return $this->view('viewer.map');
     }
 }

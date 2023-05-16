@@ -16,7 +16,7 @@ const P_ALL = P_MANAGE_ATTRACTION | P_MANAGE_USER;
 
 function check(User $u, int $permissions): bool
 {
-    return $u->super?:(($u->permissions & $permissions) === $permissions);
+    return $u->super ?: (($u->permissions & $permissions) === $permissions);
 }
 
 function checkOrThrow(User $u, int $permissions): bool
@@ -46,26 +46,19 @@ function revoke(User &$u, int ...$permissions): bool
     return $u->save();
 }
 
-function getPermissionsHash(bool $extendo = false): array
+function getPermissionsHash(): array
 {
-    return $extendo ? [
-        "none" => P_ZERO,
+    return [
         "view_attractions" => P_VIEW_ATTRACTION,
         "manage_attractions" => P_MANAGE_ATTRACTION,
         "view_users" => P_VIEW_USER,
         "manage_users" => P_MANAGE_USER,
-        "all" => P_ALL,
-    ] : [
-        "none" => P_ZERO,
-        "attractions" => P_MANAGE_ATTRACTION,
-        "users" => P_MANAGE_USER,
-        "all" => P_ALL,
     ];
 }
 
 function getPermissionKey(int $permission): ?string
 {
-    foreach (getPermissionsHash(true) as $k => $v) {
+    foreach (getPermissionsHash() as $k => $v) {
         if ($v === $permission) {
             return $k;
         }

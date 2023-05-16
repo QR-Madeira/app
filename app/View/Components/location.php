@@ -8,7 +8,6 @@ use Illuminate\View\Component;
 
 class location extends Component
 {
-    
     public $location;
 
     public function __construct($location)

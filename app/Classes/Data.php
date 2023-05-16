@@ -6,6 +6,10 @@ class Data
 {
   // Singleton
     private static $instance;
+
+    private array $data;
+    private array $fillable;
+
     public static function getInstance(): static
     {
         if (!isset(self::$instance)) {
@@ -14,15 +18,13 @@ class Data
 
         return self::$instance;
     }
+
     private function __construct()
     {
         $this->format();
     }
 
-    private array $data;
-    private array $fillable;
-
-    public function title($title): void
+    public function title(string $title): void
     {
         $this->fillable['title'] = $title;
     }
@@ -43,7 +45,7 @@ class Data
         return $data;
     }
 
-    public function set($key, $value): void
+    public function set(string $key, mixed $value): void
     {
         $this->data[$key] = $value;
     }

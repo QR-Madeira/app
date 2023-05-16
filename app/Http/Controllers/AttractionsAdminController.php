@@ -95,13 +95,13 @@ class AttractionsAdminController extends Controller
 
         $image = $request->file('image');
         $gallery = $request->file('gallery');
-     
+
         $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($in['title']));
 
         $nomeArquivo = 'qr-codes/' . $this->compileTitle($in['title']) . '.png';
 
         $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
-        
+
         $attraction = Attraction::create([
             'title_compiled' => $this->compileTitle($in['title']),
             'title' => $in['title'],
@@ -116,7 +116,7 @@ class AttractionsAdminController extends Controller
         Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
         $image->store('attractions', 'public');
 
-        if(is_iterable($gallery)){
+        if (is_iterable($gallery)) {
             foreach ($gallery as $picture) {
                 $image_path = explode("/", $picture->store('gallery', 'public'))[1];
                 $image = array(
@@ -126,7 +126,7 @@ class AttractionsAdminController extends Controller
                 Attractions_Pictures::create($image);
             }
         }
-        
+
         $request->session()->flash('status', true);
         $request->session()->flash('route', route('view', [
             'title_compiled' => $this->compileTitle($in['title'])
@@ -156,8 +156,8 @@ class AttractionsAdminController extends Controller
                 'description' => 'required',
             ]);
 
-            $lat = !$request->post("lat")?$a['lat']:$request->post("lat");
-            $lon = !$request->post("lon")?$a['lon']:$request->post("lon");
+            $lat = !$request->post("lat") ? $a['lat'] : $request->post("lat");
+            $lon = !$request->post("lon") ? $a['lon'] : $request->post("lon");
 
             $image = $request->file('image');
 
@@ -228,7 +228,7 @@ class AttractionsAdminController extends Controller
         if (!$attr) {
             return redirect()->back();
         }
-        
+
         Attractions_Pictures::where('belonged_attraction', $id)->delete();
         Attraction::destroy($id);
         return redirect()->route('admin.list.attraction');
@@ -236,8 +236,9 @@ class AttractionsAdminController extends Controller
 
     public function list()
     {
-        if(!check(Auth::user(), P_VIEW_ATTRACTION))
+        if (!check(Auth::user(), P_VIEW_ATTRACTION)) {
             return redirect()->back();
+        }
 
         Session::put('place', 'admin_attr');
 

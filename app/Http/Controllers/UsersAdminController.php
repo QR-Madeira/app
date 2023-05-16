@@ -19,9 +19,10 @@ use function App\Auth\grant;
 class UsersAdminController extends Controller
 {
     public function creator(Request $request)
-    {   
-        if(!check(Auth::user(), P_MANAGE_USER))
+    {
+        if (!check(Auth::user(), P_MANAGE_USER)) {
             return redirect()->back();
+        }
 
         Session::put('place', 'admin_usr');
 
@@ -36,9 +37,10 @@ class UsersAdminController extends Controller
     }
 
     public function list()
-    {   
-        if(!check(Auth::user(), P_VIEW_USER))
+    {
+        if (!check(Auth::user(), P_VIEW_USER)) {
             return redirect()->back();
+        }
 
         Session::put('place', 'admin_usr');
 
@@ -51,14 +53,15 @@ class UsersAdminController extends Controller
 
     public function delete($id)
     {
-        if(!check(Auth::user(), P_MANAGE_USER))
+        if (!check(Auth::user(), P_MANAGE_USER)) {
             return redirect()->back();
+        }
 
         $user = User::find($id);
 
         if (!$user) {
             return redirect()->back();
-        }    
+        }
 
         User::destroy($id);
         return redirect()->route('admin.list.users');
@@ -66,9 +69,10 @@ class UsersAdminController extends Controller
 
     public function create(Request $request)
     {
-        if(!check(Auth::user(), P_MANAGE_USER))
+        if (!check(Auth::user(), P_MANAGE_USER)) {
             return redirect()->back();
-        
+        }
+
         $validatedData = $request->validate([
             'name' => 'required|min:4',
             'email' => 'required|email|unique:users,email',

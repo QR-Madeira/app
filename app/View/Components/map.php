@@ -8,15 +8,15 @@ use Illuminate\View\Component;
 
 class map extends Component
 {
-  public $lat;
-  public $lon;
+    public $lat;
+    public $lon;
     /**
      * Create a new component instance.
      */
     public function __construct($lat, $lon)
     {
-      $this->lat = $lat;
-      $this->lon = $lon;
+        $this->lat = $lat;
+        $this->lon = $lon;
     }
 
     /**

@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttractionsAdminController;
 use App\Http\Controllers\AttractionLocationsController;
 use App\Http\Controllers\GalleryAdminController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttractionsViewerController;
 use App\Http\Controllers\UsersAdminController;
 use App\Http\Controllers\SessionController;
