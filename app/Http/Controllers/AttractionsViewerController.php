@@ -9,62 +9,67 @@ use App\Models\Attractions_Close_Locations;
 
 class AttractionsViewerController extends Controller
 {
-  public function index($title_compiled)
-  {
-    $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first();
-    if($attraction == null)
-      return $this->error('Attraction not found');
-    $attraction = $attraction->toArray();
-    
-    $description = nl2br($attraction['description']);
+    public function index($title_compiled)
+    {
+        $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first();
+        if ($attraction == null) {
+            return $this->error('Attraction not found');
+        }
+        $attraction = $attraction->toArray();
 
-    $this->data->set('image', 'storage/attractions/' . $attraction['image_path']);
-    $this->data->set('title_compiled', $title_compiled);
-    $this->data->set('title', $attraction['title']);
-    $this->data->set('description', $description);
-    $this->data->set('qr', asset('storage/qr-codes/' .  $attraction["qr-code_path"]));
-    $this->data->set("lat", $attraction["lat"]);
-    $this->data->set("lon", $attraction["lon"]);
+        $description = nl2br($attraction['description']);
 
-    return $this->view('viewer.get');
-  }
+        $this->data->set('image', 'storage/attractions/' . $attraction['image_path']);
+        $this->data->set('title_compiled', $title_compiled);
+        $this->data->set('title', $attraction['title']);
+        $this->data->set('description', $description);
+        $this->data->set('qr', asset('storage/qr-codes/' .  $attraction["qr-code_path"]));
+        $this->data->set("lat", $attraction["lat"]);
+        $this->data->set("lon", $attraction["lon"]);
 
-  public function gallery($title_compiled)
-  {
-    $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first();
-    if($attraction == null)
-      return $this->error('Attraction not found');
-    $attraction = $attraction->toArray();
+        return $this->view('viewer.get');
+    }
 
-    $images = Attractions_Pictures::where('belonged_attraction', '=', $attraction['id'])->get();
-    if($images == null)
-      return $this->error('Gallery not found');
-    $images = $images->toArray();
+    public function gallery($title_compiled)
+    {
+        $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first();
+        if ($attraction == null) {
+            return $this->error('Attraction not found');
+        }
+        $attraction = $attraction->toArray();
 
-    for ($i = 0; $i < count($images); $i++)
-      $images[$i]['image_path'] = '/storage/gallery/' . $images[$i]['image_path'];
+        $images = Attractions_Pictures::where('belonged_attraction', '=', $attraction['id'])->get();
+        if ($images == null) {
+            return $this->error('Gallery not found');
+        }
+        $images = $images->toArray();
 
-    $this->data->set('images', $images);
-    $this->data->set('title_compiled', $title_compiled);
-    $this->data->set('title', $attraction['title']);
+        for ($i = 0; $i < count($images); $i++) {
+            $images[$i]['image_path'] = '/storage/gallery/' . $images[$i]['image_path'];
+        }
 
-    return $this->view('viewer.gallery');
-  }
+        $this->data->set('images', $images);
+        $this->data->set('title_compiled', $title_compiled);
+        $this->data->set('title', $attraction['title']);
 
-  public function map($title_compiled)
-  {
-    $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first();
-    if($attraction == null)
-      return $this->error('Attraction not found');
-    $attraction = $attraction->toArray();
+        return $this->view('viewer.gallery');
+    }
 
-    $locations = Attractions_Close_Locations::where("belonged_attraction", $attraction['id'])->get();
+    public function map($title_compiled)
+    {
+        $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first();
+        if ($attraction == null) {
+            return $this->error('Attraction not found');
+        }
+        $attraction = $attraction->toArray();
 
-    $this->data->set('title_compiled', $title_compiled);
-    $this->data->set("lat", $attraction["lat"]);
-    $this->data->set("lon", $attraction["lon"]);
-    $this->data->set("locations", $locations);
+        $locations = Attractions_Close_Locations::where("belonged_attraction", $attraction['id'])->get();
 
-    return $this->view('viewer.map');
-  }
+        $this->data->set('title_compiled', $title_compiled);
+        $this->data->set("lat", $attraction["lat"]);
+        $this->data->set("lon", $attraction["lon"]);
+        $this->data->set("locations", $locations);
+
+        return $this->view('viewer.map');
+    }
 }

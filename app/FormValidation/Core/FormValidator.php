@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\FormValidation\Core;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 abstract class FormValidator implements FormInterface
 {
@@ -28,7 +29,8 @@ abstract class FormValidator implements FormInterface
         }
     }
 
-    final public static function verify(Request $req): array {
+    final public static function verify(Request $req): array
+    {
         return (new static($req, true))->validate();
     }
 
@@ -48,7 +50,13 @@ abstract class FormValidator implements FormInterface
 
     final public function validate(): array
     {
-        return $this->validator->validate($this->rules);
+        $validator = Validator::make($this->validator->all(), $this->rules);
+
+        if ($validator->fails()) {
+            throw new \RuntimeException($validator->errors()->__toString());
+        }
+
+        return $validator->validated();
     }
 
     final public function setValidator(Request $validator): static
@@ -72,4 +80,3 @@ abstract class FormValidator implements FormInterface
         return ucwords(strtr($field, "-", " "));
     }
 }
-

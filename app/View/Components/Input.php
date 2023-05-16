@@ -20,13 +20,13 @@ class Input extends Component
      */
     public function __construct($type, $name, $value = null, $placeholder = null, $multiple = false, $step = null, $min = null)
     {
-      $this->min = $min;
-      $this->type = $type;
-      $this->step = $step;
-      $this->name = $name;
-      $this->value = $value;
-      $this->multiple = $multiple;
-      $this->placeholder = $placeholder;
+        $this->min = $min;
+        $this->type = $type;
+        $this->step = $step;
+        $this->name = $name;
+        $this->value = $value;
+        $this->multiple = $multiple;
+        $this->placeholder = $placeholder;
     }
 
     /**
