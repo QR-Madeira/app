@@ -32,8 +32,8 @@ class AttractionsAdminController extends Controller
 
         Session::put('place', 'admin_attr');
 
-        $this->data->set('created', $request->session()->get('status'));
-        $this->data->set('route', $request->session()->get('route'));
+        //$this->data->set('status', $request->session()->get('status'));
+        //$this->data->set('route', $request->session()->get('route'));
 
         return $this->view('admin.create');
     }
@@ -87,7 +87,6 @@ class AttractionsAdminController extends Controller
           'lat' => 'required',
           'lon' => 'required',
           'size' => 'required',
-          //'image' => 'required',
         ]);
 
         $image = $request->file('image');
@@ -114,9 +113,13 @@ class AttractionsAdminController extends Controller
             "lon" => $in["lon"],
         ]);
 
-        Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
+        if(!$attraction){
+            Session::flash('status', false);
+            Session::flash('message', "Something went wrong, try again.");
+            return redirect()->route('admin.creator.attracion');
+        }
 
-        $image_path = $image->store('attractions', 'public');
+        Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
 
         $image_thumbnail_path = "thumbnail/".$attraction->title_compiled. ".png";
         $image_thumbnail = Image::make($image->getRealPath())->resize(150, 150, function ($constraint) {
@@ -136,8 +139,8 @@ class AttractionsAdminController extends Controller
             }
         }
 
-        $request->session()->flash('status', true);
-        $request->session()->flash('route', route('view', [
+        Session::flash('status', true);
+        Session::flash('route', route('view', [
             'title_compiled' => $this->compileTitle($in['title'])
         ]));
         return redirect()->route('admin.creator.location', array('id' => $attraction->id));
@@ -161,57 +164,57 @@ class AttractionsAdminController extends Controller
 
         if (!$a) {
             // Attraction does not exist
-            return redirect()->back();
+            return $this->error('Attraction does not exists');
         }
 
-        if ($a->created_by === Auth::id() || Auth::user()->super) {
-            $in = $request->validate([
-                'title' => 'required',
-                'description' => 'required',
-            ]);
-
-            $lat = !$request->post("lat") ? $a['lat'] : $request->post("lat");
-            $lon = !$request->post("lon") ? $a['lon'] : $request->post("lon");
-
-            $image = $request->file('image');
-
-            $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($in['title']));
-
-            $nomeArquivo = "qr-codes/" . $this->compileTitle($in["title"]) . ".png";
-
-            $main_img = $a->image_path;
-
-            if ($a->title_compiled != $this->compileTitle($in['title'])) {
-                $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
-                Storage::disk('public')->delete("qr-codes/$a->title_compiled.png");
-                Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
-            }
-
-            $raw = [
-                'title_compiled' => $this->compileTitle($in['title']),
-                'title' => $in['title'],
-                'description' => $in['description'],
-                'site_url' => $site_url,
-                'qr-code_path' => $this->compileTitle($in['title']) . '.png',
-                "lat" => $lat,
-                "lon" => $lon,
-            ];
-
-            if ($image !== null) {
-                $raw["image_path"] = explode("/", $image->store("attractions", "public"))[1];
-            }
-
-            $a->update($raw);
-
-            if ($image != null) {
-                Storage::disk("public")->delete("attractions/$main_img");
-            }
-
-            return redirect(status: 204)->route("admin.edit.attraction", $id);
-        } else {
-            // Not the owner neither a super user
-            return redirect()->back();
+        if (!$a->created_by === Auth::id() && !Auth::user()->super) {
+            return $this->error('Not the owner neither a super user');
         }
+
+        $in = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        $lat = !$request->post("lat") ? $a['lat'] : $request->post("lat");
+        $lon = !$request->post("lon") ? $a['lon'] : $request->post("lon");
+
+        $image = $request->file('image');
+
+        $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($in['title']));
+
+        $nomeArquivo = "qr-codes/" . $this->compileTitle($in["title"]) . ".png";
+
+        $main_img = $a->image_path;
+
+        if ($a->title_compiled != $this->compileTitle($in['title'])) {
+            $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
+            Storage::disk('public')->delete("qr-codes/$a->title_compiled.png");
+            Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
+        }
+
+        $raw = [
+            'title_compiled' => $this->compileTitle($in['title']),
+            'title' => $in['title'],
+            'description' => $in['description'],
+            'site_url' => $site_url,
+            'qr-code_path' => $this->compileTitle($in['title']) . '.png',
+            "lat" => $lat,
+            "lon" => $lon,
+        ];
+
+        if ($image !== null) {
+            $raw["image_path"] = explode("/", $image->store("attractions", "public"))[1];
+        }
+
+        $a->update($raw);
+
+        if ($image != null) {
+            Storage::disk("public")->delete("attractions/$main_img");
+        }
+
+        return redirect(status: 204)->route("admin.edit.attraction", $id);
+        
     }
 
     private function compileTitle(string $title)

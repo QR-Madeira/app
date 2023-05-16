@@ -9,7 +9,6 @@
       <div class='absolute right-0'>
         <x-a :url="route('admin.list.attraction')" :name="__('Attractions list')"/>
       </div>
-
     </div>
     <h2 class='text-center text-3xl py-6'>@lang('Attraction'): <b>{{$attraction->title}}</b></h2>
     @if(count($attraction_locations) != 0)
@@ -69,5 +68,6 @@
     @if(Session::has('status') && Session::has('message'))
       <x-success_error_msg :status="Session::get('status')" :msg="Session::get('message')"/>
     @endif
+    
   </div>
 @endsection

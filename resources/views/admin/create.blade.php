@@ -106,8 +106,8 @@
       <x-submit :value="__('Create')"/>
     </div>
   </form>
-  @if($created)
-    <x-attraction-created :route="$route"/>
+  @if(Session::has('status') && Session::has('message'))
+    <x-success_error_msg :status="Session::get('status')" :msg="Session::get('message')"/>
   @endif
 </div>
 @endsection
