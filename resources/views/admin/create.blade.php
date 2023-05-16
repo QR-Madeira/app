@@ -14,11 +14,11 @@
     <div class="grid gap-4">
       <div class="grid">
         <h1 class="text-xl">@lang('Title')</h1>
-        <x-input :type="'text'" :name="'title'" :placeholder="'Title'"/>
+        <x-input :type="'text'" :name="'title'" :value="old('title')" :placeholder="'Title'"/>
       </div>
       <div class="grid">
         <h1 class="text-xl">@lang('Description')</h1>
-        <textarea type="text" name="description" placeholder="@lang('Description')" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black"></textarea>
+        <textarea type="text" name="description" :value="old('description')" placeholder="@lang('Description')" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black"></textarea>
       </div>
       <div class="grid">
         <h1 class="text-xl">@lang('Attraction Image')</h1>

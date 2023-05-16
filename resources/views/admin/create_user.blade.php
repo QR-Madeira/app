@@ -10,8 +10,8 @@
     <x-show-required :errors="$errors"/>
     <form class="grid grid-cols-1 gap-4" action="{{route('admin.create.user')}}" method="POST" enctype="multipart/form-data">
       @csrf
-      <x-input :type="'text'" :name="'name'" :placeholder="'Name'"/>
-      <x-input :type="'email'" :name="'email'" :placeholder="'Email'"/>
+      <x-input :type="'text'" :name="'name'" :value="old('name')" :placeholder="'Name'"/>
+      <x-input :type="'email'" :name="'email'" :value="old('email')" :placeholder="'Email'"/>
       <x-input :type="'password'" :name="'password'" :placeholder="'Password'"/>
       <x-input :type="'password'" :name="'password_confirmation'" :placeholder="'Password Confirmation'"/>
 <fieldset>

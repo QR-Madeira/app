@@ -61,9 +61,9 @@
             <option value="hotel">hotel</option>
         </select>
         <label for="close_icon">If you can't find an icon that fits with your location simply leave the first one.</label>
-        <x-input :type="'text'" :name="'name'" :value="isset($name)?$name:''" :placeholder="'Place name' "/>
-        <x-input :type="'text'" :name="'location'" :value="isset($location)?$location:''" :placeholder="'Place location'"/>
-        <x-input :type="'text'" :name="'phone'" :value="isset($phone)?$phone:''" :placeholder="'Place phone (Optional)'"/>
+        <x-input :type="'text'" :name="'name'" :value="isset($name)?$name:old('name')" :placeholder="'Place name' "/>
+        <x-input :type="'text'" :name="'location'" :value="isset($location)?$location:old('location')" :placeholder="'Place location'"/>
+        <x-input :type="'text'" :name="'phone'" :value="isset($phone)?$phone:old('phone')" :placeholder="'Place phone (Optional)'"/>
         <x-submit :value="isset($isPUT)?$isPUT?'Save':'Add location':'Add location'" />
     </form>
     @if(Session::has('status') && Session::has('message'))
