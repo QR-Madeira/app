@@ -17,6 +17,8 @@ use function App\Auth\checkOrThrow;
 use const App\Auth\P_MANAGE_ATTRACTION;
 use const App\Auth\P_VIEW_ATTRACTION;
 
+use Intervention\Image\Facades\Image;
+
 class AttractionsAdminController extends Controller
 {
     private $qrCodeMakerApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=';
@@ -24,7 +26,6 @@ class AttractionsAdminController extends Controller
     public function creator(Request $request)
     {
         $u = Auth::user();
-
         try {
           checkOrThrow($u, P_MANAGE_ATTRACTION);
         } catch (NoPermissionsException $e) {
@@ -61,7 +62,7 @@ class AttractionsAdminController extends Controller
                     "id" => $id,
                     "title" => $a->title,
                     "description" => $a->description,
-                    "img" => '/storage/attractions/' . $a->image_path,
+                    "img" => '/storage/thumbnail/' . $a->title_compiled . ".png",
                     "lat" => $a->lat,
                     "lon" => $a->lon,
                 ] as $k => $v
@@ -110,8 +111,17 @@ class AttractionsAdminController extends Controller
             "lat" => $in["lat"],
             "lon" => $in["lon"],
         ]);
+
         Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
-        $image->store('attractions', 'public');
+
+        $image_path = $image->store('attractions', 'public');
+
+        $image_thumbnail_path = "thumbnail/".$attraction->title_compiled. ".png";
+        $image_thumbnail = Image::make($image->getRealPath())->resize(150, 150, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        })->stream()->detach();
+        Storage::disk('public')->put($image_thumbnail_path, $image_thumbnail, 'public');
 
         if (is_iterable($gallery)) {
             foreach ($gallery as $picture) {
@@ -128,7 +138,7 @@ class AttractionsAdminController extends Controller
         $request->session()->flash('route', route('view', [
             'title_compiled' => $this->compileTitle($in['title'])
         ]));
-        return redirect()->route('admin.creator.attraction');
+        return redirect()->route('admin.creator.location', array('id' => $attraction->id));
     }
 
     public function update(Request $request, string $id)
