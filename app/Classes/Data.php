@@ -12,16 +12,16 @@ class Data
 
     public static function getInstance(): static
     {
-      if (!isset(self::$instance)) {
-        self::$instance = new static();
-      }
+        if (!isset(self::$instance)) {
+            self::$instance = new static();
+        }
 
-      return self::$instance;
+        return self::$instance;
     }
 
     private function __construct()
     {
-      $this->format();
+        $this->format();
     }
 
     public function title(string $title): void
