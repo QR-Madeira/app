@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('belonged_attraction');
             $table->foreign('belonged_attraction')->references('id')->on('attractions');
-            $table->string('icon_path');
+            $table->string('icon');
             $table->string('name');
             $table->string('location');
             $table->string('phone')->nullable();
