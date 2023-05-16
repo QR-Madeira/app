@@ -93,6 +93,9 @@ class AttractionsAdminController extends Controller
         $image = $request->file('image');
         $gallery = $request->file('gallery');
 
+        if($image == null)
+          return $this->error('Image is missing');
+
         $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($in['title']));
 
         $nomeArquivo = 'qr-codes/' . $this->compileTitle($in['title']) . '.png';
