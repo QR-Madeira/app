@@ -20,6 +20,7 @@
             <x-attraction :attraction="$attr" :userName="$userName"/>
           </div>
         @endforeach
+        <p>{{$attractions->links()}}</p>
       </div>
     @else
       <div class="p-4">
