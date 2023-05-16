@@ -21,10 +21,9 @@ class AttractionLocationsController extends Controller
     private function listLocationsById(string $id)
     {
         try {
-            checkOrThrow(Auth::user(), P_VIEW_ATTRACTION);
+          checkOrThrow(Auth::user(), P_VIEW_ATTRACTION);
         } catch (NoPermissionsException $e) {
-            $e->__toString(); // ERROR MESSAGE CAN BE USED
-            return redirect()->back();
+          return $this->error($e->__toString());
         }
 
         Session::put('place', 'admin_attr');
@@ -37,10 +36,9 @@ class AttractionLocationsController extends Controller
     public function creator(Request $request, string $id)
     {
         try {
-            checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
+          checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
         } catch (NoPermissionsException $e) {
-            $e->__toString(); // ERROR MESSAGE CAN BE USED
-            return redirect()->back();
+          return $this->error($e->__toString());
         }
 
         $attr = Attraction::find($id);
@@ -66,10 +64,9 @@ class AttractionLocationsController extends Controller
     public function create(Request $request, string $id, string $id_2 = null)
     {
         try {
-            checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
+          checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
         } catch (NoPermissionsException $e) {
-            $e->__toString(); // ERROR MESSAGE CAN BE USED
-            return redirect()->back();
+          return $this->error($e->__toString());
         }
 
         $in = Locations::verify($request);

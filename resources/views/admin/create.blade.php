@@ -18,7 +18,7 @@
       </div>
       <div class="grid">
         <h1 class="text-xl">@lang('Description')</h1>
-        <textarea type="text" name="description" :value="old('description')" placeholder="@lang('Description')" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black"></textarea>
+        <textarea type="text" name="description" placeholder="@lang('Description')" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black">{{ old('description') }}</textarea>
       </div>
       <div class="grid">
         <h1 class="text-xl">@lang('Attraction Image')</h1>
@@ -27,6 +27,10 @@
       <div class="grid">
         <h1 class="text-xl">@lang('Attraction Gallery')</h1>
         <x-input :type="'file'" :name="'gallery[]'" :placeholder="'Gallery'" :multiple="TRUE"/>
+      </div>
+      <div class="grid">
+          <h1 class="text-xl">@lang('Qr Code Size')</h1>
+          <x-input :type="'number'" :name="'size'" :placeholder="'Size'" :step="25" :min="25" :value="150"/>
       </div>
     </div>
 

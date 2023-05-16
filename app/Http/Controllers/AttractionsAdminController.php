@@ -19,17 +19,14 @@ use const App\Auth\P_VIEW_ATTRACTION;
 
 class AttractionsAdminController extends Controller
 {
-    private $qrCodeMakerApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=';
-
     public function creator(Request $request)
     {
         $u = Auth::user();
 
         try {
-            checkOrThrow($u, P_MANAGE_ATTRACTION);
+          checkOrThrow($u, P_MANAGE_ATTRACTION);
         } catch (NoPermissionsException $e) {
-            $e->__toString(); // ERROR MESSAGE CAN BE USED
-            return redirect()->back();
+          return $this->error($e->__toString());
         }
 
         Session::put('place', 'admin_attr');
@@ -45,10 +42,9 @@ class AttractionsAdminController extends Controller
         $u = Auth::user();
 
         try {
-            checkOrThrow($u, P_MANAGE_ATTRACTION);
+          checkOrThrow($u, P_MANAGE_ATTRACTION);
         } catch (NoPermissionsException $e) {
-            $e->__toString(); // ERROR MESSAGE CAN BE USED
-            return redirect()->back();
+          return $this->error($e->__toString());
         }
 
         $a = Attraction::find($id);
@@ -79,10 +75,9 @@ class AttractionsAdminController extends Controller
     public function create(Request $request)
     {
         try {
-            checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
+          checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
         } catch (NoPermissionsException $e) {
-            $e->__toString(); // ERROR MESSAGE CAN BE USED
-            return redirect()->back();
+          return $this->error($e->__toString());
         }
 
         $in = $request->validate([
@@ -90,17 +85,21 @@ class AttractionsAdminController extends Controller
           'description' => 'required',
           'lat' => 'required',
           'lon' => 'required',
+          'size' => 'required',
           //'image' => 'required',
         ]);
 
         $image = $request->file('image');
         $gallery = $request->file('gallery');
 
+        if($image == null)
+          return $this->error('Image is missing');
+
         $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($in['title']));
 
         $nomeArquivo = 'qr-codes/' . $this->compileTitle($in['title']) . '.png';
 
-        $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
+        $conteudo = file_get_contents($this->getQrCodeUrl($in['size'], $site_url));
 
         $attraction = Attraction::create([
             'title_compiled' => $this->compileTitle($in['title']),
@@ -134,13 +133,18 @@ class AttractionsAdminController extends Controller
         return redirect()->route('admin.creator.attraction');
     }
 
+    public function getQrCodeUrl($size, $site)
+    {
+      $url = "https://api.qrserver.com/v1/create-qr-code/?size=".$size."x".$size."&data=".$site;
+      return $url;
+    }
+
     public function update(Request $request, string $id)
     {
         try {
-            checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
+          checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
         } catch (NoPermissionsException $e) {
-            $e->__toString(); // ERROR MESSAGE CAN BE USED
-            return redirect()->back();
+          return $this->error($e->__toString());
         }
 
         $a = Attraction::find($id);
@@ -217,27 +221,27 @@ class AttractionsAdminController extends Controller
 
     public function delete($id)
     {
-        try {
-            checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
-        } catch (NoPermissionsException $e) {
-            $e->__toString(); // ERROR MESSAGE CAN BE USED
-        }
+      try {
+        checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
+      } catch (NoPermissionsException $e) {
+        return $this->error($e->__toString());
+      }
 
-        $attr = Attraction::find($id);
+      $attr = Attraction::find($id);
 
-        if (!$attr) {
-            return redirect()->back();
-        }
+      if (!$attr) {
+        return redirect()->back();
+      }
 
-        Attractions_Pictures::where('belonged_attraction', $id)->delete();
-        Attraction::destroy($id);
-        return redirect()->route('admin.list.attraction');
+      Attractions_Pictures::where('belonged_attraction', $id)->delete();
+      Attraction::destroy($id);
+      return redirect()->route('admin.list.attraction');
     }
 
     public function list()
     {
         if (!check(Auth::user(), P_VIEW_ATTRACTION)) {
-            return redirect()->back();
+          return redirect()->back();
         }
 
         Session::put('place', 'admin_attr');

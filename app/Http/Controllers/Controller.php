@@ -17,15 +17,21 @@ class Controller extends BaseController
 
     protected function view($view)
     {
-        $this->data->set('isLogged', Auth::check());
+      $this->data->set('isLogged', Auth::check());
 
-        $this->data->set('userName', Auth::check() ? Auth::user()->name : null);
+      $this->data->set('userName', Auth::check() ? Auth::user()->name : null);
 
-        return view($view, $this->data->get());
+      return view($view, $this->data->get());
     }
 
     public function __construct()
     {
-        $this->data = Data::getInstance();
+      $this->data = Data::getInstance();
+    }
+
+    public function error($error)
+    {
+      session()->flash('error', $error);
+      return redirect()->back();
     }
 }
