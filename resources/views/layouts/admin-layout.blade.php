@@ -38,5 +38,10 @@
   <div class="xl:pl-64 pl-20">
     @yield('body')
   </div>
+  @if(session('error'))
+    <script>
+      alert('{{session('error')}}');
+    </script>
+  @endif
 </body>
 </html>
