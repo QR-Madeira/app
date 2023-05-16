@@ -37,6 +37,7 @@
         @endforeach
     </tbody>
 </table>
+    <p>{{$attraction_locations->links()}}</p>
 @else
 <p class='text-black/50 p-4 text-2xl'>@lang("Currently this attraction doesn't have close locations.")</p>
 @endif

@@ -23,7 +23,7 @@ class AttractionLocationsController extends Controller
         Session::put(static::PLACE, "admin_attr");
 
         return Attractions_Close_Locations::where("belonged_attraction", $id)
-            ->get();
+            ->cursorPaginate(5);
     }
 
     public function creator(string $id)
@@ -84,8 +84,8 @@ class AttractionLocationsController extends Controller
             }
         }
 
-        Session::flash("status", $status === true);
-        Session::flash("message", $status === true
+        Session::flash("status", $status == true);
+        Session::flash("message", $status == true
             ? "Location $method with success."
             : "Something went wrong.");
 
