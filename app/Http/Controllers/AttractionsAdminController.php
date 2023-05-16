@@ -19,8 +19,6 @@ use const App\Auth\P_VIEW_ATTRACTION;
 
 class AttractionsAdminController extends Controller
 {
-    private $qrCodeMakerApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=';
-
     public function creator(Request $request)
     {
         $u = Auth::user();
@@ -87,6 +85,7 @@ class AttractionsAdminController extends Controller
           'description' => 'required',
           'lat' => 'required',
           'lon' => 'required',
+          'size' => 'required',
           //'image' => 'required',
         ]);
 
@@ -100,7 +99,7 @@ class AttractionsAdminController extends Controller
 
         $nomeArquivo = 'qr-codes/' . $this->compileTitle($in['title']) . '.png';
 
-        $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
+        $conteudo = file_get_contents($this->getQrCodeUrl($in['size'], $site_url));
 
         $attraction = Attraction::create([
             'title_compiled' => $this->compileTitle($in['title']),
@@ -132,6 +131,12 @@ class AttractionsAdminController extends Controller
             'title_compiled' => $this->compileTitle($in['title'])
         ]));
         return redirect()->route('admin.creator.attraction');
+    }
+
+    public function getQrCodeUrl($size, $site)
+    {
+      $url = "https://api.qrserver.com/v1/create-qr-code/?size=".$size."x".$size."&data=".$site;
+      return $url;
     }
 
     public function update(Request $request, string $id)

@@ -9,20 +9,24 @@ use Illuminate\View\Component;
 class Input extends Component
 {
     public $type;
+    public $min;
     public $name;
+    public $step;
     public $value;
     public $multiple;
     public $placeholder;
     /**
      * Create a new component instance.
      */
-    public function __construct($type, $name, $value = null, $placeholder = null, $multiple = false)
+    public function __construct($type, $name, $value = null, $placeholder = null, $multiple = false, $step = null, $min = null)
     {
-        $this->type = $type;
-        $this->name = $name;
-        $this->value = $value;
-        $this->multiple = $multiple;
-        $this->placeholder = $placeholder;
+      $this->min = $min;
+      $this->type = $type;
+      $this->step = $step;
+      $this->name = $name;
+      $this->value = $value;
+      $this->multiple = $multiple;
+      $this->placeholder = $placeholder;
     }
 
     /**

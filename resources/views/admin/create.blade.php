@@ -28,6 +28,10 @@
         <h1 class="text-xl">@lang('Attraction Gallery')</h1>
         <x-input :type="'file'" :name="'gallery[]'" :placeholder="'Gallery'" :multiple="TRUE"/>
       </div>
+      <div class="grid">
+          <h1 class="text-xl">@lang('Qr Code Size')</h1>
+          <x-input :type="'number'" :name="'size'" :placeholder="'Size'" :step="25" :min="25" :value="150"/>
+      </div>
     </div>
 
     <fieldset>
