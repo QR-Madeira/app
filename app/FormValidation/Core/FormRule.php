@@ -61,9 +61,29 @@ final class FormRule
         $this->appendRules("required", "filled", "present");
         return $this;
     }
+    public function requiredUnlessNull(string $name): static
+    {
+        $this->appendRules("required_unless:$name,null");
+        return $this;
+    }
+    public function requiredWith(string ...$names): static
+    {
+        $this->appendRules("required_with:" . implode(",", $names));
+        return $this;
+    }
     public function string(): static
     {
         $this->appendRules("string");
+        return $this;
+    }
+    public function integer(): static
+    {
+        $this->appendRules("integer");
+        return $this;
+    }
+    public function numeric(): static
+    {
+        $this->appendRules("numeric");
         return $this;
     }
     public function max(int $max): static
@@ -79,6 +99,11 @@ final class FormRule
     public function minmax(int $min, int $max): static
     {
         return $this->min($min)->max($max);
+    }
+    public function minmaxDigits(int $min, int $max): static
+    {
+        $this->appendRules("digits_between:$min,$max");
+        return $this;
     }
     public function null(): static
     {

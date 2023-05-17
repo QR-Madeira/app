@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\FormValidation\Core\FormValidationException;
 use App\FormValidation\Locations;
 use Illuminate\Support\Facades\Session;
 use App\Models\Attraction;
@@ -44,6 +45,7 @@ class AttractionLocationsController extends Controller
         $this->data->set("attraction", $attr);
         $this->data->set("attraction_locations", $attrLoc);
         $this->data->set("icons", self::ICONS);
+        $this->data->set("phone_codes", self::PHONE_COUNTRY_CODES);
         $this->data->set("segs", ["id" => $id]);
 
         return $this->view("admin.create_close_location");
@@ -56,9 +58,14 @@ class AttractionLocationsController extends Controller
             return $v;
         }
 
-        $in = Locations::verify($request);
-        if (!empty($phone = $in["phone"])) {
-            $match = preg_match(self::PHONE_REGEX, $phone);
+        try {
+            $in = Locations::verify($request);
+        } catch (FormValidationException $e) {
+            return $this->error($e->getMessage());
+        }
+
+        if (!empty($in["phone"]) || !empty($in["phone_country"])) {
+            $match = preg_match(self::PHONE_REGEX, "+" . $in["phone_country"] . $in["phone"]);
             if ($match === 0 || $match === false) {
                 return $this->error("Invalid phone number");
             }
@@ -118,6 +125,7 @@ class AttractionLocationsController extends Controller
         $this->data->set("attraction", $attr);
         $this->data->set("attraction_locations", $attrLoc);
         $this->data->set("icons", self::ICONS);
+        $this->data->set("phone_codes", self::PHONE_COUNTRY_CODES);
         $this->data->set("segs", ["id" => $id, "id_2" => $id_2]);
         $this->data->set("isPUT", true);
 

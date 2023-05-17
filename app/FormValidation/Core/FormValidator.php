@@ -51,9 +51,13 @@ abstract class FormValidator implements FormInterface
     final public function validate(): array
     {
         $validator = Validator::make($this->validator->all(), $this->rules);
-
         if ($validator->fails()) {
-            throw new \RuntimeException($validator->errors()->__toString());
+            foreach ($validator->getData() as $k => $v) {
+                if (!str_starts_with($k, "_")) {
+                    $this->validator->flash($k, $v);
+                }
+            }
+            throw new FormValidationException(implode(". ", [...$validator->errors()->all()]));
         }
 
         return $validator->validated();

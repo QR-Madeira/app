@@ -40,6 +40,14 @@
   "Coordinates": "Coordenadas",
   "User permission": "Permissões do user",
   "None": "Nenhuma",
-  "Users list": "Lista de utilizadores"
-  
+  "Users list": "Lista de utilizadores",
+  "Choose an icon for your location": "Escolha um icone para esta localização",
+  "Location": "Localização",
+  "Phone": "Telefone",
+  "Phone Number": "Telefone",
+  "Add": "Adicione",
+  "Save": "Atualize",
+  "Manage": "Ações",
+  "Icon": "Icone",
+  "Currently this attraction doesn't have close locations.": "Esta atração não possuí nenhuma outra atração próxima."
 }

@@ -17,5 +17,11 @@ class Attractions_Close_Locations extends Model
       "name",
       "location",
       "phone",
+      "phone_country",
     ];
+
+    public function createPhoneNumber(): string
+    {
+        return "+$this->phone_country $this->phone";
+    }
 }

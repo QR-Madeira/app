@@ -114,7 +114,7 @@ class AttractionsAdminController extends Controller
             "lon" => $in["lon"],
         ]);
 
-        if(!$attraction){
+        if (!$attraction) {
             Session::flash('status', false);
             Session::flash('message', "Something went wrong, try again.");
             return redirect()->route('admin.creator.attracion');
@@ -122,7 +122,7 @@ class AttractionsAdminController extends Controller
 
         Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
 
-        $image_thumbnail_path = "thumbnail/".$attraction->title_compiled. ".png";
+        $image_thumbnail_path = "thumbnail/" . $attraction->title_compiled . ".png";
         $image_thumbnail = Image::make($image->getRealPath())->resize(150, 150, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
@@ -215,7 +215,6 @@ class AttractionsAdminController extends Controller
         }
 
         return redirect(status: 204)->route("admin.edit.attraction", $id);
-        
     }
 
     private function compileTitle(string $title)

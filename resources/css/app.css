@@ -36,6 +36,6 @@
     }
 
     label:has(.form-in) {
-        @apply flex justify-evenly w-full
+        @apply flex items-center justify-between sm:justify-evenly w-full
     }
 }
