@@ -7,7 +7,6 @@
  */
 
 declare(encoding="UTF-8");
-
 declare(strict_types=1);
 
 namespace App\FormValidation;
@@ -21,26 +20,23 @@ final class Attraction extends FormValidator
 {
     public function getRules(Request $req): array
     {
-        $name = FormRule::new("title")->required();
         $rules = [
             FormRule::new("description")->required(),
+            FormRule::new("image")->{$req->getMethod() === "POST"
+                ? "required"
+                : "null"}(),
+            FormRule::new("gallery")->null()->array(),
             FormRule::new("lat")->required(),
             FormRule::new("lon")->required(),
+            FormRule::new("size")->required(),
         ];
 
-        switch ($req->getMethod()) {
-            case "POST":
-                $name = $name->unique("attractions", "title");
-                $rules[] = FormRule::new("image")->required();
-                $rules[] = FormRule::new("size")->required();
-                $rules[] = $name;
-                return $rules;
-            case "PUT":
-                $rules[] = $name;
-                return $rules;
-        }
+        $name = FormRule::new("title")->required();
+        $rules[] = $req->getMethod() === "POST"
+            ? $name->unique("attractions", "title")
+            : $name;
 
-        return [];
+        return $rules;
     }
 
     public function postProcess(array $in): array

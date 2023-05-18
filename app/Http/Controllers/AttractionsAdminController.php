@@ -30,7 +30,6 @@ class AttractionsAdminController extends Controller
 
         Session::put(static::PLACE, "admin_attr");
 
-
         return $this->view('admin.create');
     }
 
@@ -74,20 +73,21 @@ class AttractionsAdminController extends Controller
         $a = Attraction::create($in);
 
         if (!$a) {
+            // TODO: single form of showing errors
             Session::flash("status", false);
             Session::flash("message", "Something went wrong, try again.");
 
             return $this->error("Something went wrong, try again.");
         }
 
-        Storage::disk('public')
-            ->put("qr-codes/" . $in["qr_code_path"], file_get_contents(
-                $this->getQrCodeUrl($in['size'], $in["site_url"])
-            ), 'public');
+        Storage::disk("public")
+            ->put("qr-codes/$in[qr_code_path]", file_get_contents(
+                $this->getQrCodeUrl($in["size"], $in["site_url"])
+            ), "public");
 
         Storage::disk('public')
             ->put(
-                "thumbnail/" . $a->title_compiled . ".png",
+                "thumbnail/$in[title_compiled].png",
                 Image::make($request->file("image")->getRealPath())
                     ->resize(150, 150, static function ($constraint) {
                         $constraint->aspectRatio();
@@ -95,26 +95,27 @@ class AttractionsAdminController extends Controller
                     })
                     ->stream()
                     ->detach(),
-                'public'
+                "public"
             );
 
-        if (is_iterable($gallery = $request->file("gallery"))) {
+        if (is_iterable($gallery = ($in["gallery"] ?? null))) {
             foreach ($gallery as $picture) {
-                $image_path = explode("/", $picture->store('gallery', 'public'))[1];
-                $image = array(
-                    'belonged_attraction' => $a->id,
-                    'image_path' => $image_path,
-                );
-                Attractions_Pictures::create($image);
+                Attractions_Pictures::create([
+                    "belonged_attraction" => $a->id,
+                    "image_path" => explode(
+                        "/",
+                        $picture->store("gallery", "public")
+                    )[1],
+                ]);
             }
         }
 
-        Session::flash('status', true);
-        Session::flash('route', route('view', [
-            'title_compiled' => $in["title_compiled"]
+        Session::flash("status", true);
+        Session::flash("route", route("view", [
+            "title_compiled" => $in["title_compiled"]
         ]));
 
-        return redirect()->route('admin.creator.location', ['id' => $a->id]);
+        return redirect()->route("admin.creator.location", ["id" => $a->id]);
     }
 
     public function update(Request $request, string $id)
@@ -143,11 +144,11 @@ class AttractionsAdminController extends Controller
         $a->update($in);
 
         if ($a->title_compiled != $in["title_compiled"]) {
-            Storage::disk('public')->delete("qr_codes/$a->title_compiled.png");
-            Storage::disk('public')
-                ->put("qr-codes/" . $in["qr_code_path"], file_get_contents(
-                    $this->getQrCodeUrl($in['size'], $in["site_url"])
-                ), 'public');
+            Storage::disk("public")->delete("qr_codes/$a->title_compiled.png");
+            Storage::disk("public")
+                ->put("qr-codes/$in[qr_code_path]", file_get_contents(
+                    $this->getQrCodeUrl($in["size"], $in["site_url"])
+                ), "public");
         }
 
         if ($request->file('image') !== null) {

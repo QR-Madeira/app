@@ -40,8 +40,8 @@
       <fieldset>
       <legend class="text-xl">@lang('Coordinates')</legend>
 
-      <input required id="lat" type="hidden" name="lat" />
-      <input required id="lon" type="hidden" name="lon" />
+      <input required id="lat" type="hidden" name="lat" value="{{$lat}}"/>
+      <input required id="lon" type="hidden" name="lon" value="{{$lon}}"/>
 
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
       <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
@@ -71,14 +71,14 @@
           if (lat_in === null || lon_in === null) {
             throw new Error(/* TODO */);
           }
-          
+
           L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           }).addTo(map);
 
           const marker = L.marker(coords, {alt: "Attraction location"});
-          
+
           marker.addTo(map);
           marker.setLatLng({ lat: {{$lat}}, lng: {{$lon}} });
           map.on("click", (e) => {

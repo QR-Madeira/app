@@ -1,113 +1,115 @@
 @extends('layouts.admin-layout')
 
 @section('body')
-<div class='py-4 px-24'>
-  <div class='flex items-center justify-center w-full relative'>
-    <h1 class='text-center text-5xl py-8'>@lang('Create Attraction')</h1>
-    <div class='hidden xl:block absolute right-0'>
-      <x-a :url="route('admin.list.attraction')" :name="'Attractions List'"/>
-    </div>
-  </div>
-  <x-show-required :errors="$errors"/>
-  <form class="sm:grid sm:grid-cols-2 gap-4" action="{{route('admin.create.attraction')}}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="grid gap-4">
-      <div class="grid">
-        <h1 class="text-xl">@lang('Title')</h1>
-        <x-input :type="'text'" :name="'title'" :value="old('title')" :placeholder="'Title'"/>
-      </div>
-      <div class="grid">
-        <h1 class="text-xl">@lang('Description')</h1>
-        <textarea type="text" name="description" placeholder="@lang('Description')" class="p-4 bg-black/[.10] text-black rounded-lg placeholder:text-black">{{ old('description') }}</textarea>
-      </div>
-      <div class="grid">
-        <h1 class="text-xl">@lang('Attraction Image')</h1>
-        <x-input :type="'file'" :name="'image'" :placeholder="'Image'"/>
-      </div>
-      <div class="grid">
-        <h1 class="text-xl">@lang('Attraction Gallery')</h1>
-        <x-input :type="'file'" :name="'gallery[]'" :placeholder="'Gallery'" :multiple="TRUE"/>
-      </div>
-      <div class="grid">
-          <h1 class="text-xl">@lang('Qr Code Size')</h1>
-          <x-input :type="'number'" :name="'size'" :placeholder="'Size'" :step="25" :min="25" :value="150"/>
-      </div>
-    </div>
+<div class="py-4 px-4 lg:px-24">
 
-    <fieldset>
-      <legend class="text-xl">@lang('Coordinates')</legend>
+<nav class="py-4 grid sm:grid-cols-5 gap-3">
+<div class="sm:row-start-1"></div>
+<h1 class="row-start-1 sm:col-span-3 text-center text-4xl antialiased font-bold py-7">@lang("Create Attraction")</h1>
+<a class="a-btn" href="{{route('admin.list.attraction')}}">@lang("Attractions List")</a>
+</nav>
 
-      <input required id="lat" type="hidden" name="lat" />
-      <input required id="lon" type="hidden" name="lon" />
+<x-show-required :errors="$errors" />
 
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
-      <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<form class="sm:grid sm:grid-cols-2 gap-4" action="{{route('admin.create.attraction')}}" method="POST" enctype="multipart/form-data">
+@csrf
 
-      <div id="map"></div>
-      <style>
+<div class="grid gap-4 [&>p>label]:flex [&>p>label]:justify-between [&>p>label]:flex-col [&>p>label]:sm:flex-row">
+
+<p><label>@lang("Title"): <input required type="text" name="title" value="{{$title ?? old('title')}}" class="form-in" /></label></p>
+<p><label>@lang("Description"): <input required type="text" name="description" value="{{$description ?? old('description')}}" class="form-in" /></label></p>
+<p><label>@lang("Attraction Image"): <input required type="file" name="image" class="form-in" /></label></p>
+<p><label>@lang("Attraction Gallery"): <input type="file" multiple name="gallery[]" class="form-in" /></label></p>
+<p><label>@lang("QR Code Size"): <input required type="number" step="25" min="25" name="size" value="{{$size ?? old('size') ?? 150}}" class="form-in" /></label></p>
+
+</div>
+
+<fieldset class="py-4">
+    <legend class="text-xl">@lang('Coordinates')</legend>
+
+    <input required id="lat" type="hidden" name="lat" />
+    <input required id="lon" type="hidden" name="lon" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+    <div id="map"></div>
+    <style>
         #map {
-          aspect-ratio: 4/3;
+            aspect-ratio: 4/3;
         }
-      </style>
+    </style>
 
-      <script>
+    <script>
         let lat = lon = 0;
         const ZOOM = 13;
         if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition((pos) => {
-          const {latitude, longitude} = pos.coords;
-          lat = latitude;
-          lon = longitude;
-          }, (err) => {}, { maximumAge: Infinity });
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const {
+                    latitude,
+                    longitude
+                } = pos.coords;
+                lat = latitude;
+                lon = longitude;
+            }, (err) => {}, {
+                maximumAge: Infinity
+            });
         }
 
         const map = L.map("map").fitWorld();
 
         document.addEventListener("DOMContentLoaded", () => {
-          const lat_in = document.getElementById("lat");
-          const lon_in = document.getElementById("lon");
+            const lat_in = document.getElementById("lat");
+            const lon_in = document.getElementById("lon");
 
-          if (lat_in === null || lon_in === null) {
-            throw new Error(/* TODO */);
-          }
-
-          L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          }).addTo(map);
-
-          const marker = L.marker([lat, lon], {alt: "Attraction location"});
-          let marker_added = false;
-
-          map.locate({setView: true, maxZoom: ZOOM});
-          map.on('locationfound', (e) => {
-            marker.setLatLng(e.latlng);
-
-            if (!marker_added) {
-              marker.addTo(map);
+            if (lat_in === null || lon_in === null) {
+                throw new Error( /* TODO */ );
             }
-          });
 
-          map.on("click", (e) => {
-            lat_in.value = e.latlng.lat;
-            lon_in.value = e.latlng.lng;
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
 
-            marker.setLatLng(e.latlng);
+            const marker = L.marker([lat, lon], {
+                alt: "Attraction location"
+            });
+            let marker_added = false;
 
-            if (!marker_added) {
-            marker.addTo(map);
-            }
-          });
+            map.locate({
+                setView: true,
+                maxZoom: ZOOM
+            });
+            map.on('locationfound', (e) => {
+                marker.setLatLng(e.latlng);
+
+                if (!marker_added) {
+                    marker.addTo(map);
+                }
+            });
+
+            map.on("click", (e) => {
+                lat_in.value = e.latlng.lat;
+                lon_in.value = e.latlng.lng;
+
+                marker.setLatLng(e.latlng);
+
+                if (!marker_added) {
+                    marker.addTo(map);
+                }
+            });
 
         });
-      </script>
-    </fieldset>
-    <div class="col-span-2 grid">
-      <x-submit :value="__('Create')"/>
-    </div>
-  </form>
-  @if(Session::has('status') && Session::has('message'))
-    <x-success_error_msg :status="Session::get('status')" :msg="Session::get('message')"/>
-  @endif
+    </script>
+</fieldset>
+
+<button type="submit" class="w-full col-span-2 form-submit">@lang(!empty($isPUT) ? "Save" : "Create")</button>
+
+</form>
+
+@if(Session::has("status") && Session::has("message"))
+<x-success_error_msg :status="Session::get('status')" :msg="Session::get('message')" />
+@endif
+
 </div>
 @endsection

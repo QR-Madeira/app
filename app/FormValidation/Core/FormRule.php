@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace App\FormValidation\Core;
 
+use Illuminate\Validation\Rule;
+
 final class FormRule
 {
     private string $field;
@@ -116,6 +118,47 @@ final class FormRule
     public function unique(string $table, string $col): static
     {
         $this->appendRules("unique:$table,$col");
+        return $this;
+    }
+    public function array(string ...$keys): static
+    {
+        $this->appendRules("array" . (empty($keys) ? "" : (":" . implode(",", $keys))));
+        return $this;
+    }
+    public function dimmensions(
+        ?int $maxw = null,
+        ?int $maxh = null,
+        ?int $minw = null,
+        ?int $minh = null,
+        ?float $ratio = null
+    ): static {
+        $rule = Rule::dimensions();
+        if ($maxw !== null) {
+            $rule = $rule->maxWidth($maxw);
+        }
+        if ($maxh !== null) {
+            $rule = $rule->maxHeight($maxh);
+        }
+        if ($minw !== null) {
+            $rule = $rule->minWidth($minw);
+        }
+        if ($minh !== null) {
+            $rule = $rule->minHeight($minh);
+        }
+        if ($ratio !== null) {
+            $rule = $rule->ratio($ratio);
+        }
+        $this->appendRules((string) $rule);
+        return $this;
+    }
+    public function file(): static
+    {
+        $this->appendRules("file");
+        return $this;
+    }
+    public function image(): static
+    {
+        $this->appendRules("image");
         return $this;
     }
 }
