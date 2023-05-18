@@ -9,6 +9,10 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Classes\Data;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\App;
+use TorresDeveloper\HTTPMessage\URI;
+use TorresDeveloper\Polyglot\Lang;
+use TorresDeveloper\Polyglot\Translator;
 
 use function App\Auth\checkOrThrow;
 
@@ -292,5 +296,26 @@ class Controller extends BaseController
         }
 
         return null;
+    }
+
+    protected function translate(string $txt): string
+    {
+        try {
+            if (env("LIBRETRANSLATE_TRANSLATE", false) != true) {
+                throw new \Exception("Won't translate");
+            }
+
+            $t = new Translator(new URI(env("LIBRETRANSLATE_URI")));
+
+            $from = $t->detectLang($txt);
+
+            if ($from->getCode() !== ($to = App::currentLocale())) {
+                return $t->translate($txt, new Lang($to), $from);
+            }
+        } catch (\Throwable) {
+            return $txt;
+        }
+
+        return $txt;
     }
 }

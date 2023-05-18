@@ -10,21 +10,25 @@ class AttractionsViewerController extends Controller
 {
     public function index($title_compiled)
     {
-        $attraction = Attraction::where('title_compiled', '=', $title_compiled)->first();
-        if ($attraction == null) {
+        $a = Attraction::where('title_compiled', '=', $title_compiled)
+            ->first()
+            ?->toArray();
+
+        if ($a == null) {
             return $this->error('Attraction not found');
         }
-        $attraction = $attraction->toArray();
 
-        $description = nl2br($attraction['description']);
-
-        $this->data->set('image', 'storage/attractions/' . $attraction['image']);
-        $this->data->set('title_compiled', $title_compiled);
-        $this->data->set('title', $attraction['title']);
-        $this->data->set('description', $description);
-        $this->data->set('qr', asset('storage/qr-codes/' .  $attraction["qr_code_path"]));
-        $this->data->set("lat", $attraction["lat"]);
-        $this->data->set("lon", $attraction["lon"]);
+        foreach ([
+            "image" => "storage/attractions/$a[image]",
+            "title_compiled" => $title_compiled,
+            "title" => $a["title"],
+            "description" => nl2br($this->translate($a["description"])),
+            "qr" => asset("storage/qr-codes/$a[qr_code_path]"),
+            "lat" => $a["lat"],
+            "lon" => $a["lon"],
+        ] as $k => $v) {
+            $this->data->set($k, $v);
+        }
 
         return $this->view('viewer.get');
     }
