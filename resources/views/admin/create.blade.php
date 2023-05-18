@@ -9,25 +9,63 @@
 <a class="a-btn" href="{{route('admin.list.attraction')}}">@lang("Attractions List")</a>
 </nav>
 
+@if(isset($isPUT) && $isPUT)
+<a class="my-4 a-btn" href="{{route('admin.creator.location', ['id' => $id])}}">@lang("Update Close Locations")</a>
+@endif
+
 <x-show-required :errors="$errors" />
 
-<form class="sm:grid sm:grid-cols-2 gap-4" action="{{route('admin.create.attraction')}}" method="POST" enctype="multipart/form-data">
+<form class="sm:grid sm:grid-cols-2 gap-4" action="{{route('admin.' . ((isset($isPUT) && $isPUT) ? 'update' : 'create') . '.attraction', (isset($isPUT) && $isPUT) ? [ 'id' => $id ] : [])}}" method="POST" enctype="multipart/form-data">
 @csrf
+@if(isset($isPUT) && $isPUT)
+@method("PUT")
+@endif
 
 <div class="grid gap-4 [&>p>label]:flex [&>p>label]:justify-between [&>p>label]:flex-col [&>p>label]:sm:flex-row">
 
 <p><label>@lang("Title"): <input required type="text" name="title" value="{{$title ?? old('title')}}" class="form-in" /></label></p>
 <p><label>@lang("Description"): <input required type="text" name="description" value="{{$description ?? old('description')}}" class="form-in" /></label></p>
-<p><label>@lang("Attraction Image"): <input required type="file" name="image" class="form-in" /></label></p>
+
+<fieldset class="flex flex-col py-4 [&>p]:py-4">
+
+<legend class="text-xl">@lang("Images")</legend>
+
+<p><label>@lang("Attraction Image"): <input @if(!isset($isPUT) || !$isPUT) required @endif type="file" name="image" class="form-in" /></label></p>
+
+@if(isset($img))
+<img src="{{$img}}" alt="@lang('Attraction Image')" class="rounded p-4 mx-auto">
+@endif
+
+<script>
+  document.addEventListener("DOMContentLoaded", async function() {
+    const img = document.getElementById("img");
+    const img_in = document.getElementById("img_in");
+
+    if (img == null || img_in == null) {
+      return;
+    }
+
+    img_in.addEventListener("change", async function() {
+      img.src = URL.createObjectURL(img_in.files[0]);
+    });
+  });
+</script>
+
+@if(isset($isPUT) && $isPUT)
+<a class="a-btn" href="{{route('admin.edit.attraction.gallery', ['id' => $id])}}">@lang("Update Gallery")</a>
+@else
 <p><label>@lang("Attraction Gallery"): <input type="file" multiple name="gallery[]" class="form-in" /></label></p>
+@endif
+
+</fieldset>
 
 </div>
 
 <fieldset class="py-4">
     <legend class="text-xl">@lang('Coordinates')</legend>
 
-    <input required id="lat" type="hidden" name="lat" />
-    <input required id="lon" type="hidden" name="lon" />
+    <input required id="lat" type="hidden" name="lat" value="{{$lat ?? old('lat') ?? ''}}" />
+    <input required id="lon" type="hidden" name="lon" value="{{$lon ?? old('lon') ?? ''}}" />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
@@ -40,8 +78,11 @@
     </style>
 
     <script>
-        let lat = lon = 0;
+        let lat = {{$lat ?? old("lat") ?? 0}};
+        let lon = {{$lon ?? old("lon") ?? 0}};
         const ZOOM = 13;
+
+        @if(!isset($isPUT) || !$isPUT)
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition((pos) => {
                 const {
@@ -54,6 +95,7 @@
                 maximumAge: Infinity
             });
         }
+        @endif
 
         const map = L.map("map").fitWorld();
 
@@ -75,6 +117,7 @@
             });
             let marker_added = false;
 
+            @if(!isset($isPUT) || !$isPUT)
             map.locate({
                 setView: true,
                 maxZoom: ZOOM
@@ -86,6 +129,10 @@
                     marker.addTo(map);
                 }
             });
+            @else
+            map.setView([lat, lon], ZOOM);
+            marker.addTo(map);
+            @endif
 
             map.on("click", (e) => {
                 lat_in.value = e.latlng.lat;
