@@ -36,25 +36,28 @@ final class FormRule
         return implode("|", $this->rules);
     }
 
-    public function setField(string $field): void
+    public function setField(string $field): static
     {
         $this->field = $field;
+        return $this;
     }
-    public function setRules(string ...$rules): void
+    public function setRules(string ...$rules): static
     {
         $this->rules = $rules;
+        return $this;
     }
-    public function appendRules(string ...$rules): void
+    public function appendRules(string ...$rules): static
     {
         foreach ($rules as $i) {
             $this->rules[] = $i;
         }
+        return $this;
     }
-    public function resetRules(): void
+    public function resetRules(): static
     {
         $this->rules = [];
+        return $this;
     }
-
 
     public function required(): static
     {
@@ -108,6 +111,11 @@ final class FormRule
     public function null(): static
     {
         $this->appendRules("nullable");
+        return $this;
+    }
+    public function unique(string $table, string $col): static
+    {
+        $this->appendRules("unique:$table,$col");
         return $this;
     }
 }

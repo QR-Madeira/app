@@ -3,137 +3,106 @@
 namespace App\Http\Controllers;
 
 use App\Auth\NoPermissionsException;
+use App\FormValidation\Core\FormValidationException;
+use App\FormValidation\Attraction as AttractionValidation;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Attractions_Pictures;
-use Illuminate\Http\Request;
 use App\Models\Attraction;
 use App\Models\User;
+use Illuminate\Http\Request;
 
-use function App\Auth\check;
 use function App\Auth\checkOrThrow;
 
 use const App\Auth\P_MANAGE_ATTRACTION;
-use const App\Auth\P_VIEW_ATTRACTION;
 
 use Intervention\Image\Facades\Image;
 
 class AttractionsAdminController extends Controller
 {
-    public function creator(Request $request)
+    public function creator()
     {
-        $u = Auth::user();
-        try {
-            checkOrThrow($u, P_MANAGE_ATTRACTION);
-        } catch (NoPermissionsException $e) {
-            return $this->error($e->__toString());
+        $v = $this->verify(P_MANAGE_ATTRACTION);
+        if ($v !== null) {
+            return $v;
         }
 
-        Session::put('place', 'admin_attr');
+        Session::put(static::PLACE, "admin_attr");
 
-        //$this->data->set('status', $request->session()->get('status'));
-        //$this->data->set('route', $request->session()->get('route'));
 
         return $this->view('admin.create');
     }
 
-    public function updater(Request $req, string $id)
+    public function updater(string $id)
     {
-        $u = Auth::user();
-
-        try {
-            checkOrThrow($u, P_MANAGE_ATTRACTION);
-        } catch (NoPermissionsException $e) {
-            return $this->error($e->__toString());
+        $v = $this->verify(P_MANAGE_ATTRACTION);
+        if ($v !== null) {
+            return $v;
         }
 
         $a = Attraction::find($id);
 
         if (!$a) {
-            return redirect()->back();
+            return $this->error("No attracion to update");
         }
 
-        if (Auth::id() === $a->created_by || $u->super) {
-            foreach (
-                [
-                    "id" => $id,
-                    "title" => $a->title,
-                    "description" => $a->description,
-                    "img" => '/storage/thumbnail/' . $a->title_compiled . ".png",
-                    "lat" => $a->lat,
-                    "lon" => $a->lon,
-                ] as $k => $v
-            ) {
+        if (Auth::id() === $a->created_by || Auth::user()->super) {
+            $a->img = "/storage/thumbnail/$a->title_compiled.png";
+            foreach ($a->toArray() as $k => $v) {
                 $this->data->set($k, $v);
             }
             return $this->view('admin.update');
         } else {
-            return redirect()->back();
+            return $this->error("No ownership to update this attracion");
         }
     }
 
     public function create(Request $request)
     {
+        $v = $this->verify(P_MANAGE_ATTRACTION);
+        if ($v !== null) {
+            return $v;
+        }
+
         try {
-            checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
-        } catch (NoPermissionsException $e) {
-            return $this->error($e->__toString());
+            $in = AttractionValidation::verify($request);
+        } catch (FormValidationException $e) {
+            return $this->error($e->getMessage());
         }
 
-        $in = $request->validate([
-          'title' => 'required|unique:attractions,title',
-          'description' => 'required',
-          'lat' => 'required',
-          'lon' => 'required',
-          'size' => 'required',
-        ]);
+        $a = Attraction::create($in);
 
-        $image = $request->file('image');
-        $gallery = $request->file('gallery');
+        if (!$a) {
+            Session::flash("status", false);
+            Session::flash("message", "Something went wrong, try again.");
 
-        if ($image == null) {
-            return $this->error('Image is missing');
+            return $this->error("Something went wrong, try again.");
         }
 
-        $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($in['title']));
+        Storage::disk('public')
+            ->put("qr-codes/" . $in["qr_code_path"], file_get_contents(
+                $this->getQrCodeUrl($in['size'], $in["site_url"])
+            ), 'public');
 
-        $nomeArquivo = 'qr-codes/' . $this->compileTitle($in['title']) . '.png';
+        Storage::disk('public')
+            ->put(
+                "thumbnail/" . $a->title_compiled . ".png",
+                Image::make($request->file("image")->getRealPath())
+                    ->resize(150, 150, static function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->stream()
+                    ->detach(),
+                'public'
+            );
 
-        $conteudo = file_get_contents($this->getQrCodeUrl($in['size'], $site_url));
-
-        $attraction = Attraction::create([
-            'title_compiled' => $this->compileTitle($in['title']),
-            'title' => $in['title'],
-            'description' => $in['description'],
-            'site_url' => $site_url,
-            'image_path' => explode("/", $image->store('attractions', 'public'))[1],
-            'qr-code_path' => $this->compileTitle($in['title']) . '.png',
-            'created_by' => Auth::id(),
-            "lat" => $in["lat"],
-            "lon" => $in["lon"],
-        ]);
-
-        if (!$attraction) {
-            Session::flash('status', false);
-            Session::flash('message', "Something went wrong, try again.");
-            return redirect()->route('admin.creator.attracion');
-        }
-
-        Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
-
-        $image_thumbnail_path = "thumbnail/" . $attraction->title_compiled . ".png";
-        $image_thumbnail = Image::make($image->getRealPath())->resize(150, 150, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        })->stream()->detach();
-        Storage::disk('public')->put($image_thumbnail_path, $image_thumbnail, 'public');
-
-        if (is_iterable($gallery)) {
+        if (is_iterable($gallery = $request->file("gallery"))) {
             foreach ($gallery as $picture) {
                 $image_path = explode("/", $picture->store('gallery', 'public'))[1];
                 $image = array(
-                    'belonged_attraction' => $attraction->id,
+                    'belonged_attraction' => $a->id,
                     'image_path' => $image_path,
                 );
                 Attractions_Pictures::create($image);
@@ -142,29 +111,22 @@ class AttractionsAdminController extends Controller
 
         Session::flash('status', true);
         Session::flash('route', route('view', [
-            'title_compiled' => $this->compileTitle($in['title'])
+            'title_compiled' => $in["title_compiled"]
         ]));
-        return redirect()->route('admin.creator.location', array('id' => $attraction->id));
-    }
 
-    public function getQrCodeUrl($size, $site)
-    {
-        $url = "https://api.qrserver.com/v1/create-qr-code/?size=" . $size . "x" . $size . "&data=" . $site;
-        return $url;
+        return redirect()->route('admin.creator.location', ['id' => $a->id]);
     }
 
     public function update(Request $request, string $id)
     {
-        try {
-            checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
-        } catch (NoPermissionsException $e) {
-            return $this->error($e->__toString());
+        $v = $this->verify(P_MANAGE_ATTRACTION);
+        if ($v !== null) {
+            return $v;
         }
 
         $a = Attraction::find($id);
 
         if (!$a) {
-            // Attraction does not exist
             return $this->error('Attraction does not exists');
         }
 
@@ -172,64 +134,28 @@ class AttractionsAdminController extends Controller
             return $this->error('Not the owner neither a super user');
         }
 
-        $in = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-        ]);
-
-        $lat = !$request->post("lat") ? $a['lat'] : $request->post("lat");
-        $lon = !$request->post("lon") ? $a['lon'] : $request->post("lon");
-
-        $image = $request->file('image');
-
-        $site_url = (($_SERVER["HTTPS"] ?? null) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . urlencode($this->compileTitle($in['title']));
-
-        $nomeArquivo = "qr-codes/" . $this->compileTitle($in["title"]) . ".png";
-
-        $main_img = $a->image_path;
-
-        if ($a->title_compiled != $this->compileTitle($in['title'])) {
-            $conteudo = file_get_contents($this->qrCodeMakerApiUrl . $site_url);
-            Storage::disk('public')->delete("qr-codes/$a->title_compiled.png");
-            Storage::disk('public')->put($nomeArquivo, $conteudo, 'public');
+        try {
+            $in = AttractionValidation::verify($request);
+        } catch (FormValidationException $e) {
+            return $this->error($e->getMessage());
         }
 
-        $raw = [
-            'title_compiled' => $this->compileTitle($in['title']),
-            'title' => $in['title'],
-            'description' => $in['description'],
-            'site_url' => $site_url,
-            'qr-code_path' => $this->compileTitle($in['title']) . '.png',
-            "lat" => $lat,
-            "lon" => $lon,
-        ];
+        $a->update($in);
 
-        if ($image !== null) {
-            $raw["image_path"] = explode("/", $image->store("attractions", "public"))[1];
+        if ($a->title_compiled != $in["title_compiled"]) {
+            Storage::disk('public')->delete("qr_codes/$a->title_compiled.png");
+            Storage::disk('public')
+                ->put("qr-codes/" . $in["qr_code_path"], file_get_contents(
+                    $this->getQrCodeUrl($in['size'], $in["site_url"])
+                ), 'public');
         }
 
-        $a->update($raw);
-
-        if ($image != null) {
-            Storage::disk("public")->delete("attractions/$main_img");
+        if ($request->file('image') !== null) {
+            // put new???
+            Storage::disk("public")->delete("attractions/$a->image_path");
         }
 
         return redirect(status: 204)->route("admin.edit.attraction", $id);
-    }
-
-    private function compileTitle(string $title)
-    {
-        $tabela = array(
-            'Á' => 'A', 'á' => 'a', 'Â' => 'A', 'â' => 'a', 'Ã' => 'A', 'ã' => 'a',
-            'É' => 'E', 'é' => 'e', 'Ê' => 'E', 'ê' => 'e',
-            'Í' => 'I', 'í' => 'i', 'Î' => 'I', 'î' => 'i',
-            'Ó' => 'O', 'ó' => 'o', 'Ô' => 'O', 'ô' => 'o', 'Õ' => 'O', 'õ' => 'o',
-            'Ú' => 'U', 'ú' => 'u', 'Û' => 'U', 'û' => 'u'
-        );
-        $title = strtr($title, $tabela);
-        $title = str_replace(" ", "-", $title);
-        $title = strtolower($title);
-        return $title;
     }
 
     public function delete($id)
@@ -253,8 +179,9 @@ class AttractionsAdminController extends Controller
 
     public function list()
     {
-        if (!check(Auth::user(), P_VIEW_ATTRACTION)) {
-            return redirect()->back();
+        $v = $this->verify(P_MANAGE_ATTRACTION);
+        if ($v !== null) {
+            return $v;
         }
 
         Session::put('place', 'admin_attr');
@@ -263,7 +190,7 @@ class AttractionsAdminController extends Controller
 
         foreach ($all_attractions as $attr) {
             $attr['image'] = asset('storage/attractions/' . $attr->image_path);
-            $attr['qr-code'] = asset('storage/qr-codes/' . $attr['qr-code_path']);
+            $attr['qr-code'] = asset('storage/qr-codes/' . $attr['qr_code_path']);
             $creator_name = User::select('name')->where('id', $attr['created_by'])->first();
             $attr['creator_name'] = $creator_name->name;
         }
@@ -271,5 +198,11 @@ class AttractionsAdminController extends Controller
         $this->data->set('attractions', $all_attractions);
 
         return $this->view('admin.list');
+    }
+
+    private function getQrCodeUrl(int $size, string $site): string
+    {
+        return "https://api.qrserver.com/v1/create-qr-code/?format=svg&size=$size"
+            . "x$size&data=$site";
     }
 }

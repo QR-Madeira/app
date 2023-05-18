@@ -65,7 +65,9 @@ class AttractionLocationsController extends Controller
         }
 
         if (!empty($in["phone"]) || !empty($in["phone_country"])) {
-            $match = preg_match(self::PHONE_REGEX, "+" . $in["phone_country"] . $in["phone"]);
+            $match = preg_match(self::PHONE_REGEX, "+"
+                . $in["phone_country"]
+                . $in["phone"]);
             if ($match === 0 || $match === false) {
                 return $this->error("Invalid phone number");
             }

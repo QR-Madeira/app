@@ -11,7 +11,10 @@ declare(strict_types=1);
 
 namespace App\FormValidation\Core;
 
+use Illuminate\Http\Request;
+
 interface FormInterface
 {
-    public function getRules(): array;
+    public function getRules(Request $req): array;
+    public function postProcess(array $in): array;
 }

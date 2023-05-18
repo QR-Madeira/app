@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('title_compiled')->unique();
             $table->string('title')->unique();
             $table->text('description');
-            $table->string('image_path');
+            $table->string('image');
             $table->string('site_url')->unique();
-            $table->string('qr-code_path');
+            $table->string('qr_code_path');
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');
             $table->timestamps();

@@ -36,7 +36,7 @@ abstract class FormValidator implements FormInterface
 
     final public function init(): static
     {
-        $rules = $this->getRules();
+        $rules = $this->getRules($this->validator);
         foreach ($rules as $i) {
             if (!($i instanceof FormRule)) {
                 throw new \RuntimeException("invalid form rule on " . static::class . "::getRules().");
@@ -60,7 +60,9 @@ abstract class FormValidator implements FormInterface
             throw new FormValidationException(implode(". ", [...$validator->errors()->all()]));
         }
 
-        return $validator->validated();
+        $in = $validator->validated();
+
+        return $this->postProcess($in);
     }
 
     final public function setValidator(Request $validator): static
