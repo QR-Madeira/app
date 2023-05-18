@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Attractions_Pictures;
 use App\Models\Attraction;
+use App\Models\Attractions_Close_Locations;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 use function App\Auth\checkOrThrow;
 
 use const App\Auth\P_MANAGE_ATTRACTION;
+use const App\Auth\P_VIEW_ATTRACTION;
 
 use Intervention\Image\Facades\Image;
 
@@ -51,7 +53,8 @@ class AttractionsAdminController extends Controller
             foreach ($a->toArray() as $k => $v) {
                 $this->data->set($k, $v);
             }
-            return $this->view('admin.update');
+            $this->data->set("isPUT", true);
+            return $this->view('admin.create');
         } else {
             return $this->error("No ownership to update this attracion");
         }
@@ -154,18 +157,17 @@ class AttractionsAdminController extends Controller
         if ($request->file('image') !== null) {
             Storage::disk("public")->delete("thumbnail/$a->title_compiled.png");
             Storage::disk('public')
-            ->put(
-                "thumbnail/$in[title_compiled].png",
-                Image::make($request->file("image")->getRealPath())
-                    ->resize(150, 150, static function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->stream()
-                    ->detach(),
-                "public"
-            );
-
+                ->put(
+                    "thumbnail/$in[title_compiled].png",
+                    Image::make($request->file("image")->getRealPath())
+                        ->resize(150, 150, static function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })
+                        ->stream()
+                        ->detach(),
+                    "public"
+                );
         }
 
         return redirect(status: 204)->route("admin.edit.attraction", $id);
@@ -173,39 +175,45 @@ class AttractionsAdminController extends Controller
 
     public function delete($id)
     {
-        try {
-            checkOrThrow(Auth::user(), P_MANAGE_ATTRACTION);
-        } catch (NoPermissionsException $e) {
-            return $this->error($e->__toString());
-        }
-
-        $attr = Attraction::find($id);
-
-        if (!$attr) {
-            return redirect()->back();
-        }
-
-        Attractions_Pictures::where('belonged_attraction', $id)->delete();
-        Attraction::destroy($id);
-        return redirect()->route('admin.list.attraction');
-    }
-
-    public function list()
-    {
         $v = $this->verify(P_MANAGE_ATTRACTION);
         if ($v !== null) {
             return $v;
         }
 
-        Session::put('place', 'admin_attr');
+        $a = Attraction::find($id);
 
-        $all_attractions = Attraction::cursorPaginate(5);
+        if (!$a) {
+            return $this->error('Attraction does not exists');
+        }
 
-        foreach ($all_attractions as $attr) {
-            $attr['image'] = asset('storage/attractions/' . $attr->image_path);
-            $attr['qr-code'] = asset('storage/qr-codes/' . $attr['qr_code_path']);
-            $creator_name = User::select('name')->where('id', $attr['created_by'])->first();
-            $attr['creator_name'] = $creator_name->name;
+        if (!$a->created_by === Auth::id() && !Auth::user()->super) {
+            return $this->error('Not the owner neither a super user');
+        }
+
+        Attractions_Pictures::where('belonged_attraction', $id)->delete();
+        Attractions_Close_Locations::where('belonged_attraction', $id)->delete();
+        Attraction::destroy($id);
+
+        return redirect()->route('admin.list.attraction');
+    }
+
+    public function list()
+    {
+        $v = $this->verify(P_VIEW_ATTRACTION);
+        if ($v !== null) {
+            return $v;
+        }
+
+        Session::put(self::PLACE, 'admin_attr');
+
+        $all_attractions = Attraction::cursorPaginate(10);
+
+        foreach ($all_attractions as &$attr) {
+            $attr["image"] = asset("storage/attractions/$attr->image_path");
+            $attr["qr-code"] = asset("storage/qr-codes/$attr->qr_code_path");
+            $attr["creator_name"] = User::select("name")
+                ->where("id", $attr["created_by"])
+                ->first()->name;
         }
 
         $this->data->set('attractions', $all_attractions);

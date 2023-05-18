@@ -42,9 +42,12 @@
     <td>{{Str::limit($attr_loc->name, 20)}}</td>
     <td class="sm:table-cell hidden">{{Str::limit($attr_loc->location, 60)}}</td>
     <td class="sm:table-cell hidden">{{$attr_loc->createPhoneNumber()}}</td>
-    <td class="py-4 grid grid-cols-1 gap-4">
-      <a class="a-btn" href="{{route('admin.edit.location', ['id' => $attraction->id, 'id_2' => $attr_loc->id])}}">@lang("Edit")</a>
-      <button onclick="document.getElementById('{{$attr_loc->id}}').style.display = 'block';" class='a-btn bg-red-600 text-white'>@lang('Delete')</button>
+    <td>
+    <div class="py-4 flex flex-col gap-4 h-full">
+      <a class="a-btn" href="{{route('view', ['title_compiled' => $a->title_compiled])}}">@lang("View")</a>
+      <a class="a-btn" href="{{route('admin.edit.attraction', ['id' => $a->id])}}">@lang("Edit")</a>
+      <button onclick="document.getElementById('{{$a->id}}').style.display = 'block';" class='a-btn bg-red-600 text-white'>@lang('Delete')</button>
+    </div>
     </td>
   </tr>
   @endforeach

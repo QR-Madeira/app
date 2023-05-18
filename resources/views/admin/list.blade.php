@@ -1,31 +1,52 @@
 @extends('layouts.admin-layout')
 @section('body')
-  <div class='px-4 xl:px-24 py-4 grid grid-rows-auto grid-cols-1 justify-items-center'>
-    <div class='flex xl:flex-row flex-col flex-gap-1 items-center justify-center w-full relative pb-12'>
-      <h1 class='text-5xl text-center py-8'>@lang('Attractions List')</h1>
-      <div class='py-8 xl:absolute sm:right-0'>
-        <x-a :url="route('admin.create.attraction')" :name="'Create Attraction'"/>
-      </div>
+<div class='px-4 xl:px-24 py-4 grid grid-rows-auto grid-cols-1 justify-items-center'>
+
+<nav class="py-4 grid sm:grid-cols-5 gap-3">
+<div class="sm:row-start-1"></div>
+<h1 class="row-start-1 sm:col-span-3 text-center text-4xl antialiased font-bold py-7">@lang('Attractions List')</h1>
+<a class="a-btn" href="{{route('admin.create.attraction')}}">@lang("Create Attraction")</a>
+</nav>
+
+@if(is_iterable($attractions) && (count($attractions) > 0))
+<table class="my-4 border border-slate-500 w-full">
+
+<colgroup><col>
+<colgroup><col><col>
+<colgroup><col>
+
+<thead class="border border-slate-500">
+  <tr>
+    <th class="sm:table-cell hidden">@lang('Qr Code')
+    <th>@lang("Name")
+    <th class="sm:table-cell hidden">@lang("Description")
+    <th>@lang("Actions")
+  </tr>
+</thead>
+
+<tbody>
+  @foreach($attractions as $a)
+  <x-delete-alert :route="route('admin.delete.attraction', ['id' => $a->id])" :id="$a->id"/>
+  <tr>
+    <td class="sm:table-cell hidden h-4"><a href="{{asset($a['qr-code'])}}" download="{{$a->title_compiled}}"><img src="{{ asset($a['qr-code']) }}" alt="Local Image" class='aspect-square p-4'></a></td>
+    <td>{{$a->title}}</td>
+    <td class="sm:table-cell hidden">{{$a->description}}</td>
+    <td>
+    <div class="py-4 flex flex-col gap-4 h-full">
+      <a class="a-btn" href="{{route('view', ['title_compiled' => $a->title_compiled])}}">@lang("View")</a>
+      <a class="a-btn" href="{{route('admin.edit.attraction', ['id' => $a->id])}}">@lang("Edit")</a>
+      <button onclick="document.getElementById('{{$a->id}}').style.display = 'block';" class='a-btn bg-red-600 text-white'>@lang('Delete')</button>
     </div>
-    @if(count($attractions) != 0)
-      <div class='grid xl:grid-cols-5 grid-cols-2 p-4 border-2 rounded-t border-black border-b-0 w-full'>
-        <h1 class="text-lg">@lang('Qr Code')</h1>
-        <h1 class='text-lg xl:block hidden'>@lang('Name')</h1>
-        <h1 class="text-lg xl:block hidden">@lang('Description')</h1>
-        <h1 class="text-lg text-end">@lang('Actions')</h1>
-      </div>
-      <div class="w-full">
-        @foreach ($attractions as $attr)
-          <div class="@if(!$loop->last) border-b-0 @else rounded-b @endif border-2 border-black">
-            <x-attraction :attraction="$attr" :userName="$userName"/>
-          </div>
-        @endforeach
-        <p>{{$attractions->links()}}</p>
-      </div>
-    @else
-      <div class="p-4">
-        <h1 class='text-2xl'>@lang('There are no attractions created')</h1>
-      </div>
-    @endif
-  </div>
+    </td>
+  </tr>
+  @endforeach
+</table>
+
+<p>{{$attractions->links()}}</p>
+
+@else
+<p class="text-black/50 p-4 text-2xl">@lang('There are no attractions created')</p>
+@endif
+
+</div>
 @endsection

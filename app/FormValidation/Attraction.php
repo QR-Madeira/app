@@ -28,7 +28,6 @@ final class Attraction extends FormValidator
             FormRule::new("gallery")->null()->array(),
             FormRule::new("lat")->required(),
             FormRule::new("lon")->required(),
-            FormRule::new("size")->required(),
         ];
 
         $name = FormRule::new("title")->required();
