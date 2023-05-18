@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('attractions_close_locations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('belonged_attraction');
-            $table->foreign('belonged_attraction')->references('id')->on('attractions');
+            $table->foreign('belonged_attraction')->references('id')->on('attractions')->onDelete('cascade');
             $table->string('icon');
             $table->string('name');
             $table->string('location');

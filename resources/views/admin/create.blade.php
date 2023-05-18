@@ -20,7 +20,6 @@
 <p><label>@lang("Description"): <input required type="text" name="description" value="{{$description ?? old('description')}}" class="form-in" /></label></p>
 <p><label>@lang("Attraction Image"): <input required type="file" name="image" class="form-in" /></label></p>
 <p><label>@lang("Attraction Gallery"): <input type="file" multiple name="gallery[]" class="form-in" /></label></p>
-<p><label>@lang("QR Code Size"): <input required type="number" step="25" min="25" name="size" value="{{$size ?? old('size') ?? 150}}" class="form-in" /></label></p>
 
 </div>
 
