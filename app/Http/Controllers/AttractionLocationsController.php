@@ -23,8 +23,7 @@ class AttractionLocationsController extends Controller
 
         Session::put(static::PLACE, "admin_attr");
 
-        return Attractions_Close_Locations::where("belonged_attraction", $id)
-            ->cursorPaginate(5);
+        return Attractions_Close_Locations::where("belonged_attraction", $id)->cursorPaginate(5);
     }
 
     public function creator(string $id)
