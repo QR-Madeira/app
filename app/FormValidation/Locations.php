@@ -13,10 +13,11 @@ namespace App\FormValidation;
 
 use App\FormValidation\Core\FormRule;
 use App\FormValidation\Core\FormValidator;
+use Illuminate\Http\Request;
 
 final class Locations extends FormValidator
 {
-    public function getRules(): array
+    public function getRules(Request $req): array
     {
         return [
             FormRule::new("icon")->required()->string(),
@@ -32,5 +33,10 @@ final class Locations extends FormValidator
                 ->integer()
                 ->minmaxDigits(1, 14),
         ];
+    }
+
+    public function postProcess(array $in): array
+    {
+        return $in;
     }
 }

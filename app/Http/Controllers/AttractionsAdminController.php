@@ -82,7 +82,7 @@ class AttractionsAdminController extends Controller
 
         Storage::disk("public")
             ->put("qr-codes/$in[qr_code_path]", file_get_contents(
-                $this->getQrCodeUrl($in["size"], $in["site_url"])
+                $this->getQrCodeUrl($in["site_url"])
             ), "public");
 
         Storage::disk('public')
@@ -147,13 +147,25 @@ class AttractionsAdminController extends Controller
             Storage::disk("public")->delete("qr_codes/$a->title_compiled.png");
             Storage::disk("public")
                 ->put("qr-codes/$in[qr_code_path]", file_get_contents(
-                    $this->getQrCodeUrl($in["size"], $in["site_url"])
+                    $this->getQrCodeUrl($in["site_url"])
                 ), "public");
         }
 
         if ($request->file('image') !== null) {
-            // put new???
-            Storage::disk("public")->delete("attractions/$a->image_path");
+            Storage::disk("public")->delete("thumbnail/$a->title_compiled.png");
+            Storage::disk('public')
+            ->put(
+                "thumbnail/$in[title_compiled].png",
+                Image::make($request->file("image")->getRealPath())
+                    ->resize(150, 150, static function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->stream()
+                    ->detach(),
+                "public"
+            );
+
         }
 
         return redirect(status: 204)->route("admin.edit.attraction", $id);
@@ -201,9 +213,8 @@ class AttractionsAdminController extends Controller
         return $this->view('admin.list');
     }
 
-    private function getQrCodeUrl(int $size, string $site): string
+    private function getQrCodeUrl(string $site): string
     {
-        return "https://api.qrserver.com/v1/create-qr-code/?format=svg&size=$size"
-            . "x$size&data=$site";
+        return "https://api.qrserver.com/v1/create-qr-code/?format=svg&data=$site";
     }
 }
