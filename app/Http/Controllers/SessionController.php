@@ -11,7 +11,7 @@ class SessionController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            return redirect()->route('admin.list.attraction');
+            return redirect()->route('admin.main');
         }
 
         return $this->view('admin.login');

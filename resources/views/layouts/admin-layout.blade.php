@@ -8,6 +8,12 @@
     <div class="h-full px-3 py-4 overflow-y-auto bg-slate-500 flex flex-col">
        <ul class="space-y-2 font-medium flex flex-col h-full">
           <li>
+            <a href="{{route('admin.main')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'main') bg-slate-700 @endif hover:bg-slate-600">
+              <span class="material-symbols-rounded fs-36">home</span>
+              <span class="flex-1 ml-3 whitespace-nowrap hidden xl:block">@lang('Main')</span>
+            </a>
+          </li>
+          <li>
             <a href="{{route('admin.list.attraction')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'admin_attr') bg-slate-700 @endif hover:bg-slate-600">
               <span class="material-symbols-rounded fs-36">distance</span>
               <span class="flex-1 ml-3 whitespace-nowrap hidden xl:block">@lang('Attractions')</span>
