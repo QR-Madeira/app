@@ -35,17 +35,16 @@
 </thead>
 
 <tbody>
-  @foreach($attraction_locations as $attr_loc)
-  <x-delete-alert :route="route('admin.delete.location', ['id' => $attraction->id, 'id_2' => $attr_loc->id])" :id="$attr_loc->id" />
+  @foreach($attraction_locations as $a)
+  <x-delete-alert :route="route('admin.delete.location', ['id' => $attraction->id, 'id_2' => $a->id])" :id="$a->id" />
   <tr>
-    <td class="sm:table-cell hidden"><span class="material-symbols-rounded fs-36">{{$attr_loc->icon}}</span></td>
-    <td>{{Str::limit($attr_loc->name, 20)}}</td>
-    <td class="sm:table-cell hidden">{{Str::limit($attr_loc->location, 60)}}</td>
-    <td class="sm:table-cell hidden">{{$attr_loc->createPhoneNumber()}}</td>
+    <td class="sm:table-cell hidden"><span class="material-symbols-rounded fs-36">{{$a->icon}}</span></td>
+    <td>{{Str::limit($a->name, 20)}}</td>
+    <td class="sm:table-cell hidden">{{Str::limit($a->location, 60)}}</td>
+    <td class="sm:table-cell hidden">{{$a->createPhoneNumber()}}</td>
     <td>
     <div class="py-4 flex flex-col gap-4 h-full">
-      <a class="a-btn" href="{{route('view', ['title_compiled' => $a->title_compiled])}}">@lang("View")</a>
-      <a class="a-btn" href="{{route('admin.edit.attraction', ['id' => $a->id])}}">@lang("Edit")</a>
+      <a class="a-btn" href="{{route('admin.edit.location', ['id' => $attraction->id, "id_2" => $a->id ])}}">@lang("Edit")</a>
       <button onclick="document.getElementById('{{$a->id}}').style.display = 'block';" class='a-btn bg-red-600 text-white'>@lang('Delete')</button>
     </div>
     </td>

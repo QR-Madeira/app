@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Attraction;
 use App\Models\Attractions_Pictures;
 use App\Models\Attractions_Close_Locations;
