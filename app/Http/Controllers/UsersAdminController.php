@@ -18,6 +18,9 @@ use function App\Auth\grant;
 
 class UsersAdminController extends Controller
 {
+
+    
+
     public function creator(Request $request)
     {
         if (!check(Auth::user(), P_MANAGE_USER)) {
@@ -44,7 +47,7 @@ class UsersAdminController extends Controller
 
         Session::put('place', 'admin_usr');
 
-        $all_users = User::all();
+        $all_users = User::cursorPaginate(8);
 
         $this->data->set('users', $all_users);
 
