@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttractionsAdminController;
 use App\Http\Controllers\AttractionLocationsController;
@@ -86,6 +87,8 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
           Route::get('/user/{id}', [UsersAdminController::class, 'delete'])->name('delete.user');
           Route::get('/location/{id}/{id_2}', [AttractionLocationsController::class, 'delete'])->name('delete.location');
       });
+
+      Route::get('/main', [AdminController::class, 'main'])->name('main');
     });
 });
 

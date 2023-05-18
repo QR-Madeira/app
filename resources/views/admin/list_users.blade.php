@@ -1,12 +1,11 @@
 @extends('layouts.admin-layout')
 @section('body')
-  <div class='xl:px-24 px-4 py-4 grid grid-rows-auto grid-cols-1 justify-items-center'>
-    <div class='flex xl:flex-row flex-col items-center justify-center w-full relative'>
-      <h1 class='text-5xl text-center py-8'>@lang('Users List')</h1>
-      <div class='xl:absolute xl:right-0'>
-        <x-a :url="route('admin.create.user')" :name="'Create User'"/>
-      </div>
-    </div>
+  <div class='px-4 xl:px-24 py-4 grid grid-rows-auto grid-cols-1 justify-items-center'>
+    <nav class="py-4 grid sm:grid-cols-5 gap-3">
+      <div class="sm:row-start-1"></div>
+      <h1 class="row-start-1 sm:col-span-3 text-center text-4xl antialiased font-bold py-7">@lang('Users List')</h1>
+      <a class="a-btn" href="{{route('admin.create.user')}}">@lang("Create User")</a>
+    </nav>
     @if(is_iterable($users) && count($users) != 0)
     <table class="my-4 border border-slate-500 w-full">
       <thead class="border border-slate-500">
