@@ -3,6 +3,7 @@
 /**
  * @package App\\FormValidation
  * @author João Augusto Costa Branco Marado Torres <torres.dev@disroot.org>
+ * @author Danilo Kymhyr <danilokymhyr@gmail.com>
  * @copyright Copyright (C) 2023  Danilo Kymhyr, João Augusto Costa Branco Marado Torres, Leonardo Abreu de Paulo
  */
 

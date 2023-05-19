@@ -161,4 +161,14 @@ final class FormRule
         $this->appendRules("image");
         return $this;
     }
+    public function email(): static
+    {
+        $this->appendRules("email");
+        return $this;
+    }
+    public function confirmed(): static
+    {
+        $this->appendRules("confirmed");
+        return $this;
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\FormValidation\Core\FormValidationException;
+use App\FormValidation\Users as UsersValidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -19,12 +21,32 @@ use function App\Auth\grant;
 class UsersAdminController extends Controller
 {
 
-    
+    public function updater($id)
+    {
+        $v = $this->verify(P_MANAGE_USER);
+        if ($v !== null) {
+            return $v;
+        }
+
+        Session::put('place', 'admin_usr');
+
+        $user = User::find($id);
+        if (!$user) {
+            return $this->error("User not found");
+        }
+
+        $this->data->set("user", $user);
+        $this->data->set('permissions', getPermissionsHash());
+        $this->data->set("isPUT", true);
+
+        return $this->view("admin.create_user");
+    }
 
     public function creator(Request $request)
     {
-        if (!check(Auth::user(), P_MANAGE_USER)) {
-            return redirect()->back();
+        $v = $this->verify(P_MANAGE_USER);
+        if ($v !== null) {
+            return $v;
         }
 
         Session::put('place', 'admin_usr');
@@ -41,8 +63,9 @@ class UsersAdminController extends Controller
 
     public function list()
     {
-        if (!check(Auth::user(), P_VIEW_USER)) {
-            return redirect()->back();
+        $v = $this->verify(P_VIEW_USER);
+        if ($v !== null) {
+            return $v;
         }
 
         Session::put('place', 'admin_usr');
@@ -56,8 +79,9 @@ class UsersAdminController extends Controller
 
     public function delete($id)
     {
-        if (!check(Auth::user(), P_MANAGE_USER)) {
-            return redirect()->back();
+        $v = $this->verify(P_MANAGE_USER);
+        if ($v !== null) {
+            return $v;
         }
 
         $user = User::find($id);
@@ -70,34 +94,41 @@ class UsersAdminController extends Controller
         return redirect()->route('admin.list.users');
     }
 
-    public function create(Request $request)
+    public function create(Request $request, string $id = null)
     {
-        if (!check(Auth::user(), P_MANAGE_USER)) {
-            return redirect()->back();
+        $v = $this->verify(P_MANAGE_USER);
+        if ($v !== null) {
+            return $v;
         }
 
-        $validatedData = $request->validate([
-            'name' => 'required|min:4',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:4|confirmed',
-        ]);
-
-        $pass_hash = Hash::make($validatedData['password']);
-
-        $user = new User();
-        $user->name = $validatedData['name'];
-        $user->email = $validatedData['email'];
-        $user->password = $pass_hash;
-        grant($user, ...$request->post("permissions"));
-
-        if ($user->save()) {
-            $request->session()->flash('status', true);
-            $request->session()->flash('message', 'User created with success!');
-            return redirect()->route('admin.creator.user');
-        } else {
-            $request->session()->flash('status', false);
-            $request->session()->flash('message', 'Something went wrong when creating the player, try again!');
-            return redirect()->route('admin.creator.user');
+        try {
+            $in = UsersValidation::verify($request);
+        } catch (FormValidationException $e) {
+            return $this->error($e->getMessage());
         }
+
+        $status = false;
+        $method = "";
+
+        switch ($request->method()) {
+            case "POST": {
+                $method = "created";
+                $status = User::create($in);
+
+                break;
+            }case "PUT": {
+                $method = "updated";
+                $status = User::find($id)->update($in);
+
+                break;
+            }
+        }
+
+        Session::flash("status", $status == true);
+        Session::flash("message", $status == true
+            ? "User $method with success."
+            : "Something went wrong.");
+
+        return redirect()->route("admin.creator.user", ["id" => $id]);
     }
 }

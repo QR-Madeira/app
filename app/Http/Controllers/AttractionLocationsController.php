@@ -50,7 +50,7 @@ class AttractionLocationsController extends Controller
         return $this->view("admin.create_close_location");
     }
 
-    public function create(Request $request, string $id, string $id_2 = null)
+    public function create(Request $request, string $id = null, string $id_2 = null)
     {
         $v = $this->verify(P_MANAGE_ATTRACTION);
         if ($v !== null) {
@@ -85,8 +85,7 @@ class AttractionLocationsController extends Controller
             }
             case "PUT": {
                     $method = "updated";
-                    $status = Attractions_Close_Locations::find($id_2)
-                        ->update($in);
+                    $status = Attractions_Close_Locations::find($id_2)->update($in);
 
                     break;
             }

@@ -23,7 +23,7 @@
             </td>
             <td>
               <div class="py-4 flex flex-col sm:flex-row justify-center sm:[&>*]:w-full gap-4 h-full">
-                <a class="a-btn" href="{{route('admin.edit.attraction', ['id' => $user->id])}}">@lang("Edit")</a>
+                <a class="a-btn" href="{{route('admin.edit.user', ['id' => $user->id])}}">@lang("Edit")</a>
                 <button onclick="document.getElementById('{{$user->id}}').style.display = 'block';" class='a-btn bg-red-600 text-white'>@lang('Delete')</button>
               </div>
             </td>
