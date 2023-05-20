@@ -23,12 +23,14 @@ final class Users extends FormValidator
     {
         $rules = [
             FormRule::new("name")->required()->minmax(3, 80),
-            FormRule::new("password")->required()->min(6)->string()->confirmed(),
             FormRule::new("permissions")->required()->array(),
         ];
 
         if ($req->getMethod() == "POST") {
             $rules[] = FormRule::new("email")->required()->email()->unique("users", "email");
+        } elseif ($req->getMethod() == "PUT") {
+            $rules[] = FormRule::new("old_password")->requiredWith("new_password")->null()->string();
+            $rules[] = FormRule::new("password")->requiredWith("password")->null()->min(6)->string()->confirmed();
         }
 
         return $rules;
@@ -36,10 +38,18 @@ final class Users extends FormValidator
 
     public function postProcess(array $in): array
     {
-        $hash = new PasswordHash(8, False);
+        if (isset($in["password"])) {
+            $hash = new PasswordHash(8, false);
+            $in['password'] = $hash->HashPassword($in['password']);
 
-        $in['password'] = $hash->HashPassword($in['password']);
-        //$in['password'] = Hash::make($in['password']);
+            //$in['password'] = Hash::make($in['password']);
+        } else {
+            $in["password"] = "";
+        }
+
+        if (isset($in['new_password'])) {
+            $in['new_password'] = $hash->HashPassword($in['new_password']);
+        }
 
         $permission = 0;
         foreach ($in['permissions'] as $perm) {

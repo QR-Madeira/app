@@ -281,7 +281,7 @@ class Controller extends BaseController
         $this->data = Data::getInstance();
     }
 
-    protected function error(string $error): RedirectResponse
+    protected static function error(string $error): RedirectResponse
     {
         session()->flash('error', $error);
         return redirect()->back();

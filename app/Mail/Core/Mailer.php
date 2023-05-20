@@ -11,45 +11,43 @@ declare(strict_types=1);
 
 namespace App\Mail\Core;
 
-use Psr\Http\Message\UriInterface;
 use Symfony\Component\Mailer\Mailer as Sender;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use TorresDeveloper\HTTPMessage\URI;
 
 final class Mailer
 {
     public MailerInterface $mailer;
-    public UriInterface $dsn;
+    public string $from;
 
     public function __construct(?string $dsn = null)
     {
         $dsn ??= env("MAILER_DSN");
-        $this->dsn = new URI($dsn);
+
+        $this->from = explode("/", explode(":", $dsn)[1])[2] ?? null;
 
         $this->mailer = new Sender(Transport::fromDsn($dsn));
     }
 
-    public static function send(Email $email): void
+    public static function send(EmailCreator $email): void
     {
-        return (new static())->send($email);
+        $mailer = new static();
+        $mailer->sendEmail($email);
     }
 
     public function sendEmail(EmailCreator $email): void
     {
-        return $this->mailer->send($email->genEmail(new Email(), $this->getAddress()));
+        $this->mailer->send($email->genEmail(new Email(), $this->getAddress()));
     }
 
     private function getAddress(): ?Address
     {
-        $email = explode(":", $this->dsn->getUserInfo())[0] ?? null;
-
-        if ($email === null) {
+        if ($this->from === null) {
             return null;
         }
 
-        return new Address($email, (env("APP_NAME") ?? "QR-Madeira"));
+        return new Address($this->from, (env("APP_NAME") ?? "QR-Madeira"));
     }
 }
