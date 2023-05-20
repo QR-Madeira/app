@@ -25,17 +25,17 @@ class Verification extends Controller
                     return self::error($e->getMessage());
                 }
 
-                $u = User::where("email", $in["email"]);
+                $u = User::where("email", $in["email"])->get()[0];
 
                 if ($u === null) {
                     return self::error("no user found");
                 }
 
-                if ($u->code_verification !== $in["code"]) {
+                if ($u->verification_code !== $in["code"]) {
                     return self::error("wrong code");
                 }
 
-                $u->code_verification = null;
+                $u->verification_code = null;
                 $u->active = true;
                 $u->password = $in["password"];
                 $u->save();
