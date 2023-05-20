@@ -6,6 +6,7 @@ use App\Models\User;
 use App\FormValidation\Core\FormValidationException;
 use App\FormValidation\Users as UsersValidation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 use function App\Auth\check;
@@ -35,9 +36,8 @@ class UsersAdminController extends Controller
 
         $this->data->set("user", $user);
         $this->data->set('permissions', getPermissionsHash());
-        $this->data->set("isPUT", true);
 
-        return $this->view("admin.create_user");
+        return $this->view("admin.edit_user");
     }
 
     public function creator(Request $request)
@@ -104,7 +104,6 @@ class UsersAdminController extends Controller
         } catch (FormValidationException $e) {
             return $this->error($e->getMessage());
         }
-
         $status = false;
         $method = "";
 
@@ -116,8 +115,16 @@ class UsersAdminController extends Controller
                 break;
             }case "PUT": {
                 $method = "updated";
-                $status = User::find($id)->update($in);
-
+                $user = User::find($id);
+                if($user){ return $status = false; }
+                if(!$in['old_password'] && !$in['password']){
+                    $status = $user->update($in);
+                }else{
+                    $attempt = Auth::attempt(['email' => $user['email'], 'password' => $in['old_password']]);
+                    if(!$attempt){ return $status = false; }
+                    $status = $user->update($in);
+                }
+                
                 break;
             }
         }
@@ -127,6 +134,6 @@ class UsersAdminController extends Controller
             ? "User $method with success."
             : "Something went wrong.");
 
-        return redirect()->route("admin.creator.user", ["id" => $id]);
+        return redirect()->route("admin.list.users");
     }
 }

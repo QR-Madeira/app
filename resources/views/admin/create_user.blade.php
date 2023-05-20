@@ -9,13 +9,10 @@
       </div>
     </div>
     <x-show-required :errors="$errors"/>
-    <form class="grid grid-cols-1 gap-4" action="{{route('admin.' . ((isset($isPUT) && $isPUT) ? 'update' : 'create') . '.user', (isset($isPUT) && $isPUT) ? [ 'id' => $user->id ] : [])}}" method="POST" enctype="multipart/form-data">
+    <form class="grid grid-cols-1 gap-4" action="{{route('admin.create.user')}}" method="POST" enctype="multipart/form-data">
       @csrf
-      @if(isset($isPUT) && $isPUT)
-      @method("PUT")
-      @endif
-      <x-input :type="'text'" :name="'name'" :value="$user->name ?? old('name')" :placeholder="'Name'"/>
-      <x-input :type="'email'" :name="'email'" :value="$user->email ?? old('email')" :placeholder="'Email'"/>
+      <x-input :type="'text'" :name="'name'" :value="old('name')" :placeholder="'Name'"/>
+      <x-input :type="'email'" :name="'email'" :value="old('email')" :placeholder="'Email'"/>
       <x-input :type="'password'" :name="'password'" :placeholder="'Password'"/>
       <x-input :type="'password'" :name="'password_confirmation'" :placeholder="'Password Confirmation'"/>
 <fieldset>
@@ -26,7 +23,7 @@
   <p>
     <label class="select-none">
       @lang(ucfirst($k))
-      <input type="checkbox" class="peer/standart" name="permissions[{{$k}}]" value="{{$v}}" <?php if(isset($user) && check($user, $v)) echo 'checked'?>/>
+      <input type="checkbox" class="peer/standart" name="permissions[{{$k}}]" value="{{$v}}"/>
     </label>
   </p>
 @endforeach
