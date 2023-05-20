@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
 use App\Http\Controllers\AttractionsAdminController;
 use App\Http\Controllers\AttractionLocationsController;
 use App\Http\Controllers\GalleryAdminController;
@@ -103,7 +104,13 @@ Route::get('/signout', [SessionController::class, 'signout'])->name('signout');
 Route::any("/verify", Verification::index(...))->name("verify");
 
 Route::get('/', function () {
-    return view('viewer.index');
+  $data = config('site');
+  dd($data);
+  /*
+    $data['test'] = '123';
+    file_put_contents('./../config/site.json', json_encode($data));
+  */
+  return view('viewer.index', $data);
 })->name('index');
 
 Route::get('/{title_compiled}', [AttractionsViewerController::class, 'index'])->name('view');
