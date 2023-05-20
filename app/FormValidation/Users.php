@@ -47,11 +47,10 @@ final class Users extends FormValidator
             $in['new_password'] = $hash->HashPassword($in['new_password']);
         }
         $permission = 0;
-        foreach($in['permissions'] as $perm){
+        foreach ($in['permissions'] as $perm) {
             $permission |= $perm;
         }
         $in['permissions'] = $permission;
         return $in;
     }
-
 }

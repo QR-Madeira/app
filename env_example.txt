@@ -10,6 +10,8 @@ DEFAULT_ADMIN_PASSWORD=pass_example
 LIBRETRANSLATE_URI=http://localhost:5000/
 LIBRETRANSLATE_TRANSLATE=false
 
+MAILER_DSN=smtp://user:pass@smtp.example.com:port
+
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
 LOG_LEVEL=debug

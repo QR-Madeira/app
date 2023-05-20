@@ -9,6 +9,9 @@ use App\Http\Controllers\AttractionsViewerController;
 use App\Http\Controllers\UsersAdminController;
 use App\Http\Controllers\SessionController;
 use App\Http\Middleware\Authenticate;
+use App\Mail\Mailer;
+use Symfony\Component\Mailer\Mailer as MailerMailer;
+use Symfony\Component\Mailer\Transport;
 
 /*
 |--------------------------------------------------------------------------
