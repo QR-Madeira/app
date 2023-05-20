@@ -8,13 +8,10 @@ use App\FormValidation\Users as UsersValidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-use function App\Auth\check;
-
 use const App\Auth\P_MANAGE_USER;
 use const App\Auth\P_VIEW_USER;
 
 use function App\Auth\getPermissionsHash;
-use function App\Auth\grant;
 
 class UsersAdminController extends Controller
 {

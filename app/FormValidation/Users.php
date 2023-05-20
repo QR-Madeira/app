@@ -16,7 +16,6 @@ use App\FormValidation\Core\FormRule;
 use App\FormValidation\Core\FormValidator;
 use Illuminate\Http\Request;
 use App\Classes\PasswordHash;
-use Illuminate\Support\Facades\Hash;
 
 final class Users extends FormValidator
 {
@@ -27,6 +26,7 @@ final class Users extends FormValidator
             FormRule::new("password")->required()->min(6)->string()->confirmed(),
             FormRule::new("permissions")->required()->array(),
         ];
+
         if ($req->getMethod() == "POST") {
             $rules[] = FormRule::new("email")->required()->email()->unique("users", "email");
         }
@@ -40,11 +40,13 @@ final class Users extends FormValidator
 
         $in['password'] = $hash->HashPassword($in['password']);
         //$in['password'] = Hash::make($in['password']);
+
         $permission = 0;
         foreach ($in['permissions'] as $perm) {
             $permission |= $perm;
         }
         $in['permissions'] = $permission;
+
         return $in;
     }
 }
