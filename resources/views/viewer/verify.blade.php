@@ -53,7 +53,7 @@
 @csrf
 
 <p><label class="flex flex-col sm:flex-row">@lang("Email"): <input required type="email" name="email" value="{{$email ?? ''}}" class="form-in" /></label></p>
-<p><label class="flex flex-col sm:flex-row">@lang("Verification Code"): <input required type="text" name="code" class="form-in" /></label></p>
+<p><label class="flex flex-col sm:flex-row">@lang("Verification Code"): <input required type="text" name="code" value="{{$code ?? ''}}" class="form-in" /></label></p>
 <p><label class="flex flex-col sm:flex-row">@lang("Password"): <input required type="password" name="password" class="form-in" /></label></p>
 <p><label class="flex flex-col sm:flex-row">@lang("Password Confirmation"): <input required type="password" name="password_confirmation" class="form-in" /></label></p>
 

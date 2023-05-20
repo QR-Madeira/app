@@ -15,8 +15,12 @@ class Verification extends Controller
         switch ($r->getMethod()) {
             case "GET":
                 $email = $r->get("email");
+                $code = $r->get("code");
 
-                return view("viewer/verify", ["email" => $email]);
+                return view("viewer/verify", [
+                    "email" => $email,
+                    "code" => $code
+                ]);
 
             case "POST":
                 try {
