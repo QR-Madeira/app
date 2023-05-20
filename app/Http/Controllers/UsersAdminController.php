@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\FormValidation\Core\FormValidationException;
 use App\FormValidation\Users as UsersValidation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 use function App\Auth\check;

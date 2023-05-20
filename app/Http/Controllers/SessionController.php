@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ class SessionController extends Controller
 {
     public function index()
     {
-        if (Auth::check()) {
+        if (Auth::check() || Auth::viaRemember()) {
             return redirect()->route('admin.main');
         }
 

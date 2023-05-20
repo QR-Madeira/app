@@ -15,7 +15,7 @@ namespace App\FormValidation;
 use App\FormValidation\Core\FormRule;
 use App\FormValidation\Core\FormValidator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Classes\PasswordHash;
 use Illuminate\Support\Facades\Hash;
 
 final class Users extends FormValidator
@@ -36,7 +36,10 @@ final class Users extends FormValidator
 
     public function postProcess(array $in): array
     {
-        $in['password'] = Hash::make($in['password']);
+        $hash = new PasswordHash(8, False);
+
+        $in['password'] = $hash->HashPassword($in['password']);
+        //$in['password'] = Hash::make($in['password']);
         $permission = 0;
         foreach($in['permissions'] as $perm){
             $permission |= $perm;
