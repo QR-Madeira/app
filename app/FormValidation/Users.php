@@ -23,11 +23,11 @@ final class Users extends FormValidator
     public function getRules(Request $req): array
     {
         $rules = [
-            FormRule::new("name")->required()->minmax(3,80),
+            FormRule::new("name")->required()->minmax(3, 80),
             FormRule::new("password")->required()->min(6)->string()->confirmed(),
             FormRule::new("permissions")->required()->array(),
         ];
-        if($req->getMethod() == "POST"){
+        if ($req->getMethod() == "POST") {
             $rules[] = FormRule::new("email")->required()->email()->unique("users", "email");
         }
 
@@ -38,11 +38,10 @@ final class Users extends FormValidator
     {
         $in['password'] = Hash::make($in['password']);
         $permission = 0;
-        foreach($in['permissions'] as $perm){
+        foreach ($in['permissions'] as $perm) {
             $permission |= $perm;
         }
         $in['permissions'] = $permission;
         return $in;
     }
-
 }

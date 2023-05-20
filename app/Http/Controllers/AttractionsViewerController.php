@@ -18,7 +18,8 @@ class AttractionsViewerController extends Controller
             return $this->error('Attraction not found');
         }
 
-        foreach ([
+        foreach (
+            [
             "image" => "storage/attractions/$a[image]",
             "title_compiled" => $title_compiled,
             "title" => $a["title"],
@@ -26,7 +27,8 @@ class AttractionsViewerController extends Controller
             "qr" => asset("storage/qr-codes/$a[qr_code_path]"),
             "lat" => $a["lat"],
             "lon" => $a["lon"],
-        ] as $k => $v) {
+            ] as $k => $v
+        ) {
             $this->data->set($k, $v);
         }
 

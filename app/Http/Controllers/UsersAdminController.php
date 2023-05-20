@@ -20,7 +20,6 @@ use function App\Auth\grant;
 
 class UsersAdminController extends Controller
 {
-
     public function updater($id)
     {
         $v = $this->verify(P_MANAGE_USER);

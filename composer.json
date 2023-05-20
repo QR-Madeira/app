@@ -13,6 +13,8 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.13",
+        "symfony/google-mailer": "^6.2",
+        "symfony/mailer": "^6.2",
         "torres-developer/polyglot": "dev-master"
     },
     "require-dev": {
@@ -31,6 +33,8 @@
             "App\\Auth\\": "app/Auth/",
             "App\\FormValidation\\Core\\": "app/FormValidation/Core/",
             "App\\FormValidation\\": "app/FormValidation/",
+            "App\\Mail\\Core\\": "app/Mail/Core/",
+            "App\\Mail\\": "app/Mail/",
             "App\\Helpers\\": "app/Helpers/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
