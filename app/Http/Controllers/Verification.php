@@ -25,7 +25,7 @@ class Verification extends Controller
                     return self::error($e->getMessage());
                 }
 
-                $u = User::where("email", $in["email"])->get()[0];
+                $u = User::where("email", $in["email"])->first();
 
                 if ($u === null) {
                     return self::error("no user found");
@@ -40,7 +40,7 @@ class Verification extends Controller
                 $u->password = $in["password"];
                 $u->save();
 
-                redirect("login");
+                return redirect("login");
             default:
                 return (new Response())->setStatusCode(405);
         }
