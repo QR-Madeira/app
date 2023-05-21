@@ -65,7 +65,7 @@
   @if (session('error'))
       <dialog class="bg-slate-700 p-8 rounded text-red-500 [&>*]:py-4" id="errors">
         <h1>@lang('Error'):</h1>
-        <p><code>{{session("error")}}<code></p>
+        <p><strong><code>{{session("error")}}<code><strong></p>
         <form method="dialog">
           <button autofocus type="submit" class="form-submit bg-slate-600 hover:bg-slate-500 text-white">Okay</button>
         </form>
