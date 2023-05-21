@@ -63,7 +63,7 @@
 
   </div>
   @if (session('error'))
-      <dialog class="bg-slate-700 p-8 rounded text-red-500 [&>*]:py-4" id="errors">
+      <dialog class="bg-slate-700 p-8 rounded text-red-500 [&>*]:py-4" id="errors" open>
         <h1>@lang('Error'):</h1>
         <p><strong><code>{{session("error")}}<code><strong></p>
         <form method="dialog">
@@ -71,6 +71,7 @@
         </form>
       </dialog>
     <script>
+      document.querySelector("#errors")?.close();
       document.querySelector("#errors")?.showModal();
     </script>
   @endif
