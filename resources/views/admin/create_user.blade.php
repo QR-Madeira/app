@@ -1,12 +1,9 @@
 <?php use function App\Auth\check; ?>
 @extends('layouts.admin-layout')
 @section('body')
-  <div class='py-4 px-24'>
+  <div class='py-4 px-4 lg:px-24'>
     <div class='flex items-center justify-center w-full relative'>
       <h1 class='text-center text-5xl py-8'>@lang('Create User')</h1>
-    <div class='hidden sm:visible sm:absolute right-0'>
-        <x-a :url="route('admin.list.users')" :name="'Users list'"/>
-      </div>
     </div>
     <x-show-required :errors="$errors"/>
     <form class="grid grid-cols-1 gap-4" action="{{route('admin.create.user')}}" method="POST" enctype="multipart/form-data">
@@ -31,8 +28,5 @@
 </fieldset>
       <x-submit :value="'Create'" />
     </form>
-    @if(Session::has('status') && Session::has('message'))
-      <x-success_error_msg :status="$status" :msg="$message"/>
-    @endif
   </div>
 @endsection

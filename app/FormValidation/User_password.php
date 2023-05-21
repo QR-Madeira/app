@@ -18,18 +18,14 @@ use Illuminate\Http\Request;
 use App\Classes\PasswordHash;
 use Illuminate\Support\Facades\Hash;
 
-final class Users extends FormValidator
+final class User_password extends FormValidator
 {
     public function getRules(Request $req): array
     {
         $rules = [
-            FormRule::new("name")->required()->minmax(3,80),
-            FormRule::new("permissions")->required()->array(),
+            FormRule::new("old_password")->required()->string(),
+            FormRule::new("password")->required()->min(6)->string()->confirmed(),
         ];
-        if($req->getMethod() == "POST"){
-            $rules[] = FormRule::new("password")->required()->min(6)->string()->confirmed();
-            $rules[] = FormRule::new("email")->required()->email()->unique("users", "email");
-        }
 
         return $rules;
     }
@@ -38,15 +34,9 @@ final class Users extends FormValidator
     {
         $hash = new PasswordHash(8, False);
         //$in['password'] = Hash::make($in['password']);
-        if(isset($in['password'])){
-            $in['password'] = $hash->HashPassword($in['password']);
-        }
+        //$in['old_password'] = $hash->HashPassword($in['old_password']);
+        $in['password'] = $hash->HashPassword($in['password']);
         
-        $permission = 0;
-        foreach ($in['permissions'] as $perm) {
-            $permission |= $perm;
-        }
-        $in['permissions'] = $permission;
         return $in;
     }
 }

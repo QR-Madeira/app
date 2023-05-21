@@ -37,5 +37,8 @@
         <h1 class='text-2xl'>There are no users created</h1>
       </div>
     @endif
+    @if(Session::has('status') && Session::has('message'))
+      <x-success_error_msg :status="Session::get('status')" :msg="Session::get('message')"/>
+    @endif
   </div>
 @endsection
