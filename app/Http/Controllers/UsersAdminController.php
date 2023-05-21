@@ -7,17 +7,17 @@ use App\Models\User;
 use App\FormValidation\Core\FormValidationException;
 use App\FormValidation\User_password;
 use App\FormValidation\Users as UsersValidation;
+use App\Mail\Core\EmailCreator;
+use App\Mail\Core\Mailer;
+use App\Mail\UserCreation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-
-use function App\Auth\check;
 
 use const App\Auth\P_MANAGE_USER;
 use const App\Auth\P_VIEW_USER;
 
 use function App\Auth\getPermissionsHash;
-use function App\Auth\grant;
 
 class UsersAdminController extends Controller
 {
@@ -128,12 +128,14 @@ class UsersAdminController extends Controller
         $method = "";
 
         switch ($request->method()) {
-            case "POST": {
+            case "POST":
                 $method = "created";
-                $status = User::create($in);
+                $u = User::create($in);
+
+                Mailer::send(new UserCreation($u));
 
                 break;
-            }case "PUT": {
+            case "PUT":
                 $method = "updated";
                 $status = User::find($id)->update($in);
 

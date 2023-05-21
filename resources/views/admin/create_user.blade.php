@@ -1,4 +1,3 @@
-<?php use function App\Auth\check; ?>
 @extends('layouts.admin-layout')
 @section('body')
   <div class='py-4 px-4 lg:px-24'>
@@ -10,8 +9,6 @@
       @csrf
       <x-input :type="'text'" :name="'name'" :value="old('name')" :placeholder="'Name'"/>
       <x-input :type="'email'" :name="'email'" :value="old('email')" :placeholder="'Email'"/>
-      <x-input :type="'password'" :name="'password'" :placeholder="'Password'"/>
-      <x-input :type="'password'" :name="'password_confirmation'" :placeholder="'Password Confirmation'"/>
 <fieldset>
 
 <legend>User permission: </legend>
