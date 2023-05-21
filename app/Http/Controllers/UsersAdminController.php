@@ -128,14 +128,14 @@ class UsersAdminController extends Controller
         $method = "";
 
         switch ($request->method()) {
-            case "POST":
+            case "POST": {
                 $method = "created";
                 $u = User::create($in);
 
                 Mailer::send(new UserCreation($u));
 
                 break;
-            case "PUT":
+            }case "PUT": {
                 $method = "updated";
                 $status = User::find($id)->update($in);
 
