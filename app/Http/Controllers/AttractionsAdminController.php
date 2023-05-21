@@ -22,7 +22,10 @@ use const App\Auth\P_VIEW_ATTRACTION;
 use Intervention\Image\Facades\Image;
 
 class AttractionsAdminController extends Controller
-{
+{   
+
+    public $qr_format = 'svg';
+
     public function creator()
     {
         $v = $this->verify(P_MANAGE_ATTRACTION);
@@ -103,13 +106,20 @@ class AttractionsAdminController extends Controller
 
         if (is_iterable($gallery = ($in["gallery"] ?? null))) {
             foreach ($gallery as $picture) {
+                $store = explode("/",$picture->store("gallery", "public"))[1];
                 Attractions_Pictures::create([
                     "belonged_attraction" => $a->id,
-                    "image_path" => explode(
-                        "/",
-                        $picture->store("gallery", "public")
-                    )[1],
+                    "image_path" => $store,
                 ]);
+                Storage::disk('public')->put(
+                    "gallery_thumbnail/$store",
+                    Image::make($picture->getRealPath())
+                        ->resize(150, 150, static function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })->stream()->detach(),
+                    "public"
+                );
             }
         }
 
@@ -147,9 +157,9 @@ class AttractionsAdminController extends Controller
         $a->update($in);
 
         if ($a->title_compiled != $in["title_compiled"]) {
-            Storage::disk("public")->delete("qr_codes/$a->title_compiled.png");
+            Storage::disk("public")->delete("qr-codes/$a->title_compiled.$this->qr_format");
             Storage::disk("public")
-                ->put("qr-codes/$in[qr_code_path]", file_get_contents(
+                ->put("qr-codes/".$in['qr_code_path'], file_get_contents(
                     $this->getQrCodeUrl($in["site_url"])
                 ), "public");
         }
@@ -158,7 +168,7 @@ class AttractionsAdminController extends Controller
             Storage::disk("public")->delete("thumbnail/$a->title_compiled.png");
             Storage::disk('public')
                 ->put(
-                    "thumbnail/$in[title_compiled].png",
+                    "thumbnail/".$in['title_compiled'].".png",
                     Image::make($request->file("image")->getRealPath())
                         ->resize(150, 150, static function ($constraint) {
                             $constraint->aspectRatio();
@@ -189,9 +199,22 @@ class AttractionsAdminController extends Controller
         if (!$a->created_by === Auth::id() && !Auth::user()->super) {
             return $this->error('Not the owner neither a super user');
         }
+        
+        $pics = Attractions_Pictures::where('belonged_attraction', $id);
+        $pictures = $pics->get()->toArray();
+        if($pictures != null){
+            for ($i = 0; $i < count($pictures); $i++) {
+                Storage::disk("public")->delete("gallery/".$pictures[$i]['image_path']);
+                Storage::disk("public")->delete("gallery_thumbnail/".$pictures[$i]['image_path']);
+            }
+        }
 
-        Attractions_Pictures::where('belonged_attraction', $id)->delete();
-        Attractions_Close_Locations::where('belonged_attraction', $id)->delete();
+        Storage::disk("public")->delete("qr-codes/$a[title_compiled].$this->qr_format");
+        Storage::disk("public")->delete("attractions/$a[image]");
+        Storage::disk("public")->delete("thumbnail/$a[title_compiled].png");
+        $pics->delete();
+        Attractions_Close_Locations::where('belonged_attraction', $id)->delete();   
+        
         Attraction::destroy($id);
 
         return redirect()->route('admin.list.attraction');
@@ -223,6 +246,6 @@ class AttractionsAdminController extends Controller
 
     private function getQrCodeUrl(string $site): string
     {
-        return "https://api.qrserver.com/v1/create-qr-code/?format=svg&data=$site";
+        return "https://api.qrserver.com/v1/create-qr-code/?format=".$this->qr_format."&data=$site";
     }
 }

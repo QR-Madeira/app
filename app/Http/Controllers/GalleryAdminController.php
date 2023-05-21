@@ -6,8 +6,11 @@ use App\Models\Attractions_Pictures;
 use Illuminate\Http\Request;
 use App\Models\Attraction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 use function App\Auth\check;
+
+use Intervention\Image\Facades\Image;
 
 use const App\Auth\P_MANAGE_ATTRACTION;
 use const App\Auth\P_VIEW_ATTRACTION;
@@ -21,16 +24,26 @@ class GalleryAdminController extends Controller
         }
 
         $validated = $request->validate([
-        'belonged_attraction' => 'required'
+            'belonged_attraction' => 'required'
         ]);
 
         $gallery = $request->file('gallery');
 
         foreach ($gallery as $img) {
+            $store = explode("/", $img->store('gallery', 'public'))[1];
             Attractions_Pictures::create(array(
-            'belonged_attraction' => $validated['belonged_attraction'],
-            'image_path' => explode("/", $img->store('gallery', 'public'))[1],
+                'belonged_attraction' => $validated['belonged_attraction'],
+                'image_path' => $store,
             ));
+            Storage::disk('public')->put(
+                "gallery_thumbnail/$store",
+                Image::make($img->getRealPath())
+                    ->resize(150, 150, static function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })->stream()->detach(),
+                "public"
+            );
         }
 
         return redirect()->back();
@@ -51,7 +64,7 @@ class GalleryAdminController extends Controller
         $title = Attraction::where('id', '=', $id)->first()->toArray()['title'];
         $images = Attractions_Pictures::where('belonged_attraction', '=', $id)->get()->toArray();
         foreach ($images as $key => $value) {
-            $images[$key]['image_path'] = '/storage/gallery/' . $value['image_path'];
+            $images[$key]['image_path'] = '/storage/gallery_thumbnail/' . $value['image_path'];
         }
 
         $this->data->set('images', $images);
@@ -74,6 +87,8 @@ class GalleryAdminController extends Controller
             return redirect()->back();
         }
 
+        Storage::disk("public")->delete("gallery/$attr->image_path");
+        Storage::disk("public")->delete("gallery_thumbnail/$attr->image_path");
         Attractions_Pictures::destroy($id);
         return redirect()->back();
     }

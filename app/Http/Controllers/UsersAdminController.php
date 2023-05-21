@@ -173,7 +173,7 @@ class UsersAdminController extends Controller
 
         Session::flash("status", $status == true);
         Session::flash("message",$status == true
-        ?"Passwrod changed with success.":"Something went wrong.");
+        ?"Password changed with success.":"Something went wrong.");
 
         return redirect()->route("admin.list.users");
     }
