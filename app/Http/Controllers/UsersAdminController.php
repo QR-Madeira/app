@@ -124,12 +124,14 @@ class UsersAdminController extends Controller
         } catch (FormValidationException $e) {
             return $this->error($e->getMessage());
         }
-        $status = false;
+
+        $u = false;
         $method = "";
 
         switch ($request->method()) {
             case "POST": {
                 $method = "created";
+                $in["password"] = "";
                 $u = User::create($in);
 
                 Mailer::send(new UserCreation($u));
@@ -137,13 +139,13 @@ class UsersAdminController extends Controller
                 break;
             }case "PUT": {
                 $method = "updated";
-                $status = User::find($id)->update($in);
+                $u = User::find($id)->update($in);
 
                 break;
             }
         }
-        Session::flash("status", $status == true);
-        Session::flash("message", $status == true
+        Session::flash("status", $u == true);
+        Session::flash("message", $u == true
             ? "User $method with success."
             : "Something went wrong.");
 
