@@ -104,8 +104,7 @@ Route::get('/signout', [SessionController::class, 'signout'])->name('signout');
 Route::any("/verify", Verification::index(...))->name("verify");
 
 Route::get('/', function () {
-  $data = config('site');
-  dd($data);
+  $data = config('site') ?? [];
   /*
     $data['test'] = '123';
     file_put_contents('./../config/site.json', json_encode($data));

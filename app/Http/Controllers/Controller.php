@@ -292,7 +292,7 @@ class Controller extends BaseController
         try {
             checkOrThrow(Auth::user(), $permission);
         } catch (NoPermissionsException $e) {
-            return $this->error($e);
+            return $this->error($e->getMessage());
         }
 
         return null;

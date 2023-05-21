@@ -10,10 +10,10 @@
 
   <div class="sm:w-[120ch] my-4 sm:mx-auto">
     <p class="text-2xl text-center">
-      @if(app()->getLocale() == 'pt')
-        {{$welcome}}
+      @if(app()->getLocale() !== 'pt')
+        {{$welcome ?? ""}}
       @else
-        {{$bemvindo}}
+        {{$bemvindo ?? ""}}
       @endif
     </p>
   </div>
