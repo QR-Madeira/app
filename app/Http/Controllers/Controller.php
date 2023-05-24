@@ -38,6 +38,7 @@ class Controller extends BaseController
         "park",
         "fort",
         "handyman",
+        "mail",
         "sports_esports",
         "sports_basketball",
         "surfing",

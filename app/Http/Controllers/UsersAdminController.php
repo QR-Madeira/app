@@ -10,6 +10,7 @@ use App\FormValidation\Users as UsersValidation;
 use App\Mail\Core\EmailCreator;
 use App\Mail\Core\Mailer;
 use App\Mail\UserCreation;
+use App\Models\Attraction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -88,7 +89,7 @@ class UsersAdminController extends Controller
 
         Session::put('place', 'admin_usr');
 
-        $all_users = User::cursorPaginate(8);
+        $all_users = User::where('active', 1)->cursorPaginate(8);
 
         $this->data->set('users', $all_users);
 
@@ -105,6 +106,23 @@ class UsersAdminController extends Controller
         $user = User::find($id);
 
         if (!$user) {
+            return redirect()->back();
+        }
+
+        if($user['super'] == 1 /*|| $user['id'] == Auth::id()*/){
+            Session::flash('status', false);
+            Session::flash('message', "Can't delete Super Administrator or Your Own Self.");
+            return redirect()->back();
+        }
+
+        $attractions = Attraction::where('created_by', $user['id'])->get()->toArray();
+        $ls = "";
+        if($attractions != null){
+            Session::flash('status', false);
+            foreach($attractions as $attr){
+                $ls .= "\"".$attr['title']."\"; ";
+            }
+            Session::flash('message', "There are attractions attached to this user, such as: ".$ls);
             return redirect()->back();
         }
 

@@ -6,13 +6,13 @@
     </div>
     <form class="grid grid-cols-1 gap-4" action="{{route('signin')}}" method="POST" enctype="multipart/form-data">
       @csrf
-      <x-input :type="'email'" :name="'email'" :placeholder="'Email'" />
-      <x-input :type="'password'" :name="'password'" :placeholder="'Password'" />
+      <p><label>Email: <input required type="email" name="email" value="{{$email ?? old('email')}}" class="form-in" /></label></p>
+      <p><label>Password: <input required type="password" name="password" class="form-in" /></label></p>
       <div class="flex">
-        <label for="remember" class="select-none"><p class="text-xl">Remember Me: </p></label>
+        <label for="remember" class="select-none"><p class="text-xl">@lang('Remember Me'): </p></label>
         <input class="w-12" type="checkbox" name="remember" id="remember" />
       </div>
-      <x-submit :value="'Signin'" />
+      <button type="submit" class="form-submit">@lang("Signin")</button>
     </form>
   </div>
 @endsection

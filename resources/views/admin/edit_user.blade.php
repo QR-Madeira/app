@@ -9,10 +9,10 @@
     <form class="grid grid-cols-1 gap-4" action="{{route('admin.update.user', [ 'id' => $user->id ])}}" method="POST" enctype="multipart/form-data">
       @csrf
       @method("PUT")
-      <x-input :type="'text'" :name="'name'" :value="$user->name ?? old('name')" :placeholder="'Name'"/>
+      <p><label>@lang("Name"): <input required type="text" name="name" value="{{$user->name ?? old('name')}}" class="form-in" /></label></p>
       <div class="grid grid-cols-2">
         <fieldset class="col-span-2 sm:col-span-1">
-          <legend>User permission: </legend>
+          <legend>@lang("User permission"): </legend>
           @foreach($permissions as $k => $v)
             <p>
               <label class="select-none">
@@ -24,7 +24,7 @@
         </fieldset>
         <a class="a-btn col-span-2 sm:col-span-1 my-8" href="{{route('admin.edit.user_pass', ['id' => $user->id])}}">@lang("Change password")</a>
       </div>
-      <x-submit :value="'Save'" />
+      <button type="submit" class="form-submit">@lang("Save")</button>
     </form>
   </div>
 @endsection

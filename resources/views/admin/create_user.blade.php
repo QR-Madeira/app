@@ -7,8 +7,8 @@
     <x-show-required :errors="$errors"/>
     <form class="grid grid-cols-1 gap-4" action="{{route('admin.create.user')}}" method="POST" enctype="multipart/form-data">
       @csrf
-      <x-input :type="'text'" :name="'name'" :value="old('name')" :placeholder="'Name'"/>
-      <x-input :type="'email'" :name="'email'" :value="old('email')" :placeholder="'Email'"/>
+      <p><label>@lang("Name"): <input required type="text" name="name" value="{{$name ?? old('name')}}" class="form-in" /></label></p>
+      <p><label>@lang("Email"): <input required type="email" name="email" value="{{$email ?? old('email')}}" class="form-in" /></label></p>
 <fieldset>
 
 <legend>User permission: </legend>
@@ -23,7 +23,7 @@
 @endforeach
 
 </fieldset>
-      <x-submit :value="'Create'" />
+      <button type="submit" class="form-submit">@lang("Create")</button>
     </form>
   </div>
 @endsection

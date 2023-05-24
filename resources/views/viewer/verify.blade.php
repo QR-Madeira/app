@@ -48,7 +48,7 @@
 </head>
 
 <body class="my-4 mx-auto w-[120ch]">
-
+<x-show-required :errors="$errors"/>
 <form class="grid grid-cols-1 gap-4 [&>p>label]:flex [&>p>label]:flex-col [&>p>label]:sm:flex-row" action="#" method="POST">
 @csrf
 
