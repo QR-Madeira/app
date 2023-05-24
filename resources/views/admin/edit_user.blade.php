@@ -22,7 +22,7 @@
             </p>
           @endforeach
         </fieldset>
-        <a class="a-btn col-span-2 sm:col-span-1 my-8" href="{{route('admin.edit.user_pass', ['id' => $user->id])}}">@lang("Change pass")</a>
+        <a class="a-btn col-span-2 sm:col-span-1 my-8" href="{{route('admin.edit.user_pass', ['id' => $user->id])}}">@lang("Change password")</a>
       </div>
       <x-submit :value="'Save'" />
     </form>

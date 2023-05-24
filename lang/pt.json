@@ -51,9 +51,10 @@
   "Manage": "Ações",
   "Icon": "Icone",
   "Country": "País",
-  "Create Close Locations": "Criar sítio por perto",
-  "Close Attractions List": "Lista de sítios por perto",
-  "What's a Close Attraction?": "O que é um \"sítio por perto\"?",
+  "Create Close Locations": "Criar local próximo",
+  "Close Attractions List": "Lista de locais próximos",
+  "What are the Close Locations?": "O que são os \"locais próximos\"?",
   "QR Code Size": "Tamanho do Código QR",
-  "Currently this attraction doesn't have close locations.": "Esta atração não possuí nenhuma outra atração próxima."
+  "Currently this attraction doesn't have close locations.": "Esta atração não possuí nenhum local próximo.",
+  "The \"close locations\" like the name says, are the closest places around the attraction selected, for example: Pharmacies, hospitals, shoppings, museums, hotels.": "Os \"locais próximos\" como o nome diz, são os lugares mais próximos da atração selecionada, por exemplo: Farmácias, hospitais, shoppings, museus, hotéis, etc."
 }
