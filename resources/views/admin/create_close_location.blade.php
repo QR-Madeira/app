@@ -13,14 +13,6 @@
 @if(is_iterable($attraction_locations) && (count($attraction_locations) > 0))
 <table class="my-4 border border-slate-500 w-full">
 
-<caption>
-<strong>@lang("Close Attractions List")</strong>
-<details>
-<summary>@lang("What's a Close Attraction?")</summary>
-<p>Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.</p>
-</details>
-</caption>
-
 <colgroup><col><col><col><col>
 <colgroup><col>
 
@@ -60,6 +52,14 @@
 
 <hr class="p-4" />
 
+<caption>
+<details>
+<summary>@lang("What are the Close Locations?")</summary>
+<p>@lang("The \"close locations\" like the name says, are the closest places around the attraction selected, for example: Pharmacies, hospitals, shoppings, museums, hotels.")</p>
+</details>
+</caption>
+<br />
+
 <x-show-required :errors="$errors" />
 
 <form class="grid grid-cols-1 gap-4" action="{{route('admin.' . (!empty($isPUT) ? 'update' : 'create') . '.location', $segs)}}" method="POST" enctype="multipart/form-data">
@@ -69,7 +69,7 @@
 @endif
 
 <p><label for="close_icon">@lang("Choose an icon for your location"): </label></p>
-<select name="icon" id="close_icon" class="max-w-min h-auto material-symbols-rounded fs-base">
+<select name="icon" id="close_icon" class="max-w-min h-auto material-symbols-rounded fs-36">
     @foreach($icons as $ico)
     <option @if(($icon ?? old("icon")) === $ico) selected @endif value="{{$ico}}">{{$ico}}</option>
     @endforeach
@@ -91,7 +91,7 @@
 <select class="max-w-min h-auto fs-base input-block-level" id="phone-country" name="phone_country">
 <option value="">...</option>
 @foreach($phone_codes as $code => $emoji)
-<option @if(($phone_country ?? old("phone_country")) === $code) selected @endif value="263">{!! $emoji !!} (+{{$code}})</option>
+<option @if(($phone_country ?? old("phone_country")) === $code) selected @endif value="{{$code}}">{!! $emoji !!} (+{{$code}})</option>
 @endforeach
 </select>
 

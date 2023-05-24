@@ -10,11 +10,11 @@
     <form class="grid grid-cols-1 gap-4" action="{{route('admin.update.user_pass', [ 'id' => $user->id ])}}" method="POST" enctype="multipart/form-data">
       @csrf
       @method("PUT")
-      <x-input :type="'password'" :name="'old_password'" :placeholder="'Current Password'"/>
-      <x-input :type="'password'" :name="'password'" :placeholder="'New Password'"/>
-      <x-input :type="'password'" :name="'password_confirmation'" :placeholder="'New Password Confirmation'"/>
+      <p><label>@lang("Current Password"): <input required type="password" name="password" class="form-in"/></label></p>
+      <p><label>@lang("New Password"): <input required type="password" name="password" class="form-in"/></label></p>
+      <p><label>@lang("New Password Confirmation"): <input required type="password" name="password_confirmation" class="form-in"/></label></p>
       <a href="{{route('admin.edit.user_pass', ['id' => $user->id])}}">@lang("I forgot my password!")</a>
-      <x-submit :value="'Change password'" />
+      <button type="submit" class="form-submit">@lang("Change Password")</button>
     </form>
     @if(Session::has('status') && Session::has('message'))
       <x-success_error_msg :status="$status" :msg="$message"/>

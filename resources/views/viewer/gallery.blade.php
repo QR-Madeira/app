@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 @section('body')
-  <div class="w-full h-36 pt-10">
+  <div class="w-full">
     <div class="w-full flex items-center justify-center p-8">
       <h1 class="text-5xl">{{$title}}</h1>
     </div>

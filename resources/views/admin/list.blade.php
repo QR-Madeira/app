@@ -30,7 +30,11 @@
     <tr>
       <td class="sm:table-cell hidden h-4"><a href="{{asset($a['qr-code'])}}" download="{{$a->title_compiled}}"><img src="{{ asset($a['qr-code']) }}" alt="Local Image" class='aspect-square p-4'></a></td>
       <td>{{$a->title}}</td>
-      <td class="sm:table-cell hidden">{{$a->description}}</td>
+      <td class="sm:table-cell hidden max-w-[120ch]">
+        <div class="max-h-[20em] overflow-scroll">
+          {{$a->description}}
+        </div>
+      </td>
       <td>
       <div class="py-4 flex flex-col gap-4 h-full">
         <a class="a-btn" href="{{route('view', ['title_compiled' => $a->title_compiled])}}">@lang("View")</a>

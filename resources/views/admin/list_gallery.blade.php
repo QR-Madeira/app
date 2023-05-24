@@ -1,21 +1,17 @@
 @extends('layouts.admin-layout')
 @section('body')
   <div class="xl:px-24 xl:py-4 px-4 space-y-4">
-    <div class="xl:flex xl:flex-row xl:justify-center xl:items-center xl:relative grid grid-cols-2 grid-rows-2">
-      <h1 class="text-6xl py-4 col-span-2 text-center">@lang('Gallery')</h1>
-      <div class='xl:absolute xl:left-0 flex items-center justify-center'>
-        <x-a :url="route('admin.edit.attraction', ['id' => $id])" :name="$title"/>
-      </div>
-      <div class='xl:absolute xl:right-0 flex items-center justify-center'>
-        <x-a :url="route('admin.list.attraction')" :name="__('Attractions list')"/>
-      </div>
-    </div>
+    <nav class="grid sm:grid-cols-5 gap-3">
+      <a class="a-btn sm:row-start-1" href="{{route('admin.edit.attraction', ['id' => $id])}}">{{$title}}</a>
+      <h1 class='row-start-1 sm:col-span-3 text-center text-4xl antialiased font-bold py-7'>@lang('Gallery')</h1>
+      <a class="a-btn" href="{{route('admin.list.attraction')}}">@lang("Attractions List")</a>
+    </nav>
     <div class="grid xl:grid-cols-3 grid-cols-1 gap-4">
       @foreach ($images as $image)
         <div class="relative">
           <img src="{{$image['image_path']}}" alt="Gallery image" class="h-full rounded">
           <div class="absolute top-4 right-0">
-            <x-a :url="route('admin.delete.image', ['id' => $image['id']])" :name="__('Delete')"/>
+            <a class="a-btn bg-red-600 text-white" href="{{route('admin.delete.image', ['id' => $image['id']])}}">@lang('Delete')</a>
           </div>
         </div>
       @endforeach
@@ -23,9 +19,9 @@
         <form action="{{route('admin.create.image')}}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="grid gap-4">
-            <x-input :type="'hidden'" :name="'belonged_attraction'" :value="$belonged_attraction"/>
-            <x-input :type="'file'" :name="'gallery[]'" :multiple="TRUE"/>
-            <x-submit :value="__('Create')"/>
+            <input type="hidden" name="belonged_attraction" value="{{$belonged_attraction}}">
+            <p><label>@lang("Gallery"): <input type="file" name="gallery[]" multiple class="form-in" /></label></p>
+            <button type="submit" class="form-submit">@lang("Add")</button>
           </div>
         </form>
       </div>

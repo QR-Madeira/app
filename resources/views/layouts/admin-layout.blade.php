@@ -44,7 +44,7 @@
 
 <hr />
 
-<footer class="flex gap-4 justify-between align-center h-12 absolute bottom-0">
+<footer class="flex gap-4 justify-between align-center h-10 absolute bottom-0 py-8">
 
   <address class="h-full">
     <p class="h-full">
