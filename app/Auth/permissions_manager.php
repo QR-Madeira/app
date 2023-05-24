@@ -14,10 +14,12 @@ const P_MANAGE_USER = (0x1 << 3) | P_VIEW_USER;
 
 const P_ALL = P_MANAGE_ATTRACTION | P_MANAGE_USER;
 
-function check(User $u, int $permissions): bool
+function check(User $u, int $permissions, bool $active = true): bool
 {
-    return $u->active
-        && ($u->super ?: (($u->permissions & $permissions) === $permissions));
+    return $active
+        ? ($u->active
+            && ($u->super ?: (($u->permissions & $permissions) === $permissions)))
+        : ($u->super ?: (($u->permissions & $permissions)));
 }
 
 function checkOrThrow(User $u, int $permissions): bool
@@ -61,7 +63,7 @@ function getUserPermissionsHashes(User $u): array
 {
     $hashes = [];
     foreach (getPermissionsHash() as $k => $v) {
-        if (check($u, $v)) {
+        if (check($u, $v, false)) {
             $hashes[] = $k;
         }
     }
