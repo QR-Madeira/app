@@ -62,7 +62,6 @@ class AttractionLocationsController extends Controller
         } catch (FormValidationException $e) {
             return $this->error($e->getMessage());
         }
-
         if (!empty($in["phone"]) || !empty($in["phone_country"])) {
             $match = preg_match(self::PHONE_REGEX, "+"
                 . $in["phone_country"]

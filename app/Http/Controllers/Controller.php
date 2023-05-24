@@ -44,6 +44,7 @@ class Controller extends BaseController
     ];
     protected const PHONE_REGEX = '/\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$/';
     protected const PHONE_COUNTRY_CODES = [
+        351 => '&#x1F1F5&#x1F1F9',
         93 => '&#x1F1E6&#x1F1EB',
         355 => '&#x1F1E6&#x1F1FD',
         213 => '&#x1F1E9&#x1F1FF',
@@ -212,7 +213,6 @@ class Controller extends BaseController
         51 => '&#x1F1F5&#x1F1EA',
         63 => '&#x1F1F5&#x1F1ED',
         48 => '&#x1F1F5&#x1F1F1',
-        351 => '&#x1F1F5&#x1F1F9',
         1787 => '&#x1F1F5&#x1F1F7',
         974 => '&#x1F1F6&#x1F1E6',
         262 => '&#x1F1F7&#x1F1EA',

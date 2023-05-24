@@ -24,7 +24,10 @@
 <div class="grid gap-4 [&>p>label]:flex [&>p>label]:justify-between [&>p>label]:flex-col [&>p>label]:sm:flex-row">
 
 <p><label>@lang("Title"): <input required type="text" name="title" value="{{$title ?? old('title')}}" class="form-in" /></label></p>
-<p><label>@lang("Description"): <textarea required name="description" class="form-in">{{$description ?? old('description')}}</textarea></label></p>
+<p><label>
+    @lang("Description"): 
+    <textarea id="desc" required name="description" class="form-in" rows="10">{{$description ?? old('description')}}</textarea>
+</label></p>
 
 <fieldset class="flex flex-col py-4 [&>p]:py-4">
 

@@ -3,10 +3,5 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <!--<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">-->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,300,0,0" />
-<style>
-    .material-symbols-rounded.fs-24 { font-size: 24px; }
-    .material-symbols-rounded.fs-36 { font-size: 36px; }
-    .material-symbols-rounded.fs-48 { font-size: 48px; }
-</style>
 @vite('resources/css/app.css')
 <title>QR-Madeira</title>

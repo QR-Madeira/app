@@ -38,4 +38,8 @@
     label:has(.form-in) {
         @apply flex items-center justify-between sm:justify-evenly w-full
     }
+
+    .material-symbols-rounded.fs-24 { font-size: 24px; }
+    .material-symbols-rounded.fs-36 { font-size: 36px; }
+    .material-symbols-rounded.fs-48 { font-size: 48px; }
 }

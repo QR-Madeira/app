@@ -91,7 +91,7 @@
 <select class="max-w-min h-auto fs-base input-block-level" id="phone-country" name="phone_country">
 <option value="">...</option>
 @foreach($phone_codes as $code => $emoji)
-<option @if(($phone_country ?? old("phone_country")) === $code) selected @endif value="263">{!! $emoji !!} (+{{$code}})</option>
+<option @if(($phone_country ?? old("phone_country")) === $code) selected @endif value="{{$code}}">{!! $emoji !!} (+{{$code}})</option>
 @endforeach
 </select>
 
