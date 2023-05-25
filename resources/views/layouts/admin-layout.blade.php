@@ -14,6 +14,12 @@
             </a>
           </li>
           <li>
+            <a href="{{route('admin.edit.site')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'admin_attr') bg-slate-700 @endif hover:bg-slate-600">
+              <span class="material-symbols-rounded fs-36">info</span>
+              <span class="flex-1 ml-3 whitespace-nowrap hidden xl:block">@lang('Website Information')</span>
+            </a>
+          </li>
+          <li>
             <a href="{{route('admin.list.attraction')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'admin_attr') bg-slate-700 @endif hover:bg-slate-600">
               <span class="material-symbols-rounded fs-36">distance</span>
               <span class="flex-1 ml-3 whitespace-nowrap hidden xl:block">@lang('Attractions')</span>
@@ -44,22 +50,7 @@
 
 <hr />
 
-<footer class="flex gap-4 justify-between align-center h-10 absolute bottom-0 py-8">
-
-  <address class="h-full">
-    <p class="h-full">
-      <a class="h-full" href="https://github.com/QR-Madeira"><img class="h-full" src="{{asset("images/GitHub-Mark.png")}}" alt="GitHub Logo" /></a>
-    </p>
-  </address>
-
-  <div class="flex flex-row space-x-4 items-end">
-    <h4 class="text-xl">Made by</h4>
-    <a href="https://github.com/AbreuDProgrammer"><h5 class="text-lg">Leonardo Abreu</h5></a>
-    <a href="https://github.com/Marado-Programmer"><h5 class="text-lg">João Torres</h5></a>
-    <a href="https://github.com/DaniloKy"><h5 class="text-lg">Danilo Kymhyr</h5></a>
-  </div>
-
-</footer>
+<x-footer />
 
   </div>
   @if (session('error'))
