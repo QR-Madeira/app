@@ -16,11 +16,6 @@ class AttractionLocationsController extends Controller
 {
     private function listLocationsById(string $id)
     {
-        $v = $this->verify(P_VIEW_ATTRACTION);
-        if ($v !== null) {
-            return $v;
-        }
-
         Session::put(static::PLACE, "admin_attr");
 
         return Attractions_Close_Locations::where("belonged_attraction", $id)->cursorPaginate(5);

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\AttractionsAdminController;
 use App\Http\Controllers\AttractionLocationsController;
 use App\Http\Controllers\GalleryAdminController;
@@ -72,6 +73,7 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
       Route::prefix('edit')->group(function () {
         // Pages
+          Route::get('/site', [SiteController::class, 'updater'])->name('edit.site');
           Route::get('/user/{id}', [UsersAdminController::class, 'updater'])->name('edit.user');
           Route::get('/user_pass/{id}', [UsersAdminController::class, 'pass_updater'])->name('edit.user_pass');
           Route::get('/attraction/{id}', [AttractionsAdminController::class, 'updater'])->name('edit.attraction');
@@ -81,6 +83,7 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
       Route::prefix('update')->group(function () {
         // Actions
+          Route::get('/site', [SiteController::class, 'update'])->name('update.site');
           Route::put('/user/{id}', [UsersAdminController::class, 'create'])->name('update.user');
           Route::put('/user_pass/{id}', [UsersAdminController::class, 'update_pass'])->name('update.user_pass');
           Route::put('/attraction/{id}', [AttractionsAdminController::class, 'update'])->name('update.attraction');
@@ -98,6 +101,8 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
         Route::get('/main', [AdminController::class, 'main'])->name('main');
     });
 });
+
+
 
 Route::get('/login', [SessionController::class, 'index'])->name('login');
 Route::post('/signin', [SessionController::class, 'signin'])->name('signin');

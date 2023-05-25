@@ -6,11 +6,12 @@ use App\Models\User;
 
 const P_ZERO = 0x0;
 
-const P_VIEW_ATTRACTION = 0x1 << 0;
-const P_MANAGE_ATTRACTION = (0x1 << 1) | P_VIEW_ATTRACTION;
+const P_MANAGE_SITE = 0x1 << 0;
+const P_VIEW_ATTRACTION = 0x1 << 1;
+const P_MANAGE_ATTRACTION = (0x1 << 2) | P_VIEW_ATTRACTION;
 
-const P_VIEW_USER = 0x1 << 2;
-const P_MANAGE_USER = (0x1 << 3) | P_VIEW_USER;
+const P_VIEW_USER = 0x1 << 3;
+const P_MANAGE_USER = (0x1 << 4) | P_VIEW_USER;
 
 const P_ALL = P_MANAGE_ATTRACTION | P_MANAGE_USER;
 
@@ -52,6 +53,7 @@ function revoke(User &$u, int ...$permissions): bool
 function getPermissionsHash(): array
 {
     return [
+        "manage_site" => P_MANAGE_SITE,
         "view_attractions" => P_VIEW_ATTRACTION,
         "manage_attractions" => P_MANAGE_ATTRACTION,
         "view_users" => P_VIEW_USER,
