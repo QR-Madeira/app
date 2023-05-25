@@ -196,7 +196,7 @@ class AttractionsAdminController extends Controller
             return $this->error('Attraction does not exists');
         }
 
-        if (!$a->created_by === Auth::id() && !Auth::user()->super) {
+        if (!$a->created_by === Auth::id() || !Auth::user()->super) {
             return $this->error('Not the owner neither a super user');
         }
         
