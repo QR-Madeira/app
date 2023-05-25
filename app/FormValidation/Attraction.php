@@ -22,7 +22,8 @@ final class Attraction extends FormValidator
     public function getRules(Request $req): array
     {
         $rules = [
-            FormRule::new("description")->required(),
+            FormRule::new("description")->required()->string(),
+            FormRule::new("description_lang")->required()->string(),
             FormRule::new("image")->{$req->getMethod() === "POST"
                 ? "required"
                 : "null"}(),

@@ -24,10 +24,27 @@
 <div class="grid gap-4 [&>p>label]:flex [&>p>label]:justify-between [&>p>label]:flex-col [&>p>label]:sm:flex-row">
 
 <p><label>@lang("Title"): <input required type="text" name="title" value="{{$title ?? old('title')}}" class="form-in" /></label></p>
-<p><label>
-    @lang("Description"): 
-    <textarea id="desc" required name="description" class="form-in" rows="10">{{$description ?? old('description')}}</textarea>
-</label></p>
+
+<fieldset>
+<legend>@lang("Description")</legend>
+<div class="flex">
+<select name="description_lang" id="lang-select">
+@foreach($langs as $l)
+<option label="{{Str::upper($l)}}" value="{{$l}}" @if($l === $cur_lang) selected @endif />
+@endforeach
+</select>
+<textarea id="desc" required name="description" class="form-in w-full" rows="10">{{$description ?? old('description')}}</textarea>
+</div>
+
+@if(isset($isPUT) && $isPUT)
+<script>
+document.getElementById("lang-select").onchange = e => {
+    console.log(e.target.form.submit());
+}
+</script>
+@endif
+
+</fieldset>
 
 <fieldset class="flex flex-col py-4 [&>p]:py-4">
 

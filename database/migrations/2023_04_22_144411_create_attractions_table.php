@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('title_compiled')->unique();
             $table->string('title')->unique();
-            $table->text('description');
             $table->string('image');
             $table->string('site_url')->unique();
             $table->string('qr_code_path');
