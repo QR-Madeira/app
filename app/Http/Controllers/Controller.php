@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Classes\Data;
+use App\Models\Site;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\App;
 use TorresDeveloper\HTTPMessage\URI;
@@ -287,12 +288,14 @@ class Controller extends BaseController
 
         $this->data->set('userName', Auth::check() ? Auth::user()->name : null);
 
+        $this->data->set('siteInfo', Site::first()); 
+
         return view($view, $this->data->get());
     }
 
     public function __construct()
     {
-        $this->data = Data::getInstance();
+        $this->data = Data::getInstance();       
     }
 
     protected static function error(string $error): RedirectResponse

@@ -27,6 +27,6 @@
   <div class="pt-24">
     @yield('body')
   </div>
-  <x-footer />
+  <x-footer :site="$siteInfo"/>
 </body>
 </html>

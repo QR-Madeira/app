@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('site_info', function (Blueprint $table) {
             $table->id();
-            $table->string('titlePt');
-            $table->string('titleEng');
-            $table->string('descPt');
-            $table->string('descEng');
-            $table->string('footer');
+            $table->string('title');
+            $table->longText('desc');
+            $table->string('footerSede');
+            $table->string('footerPhone');
+            $table->string('footerMail');
+            $table->string('footerCopyright');
+            $table->timestamps();
         });
     }
 

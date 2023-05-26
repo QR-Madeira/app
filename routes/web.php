@@ -12,6 +12,7 @@ use App\Http\Controllers\UsersAdminController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\Verification;
 use App\Http\Middleware\Authenticate;
+use App\Models\Site;
 use Illuminate\Http\Request;
 
 /*
@@ -73,7 +74,7 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
       Route::prefix('edit')->group(function () {
         // Pages
-          Route::get('/site', [SiteController::class, 'updater'])->name('edit.site');
+          Route::get('/siteInfo', [SiteController::class, 'updater'])->name('edit.site');
           Route::get('/user/{id}', [UsersAdminController::class, 'updater'])->name('edit.user');
           Route::get('/user_pass/{id}', [UsersAdminController::class, 'pass_updater'])->name('edit.user_pass');
           Route::get('/attraction/{id}', [AttractionsAdminController::class, 'updater'])->name('edit.attraction');
@@ -83,7 +84,7 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
 
       Route::prefix('update')->group(function () {
         // Actions
-          Route::get('/site', [SiteController::class, 'update'])->name('update.site');
+          Route::put('/siteInfo', [SiteController::class, 'update'])->name('update.site');
           Route::put('/user/{id}', [UsersAdminController::class, 'create'])->name('update.user');
           Route::put('/user_pass/{id}', [UsersAdminController::class, 'update_pass'])->name('update.user_pass');
           Route::put('/attraction/{id}', [AttractionsAdminController::class, 'update'])->name('update.attraction');
@@ -111,11 +112,7 @@ Route::get('/signout', [SessionController::class, 'signout'])->name('signout');
 Route::any("/verify", Verification::index(...))->name("verify");
 
 Route::get('/', function () {
-  $data = config('site') ?? [];
-  /*
-    $data['test'] = '123';
-    file_put_contents('./../config/site.json', json_encode($data));
-  */
+  $data = ["siteInfo" => Site::first()];
   return view('viewer.index', $data);
 })->name('index');
 

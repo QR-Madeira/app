@@ -9,13 +9,14 @@ class Site extends Model
 {
     use HasFactory;
 
-    protected $table = 'attractions';
+    protected $table = 'site_info';
 
     protected $fillable = [
-        'titlePt',
-        'titleEng',
-        'descPt',
-        'descEng',
-        'footer',
+        'title',
+        'desc',
+        'footerSede',
+        'footerPhone',
+        'footerMail',
+        'footerCopyright',
     ];
 }
