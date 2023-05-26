@@ -1,4 +1,4 @@
-<footer class="flex flex-col absolute bottom-0 text-sm/[14px] w-full">
+<footer class="flex-2 flex flex-col stiky left-0 bottom-0 text-sm/[14px] w-full">
 
   <div class="flex flex-col sm:flex-row bg-slate-800 text-white py-6 px-2">
     <ul class="flex flex-col sm:flex-row gap-6 justify-between align-center">
