@@ -3,7 +3,7 @@
 <head>
   <x-header/>
 </head>
-<body class="flex flex-col h-full">
+<body class="flex flex-col justify-between h-full">
     <main class="pb-2">
       @yield('body')
     </main>
