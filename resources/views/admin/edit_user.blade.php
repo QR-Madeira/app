@@ -10,20 +10,22 @@
       @csrf
       @method("PUT")
       <p><label>@lang("Name"): <input required type="text" name="name" value="{{$user->name ?? old('name')}}" class="form-in" /></label></p>
-      <div class="grid grid-cols-2">
-        <fieldset class="col-span-2 sm:col-span-1">
-          <legend>@lang("User permission"): </legend>
-          @foreach($permissions as $k => $v)
-            <p>
-              <label class="select-none">
-                @lang(ucfirst($k))
-                <input type="checkbox" class="peer/standart" name="permissions[{{$k}}]" value="{{$v}}" <?php if(isset($user) && check($user, $v)) echo 'checked'?>/>
-              </label>
-            </p>
-          @endforeach
-        </fieldset>
-        <a class="a-btn col-span-2 sm:col-span-1 my-8" href="{{route('admin.edit.user_pass', ['id' => $user->id])}}">@lang("Change password")</a>
-      </div>
+      @if(!$user->super)
+        <div class="grid grid-cols-2">
+          <fieldset class="col-span-2 sm:col-span-1">
+            <legend>@lang("User permission"): </legend>
+            @foreach($permissions as $k => $v)
+              <p>
+                <label class="select-none">
+                  @lang(ucfirst($k))
+                  <input type="checkbox" class="peer/standart" name="permissions[{{$k}}]" value="{{$v}}" <?php if(isset($user) && check($user, $v)) echo 'checked'?>/>
+                </label>
+              </p>
+            @endforeach
+          </fieldset>
+        </div>
+      @endif
+      <a class="a-btn col-span-2 sm:col-span-1 my-8" href="{{route('admin.edit.user_pass', ['id' => $user->id])}}">@lang("Change password")</a>
       <button type="submit" class="form-submit">@lang("Save")</button>
     </form>
   </div>
