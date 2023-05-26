@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create(
             "attraction_descriptions",
             static function (Blueprint $table) {
+                $table->id();
                 $table->text("description");
                 $table->string("language");
                 $table->unsignedBigInteger("attraction_id");

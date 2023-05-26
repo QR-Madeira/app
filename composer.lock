@@ -5704,17 +5704,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/torres-developer/http-message-impl.git",
-                "reference": "7c82ff060bf58d7c9ee1e436e458966351d9edb4"
+                "reference": "95ec78b5b200285ce70ac79521477a697bb015d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/torres-developer/http-message-impl/zipball/7c82ff060bf58d7c9ee1e436e458966351d9edb4",
-                "reference": "7c82ff060bf58d7c9ee1e436e458966351d9edb4",
+                "url": "https://api.github.com/repos/torres-developer/http-message-impl/zipball/95ec78b5b200285ce70ac79521477a697bb015d4",
+                "reference": "95ec78b5b200285ce70ac79521477a697bb015d4",
                 "shasum": ""
             },
             "require": {
                 "pds/skeleton": "^1.0",
-                "php": ">=8.1.7",
+                "php": ">=8.1.6",
                 "psr/http-factory": "^1.0@dev",
                 "psr/http-message": "^1.0@dev"
             },
@@ -5763,17 +5763,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/torres-developer/polyglot.git",
-                "reference": "6397ca11d56dbc641ccebe92a693195be8e6aa05"
+                "reference": "f0050b3fafff122ae273f92126621e56967e2734"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/torres-developer/polyglot/zipball/6397ca11d56dbc641ccebe92a693195be8e6aa05",
-                "reference": "6397ca11d56dbc641ccebe92a693195be8e6aa05",
+                "url": "https://api.github.com/repos/torres-developer/polyglot/zipball/f0050b3fafff122ae273f92126621e56967e2734",
+                "reference": "f0050b3fafff122ae273f92126621e56967e2734",
                 "shasum": ""
             },
             "require": {
                 "pds/skeleton": "^1.0",
-                "php": ">=8.1.13",
+                "php": ">=8.1.6",
                 "torres-developer/pull": "dev-master"
             },
             "default-branch": true,
@@ -5814,18 +5814,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/torres-developer/php-pull.git",
-                "reference": "d78759809925b443859015c066133342dbc92bee"
+                "reference": "0ffeb987e57d775d4677d89fc5c6aa64d1abf7ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/torres-developer/php-pull/zipball/d78759809925b443859015c066133342dbc92bee",
-                "reference": "d78759809925b443859015c066133342dbc92bee",
+                "url": "https://api.github.com/repos/torres-developer/php-pull/zipball/0ffeb987e57d775d4677d89fc5c6aa64d1abf7ce",
+                "reference": "0ffeb987e57d775d4677d89fc5c6aa64d1abf7ce",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "pds/skeleton": "^1.0",
-                "php": ">=8.1.7",
+                "php": ">=8.1.6",
                 "torres-developer/http-message-impl": "dev-master"
             },
             "default-branch": true,

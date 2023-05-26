@@ -59,8 +59,8 @@ class AttractionsAdminController extends Controller
             }
             $this->data->set("isPUT", true);
             $this->data->set("langs", ["pt", "en"]);
-            $this->data->set("cur_lang", App::currentLocale());
-            $desc = $a->description->where("language", App::currentLocale())->first() ?? null;
+            $this->data->set("cur_lang", session("lastLang", App::currentLocale()));
+            $desc = $a->description->where("language", $this->data->get()["cur_lang"])->first() ?? null;
 
             $this->data->set("description", $desc?->description ?? "");
 
@@ -179,21 +179,20 @@ class AttractionsAdminController extends Controller
 
         $a->update($in);
 
-        //$desc = AttractionDescriptions::create([
-        //    "description" => $in["description"],
-        //    "language" => $in["description_lang"],
-        //    "attraction_id" => $a->id,
-        //]);
+        $desc = $a->description->where("language", $in["description_lang"] === "en" ? "pt" : "en")->first();
 
-        //if (!$desc) {
-        //    Attraction::destroy($a->id);
-
-        //    // TODO: single form of showing errors
-        //    Session::flash("status", false);
-        //    Session::flash("message", "Something went wrong, try again.");
-
-        //    return $this->error("Something went wrong, try again.");
-        //}
+        $data = [
+            "description" => $in["description"],
+            "language" => $in["description_lang"] === "en" ? "pt" : "en",
+            "attraction_id" => $a->id,
+        ];
+        if ($desc === null) {
+            $a->description()->save(new AttractionDescriptions($data));
+        } else {
+            $desc->update([
+                "description" => $in["description"],
+            ]);
+        }
 
         if ($a->title_compiled != $in["title_compiled"]) {
             Storage::disk("public")->delete("qr-codes/$a->title_compiled." . self::QR_FORMAT);
@@ -219,7 +218,7 @@ class AttractionsAdminController extends Controller
                 );
         }
 
-        return redirect(status: 204)->route("admin.edit.attraction", $id);
+        return redirect(status: 204)->route("admin.edit.attraction", $id)->with("lastLang", $in["description_lang"]);
     }
 
     public function delete($id)
