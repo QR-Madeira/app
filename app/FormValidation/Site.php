@@ -20,14 +20,13 @@ final class Site extends FormValidator
     public function getRules(Request $req): array
     {
         return [
-            FormRule::new("titlePt")->required()->string(),
-            FormRule::new("titleEng")->required()->string(),
-            FormRule::new("descPt")->required()->string(),
-            FormRule::new("descEng")->required()->string(),
-            FormRule::new("footer")->required()->string(),
-            
+            FormRule::new("title")->required()->string(),
+            FormRule::new("desc")->required()->string(),
+            FormRule::new("footerSede")->required()->string(),
+            FormRule::new("footerPhone")->required()->string(),
+            FormRule::new("footerMail")->required()->string(),
+            FormRule::new("footerCopyright")->required()->string(),
         ];
-
     }
 
     public function postProcess(array $in): array

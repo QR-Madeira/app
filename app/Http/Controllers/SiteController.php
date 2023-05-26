@@ -10,21 +10,22 @@ use App\Models\Site;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
+use const App\Auth\P_MANAGE_SITE;
+
 
 class SiteController extends Controller
 {
     public function updater()
     {
-        /*$v = $this->verify(P_MANAGE_USER);
+        $v = $this->verify(P_MANAGE_SITE);
         if ($v !== null) {
             return $v;
-        }*/
+        }
 
         Session::put('place', 'admin_site');
 
         $siteInfo = $this->getFirst();
-        
-        if (!$siteInfo) {
+        if(!$siteInfo) {
             return $this->error("Page not found");
         }
 
@@ -33,7 +34,7 @@ class SiteController extends Controller
         return $this->view("admin.edit_site");
     }
 
-    public function update()
+    public function update(Request $request)
     {
         $v = $this->verify(P_MANAGE_SITE);
         if ($v !== null) {
@@ -45,9 +46,8 @@ class SiteController extends Controller
         } catch (FormValidationException $e) {
             return $this->error($e->getMessage());
         }
-        dd($this->getFirst()->get());
-        $status = Site::update($in);
-        dd($status);
+        $siteInfo = $this->getFirst();
+        $status = $siteInfo->update($in);
         Session::flash("status", $status);
         Session::flash("message", $status === true?"Information updated with success." : "Something went wrong.");
 

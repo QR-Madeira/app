@@ -3,8 +3,8 @@
 <head>
   <x-header/>
 </head>
-<body>
+<body class="">
   @yield('body')
-  <x-footer />
+  <x-footer :site="$siteInfo"/>
 </body>
 </html>

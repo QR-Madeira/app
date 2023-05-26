@@ -4,21 +4,21 @@
     <ul class="flex flex-col sm:flex-row gap-6 justify-between align-center">
       <li class="flex items-center gap-2">
         <span class="material-symbols-rounded fs-14">distance</span>
-        <p><strong>SEDE: </strong>{{$site['footerSede']}}</p>
+        <p><strong>SEDE: </strong>{{$siteInfo['footerSede']}}</p>
       </li>
       <li class="flex items-center gap-2">
         <span class="material-symbols-rounded fs-14">phone</span>
-        <p><strong>TELEFONE: </strong>{{$site['footerPhone']}}</p>
+        <p><strong>TELEFONE: </strong>{{"213 023 923"}}</p>
       </li>
       <li class="flex items-center gap-2">
         <span class="material-symbols-rounded fs-14">mail</span>
-        <p><strong>MAIL: </strong>{{$site['footerMail']}}</p>
+        <p><strong>MAIL: </strong>{{"asd@asd.com"}}</p>
       </li>
     </ul>
   </div>
-  <div class="flex flex-col gap-4 bg-white text-gray-500 p-4">
+  <div class="flex flex-col gap-4 bg-white text-gray-500 p-4 w-full">
     <div class="flex text-center">
-      <p>&copy; {{$site['footerCopyright']}}</p>
+      <p>&copy; {{"copyrigth default qr-madeira"}}</p>
     </div>
     <div class="flex flex-col sm:flex-row gap-3">
       <p><strong>Made by:</strong></p>

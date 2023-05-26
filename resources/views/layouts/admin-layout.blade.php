@@ -14,7 +14,7 @@
             </a>
           </li>
           <li>
-            <a href="{{route('admin.edit.site')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'admin_attr') bg-slate-700 @endif hover:bg-slate-600">
+            <a href="{{route('admin.edit.site')}}" class="flex items-center p-2 text-white rounded-lg @if(Session::get('place') == 'admin_site') bg-slate-700 @endif hover:bg-slate-600">
               <span class="material-symbols-rounded fs-36">info</span>
               <span class="flex-1 ml-3 whitespace-nowrap hidden xl:block">@lang('Website Information')</span>
             </a>
@@ -49,8 +49,6 @@
     @yield('body')
 
 <hr />
-
-<x-footer />
 
   </div>
   @if (session('error'))

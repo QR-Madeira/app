@@ -6,17 +6,13 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class a extends Component
+class footer extends Component
 {
-    public $name;
-    public $url;
-    /**
-     * Create a new component instance.
-     */
-    public function __construct($name, $url)
+    public $site;
+    
+    public function __construct($site)
     {
-        $this->name = $name;
-        $this->url = $url;
+        $this->site = $site;
     }
 
     /**
@@ -24,6 +20,6 @@ class a extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.a');
+        return view('components.footer');
     }
 }

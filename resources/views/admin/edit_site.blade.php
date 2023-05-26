@@ -1,4 +1,3 @@
-<?php use function App\Auth\check; ?>
 @extends('layouts.admin-layout')
 @section('body')
   <div class='py-4 px-4 lg:px-24'>
@@ -10,13 +9,13 @@
       @csrf
       @method("PUT")
       <legend>@lang("Index Page")</legend>
-      <p><label>@lang("Title in Portuguese"): <input required type="text" name="titlePt" value="{{$siteInfo->titlePt ?? old('title')}}" class="form-in"/></label></p>
-      <p><label>@lang("Title in English"): <input required type="text" name="titleEng" value="{{$siteInfo->titleEng ?? old('titleEng')}}" class="form-in"/></label></p>
-      <p><label>@lang("Description in Portuguese"): <input required type="text" name="descPt" value="{{$siteInfo->descPt ?? old('descPt')}}" class="form-in"/></label></p>
-      <p><label>@lang("Description in English"): <input required type="text" name="descEng" value="{{$siteInfo->descEng ?? old('descEng')}}" class="form-in"/></label></p>
+      <p><label>@lang("Title"): <input required type="text" name="title" value="{{$siteInfo->title ?? old('title')}}" class="form-in"/></label></p>
+      <p><label>@lang("Description"): <textarea required type="text" name="desc" rows="10" class="form-in">{{$siteInfo->desc ?? old('desc')}}</textarea></label></p>
       <legend>@lang("Footer")</legend>
-      <p><label>@lang("Footer Contacts"): <input required type="text" name="title" value="{{$title ?? old('title')}}" class="form-in"/></label></p>
-      <p><label>@lang("Footer"): <input required type="text" name="title" value="{{$title ?? old('title')}}" class="form-in"/></label></p>
+      <p><label>@lang("Footer Sede"): <input required type="text" name="footerSede" value="{{$siteInfo->footerSede ?? old('footerSede')}}" class="form-in"/></label></p>
+      <p><label>@lang("Footer Phone"): <input required type="text" name="footerPhone" value="{{$siteInfo->footerPhone ?? old('footerPhone')}}" class="form-in"/></label></p>
+      <p><label>@lang("Footer Mail"): <input required type="text" name="footerMail" value="{{$siteInfo->footerMail ?? old('footerMail')}}" class="form-in"/></label></p>
+      <p><label>@lang("Footer Copyright"): <input required type="text" name="footerCopyright" value="{{$siteInfo->footerCopyright ?? old('footerCopyright')}}" class="form-in"/></label></p>
       <button type="submit" class="form-submit">@lang("Save")</button>
     </form>
     @if(Session::has('status') && Session::has('message'))
