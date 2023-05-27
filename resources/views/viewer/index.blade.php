@@ -1,6 +1,6 @@
 @extends('layouts.basic')
 @section('body')
-<div class="p-4">
+<div class="m-2">
 
   <nav class="py-4 grid sm:grid-cols-5 gap-3">
     <div class="sm:row-start-1"></div>
