@@ -14,6 +14,7 @@ use App\Http\Controllers\Verification;
 use App\Http\Middleware\Authenticate;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,8 +113,13 @@ Route::get('/signout', [SessionController::class, 'signout'])->name('signout');
 Route::any("/verify", Verification::index(...))->name("verify");
 
 Route::get('/', function () {
-  $data = ["siteInfo" => Site::first()];
-  return view('viewer.index', $data);
+  $siteInfo = Site::first();
+  $desc = $siteInfo->desc->where("language", App::currentLocale())->first() ?? $siteInfo->desc->first();
+
+  $desc = $desc?->description ?? "";
+  $siteInfo = $siteInfo->toArray();
+  $siteInfo["desc"] = $desc;
+  return view('viewer.index', [ "siteInfo" => $siteInfo ]);
 })->name('index');
 
 Route::get('/{title_compiled}', [AttractionsViewerController::class, 'index'])->name('view');
