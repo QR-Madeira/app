@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Site extends Model
 {
@@ -13,10 +14,14 @@ class Site extends Model
 
     protected $fillable = [
         'title',
-        'desc',
         'footerSede',
         'footerPhone',
         'footerMail',
         'footerCopyright',
     ];
+
+    public function desc(): HasMany
+    {
+        return $this->hasMany(SiteDescriptions::class);
+    }
 }
