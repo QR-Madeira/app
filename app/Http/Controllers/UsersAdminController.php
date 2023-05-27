@@ -107,7 +107,7 @@ class UsersAdminController extends Controller
             return redirect()->back();
         }
 
-        if($user['super'] == 1 /*|| $user['id'] == Auth::id()*/){
+        if ($user['super'] == 1 /*|| $user['id'] == Auth::id()*/) {
             Session::flash('status', false);
             Session::flash('message', "Can't delete Super Administrator or Your Own Self.");
             return redirect()->back();
@@ -115,12 +115,12 @@ class UsersAdminController extends Controller
 
         $attractions = Attraction::where('created_by', $user['id'])->get()->toArray();
         $ls = "";
-        if($attractions != null){
+        if ($attractions != null) {
             Session::flash('status', false);
-            foreach($attractions as $attr){
-                $ls .= "\"".$attr['title']."\"; ";
+            foreach ($attractions as $attr) {
+                $ls .= "\"" . $attr['title'] . "\"; ";
             }
-            Session::flash('message', "There are attractions attached to this user, such as: ".$ls);
+            Session::flash('message', "There are attractions attached to this user, such as: " . $ls);
             return redirect()->back();
         }
 
@@ -142,28 +142,39 @@ class UsersAdminController extends Controller
         }
 
         $u = false;
-        $method = "";
 
         switch ($request->method()) {
-            case "POST": {
-                $method = "created";
+            case "POST":
                 $in["password"] = "";
                 $u = User::create($in);
 
                 Mailer::send(new UserCreation($u));
 
-                break;
-            }case "PUT": {
-                $method = "updated";
-                $u = User::find($id)->update($in);
+                if (!$u) {
+                    Session::flash("status", (bool) $u);
+                    $this->error("Something went wrong.");
+                }
+
+                Session::flash(
+                    "message",
+                    "A e-mail was sent to `$in[email]` to activate the account and set their password."
+                );
 
                 break;
-            }
+            case "PUT":
+                $u = User::find($id)->update($in);
+
+                if (!$u) {
+                    Session::flash("status", (bool) $u);
+                    $this->error("Something went wrong.");
+                }
+
+                Session::flash("message", "User updated with success.");
+
+                break;
         }
-        Session::flash("status", $u == true);
-        Session::flash("message", $u == true
-            ? "User $method with success."
-            : "Something went wrong.");
+
+        Session::flash("status", (bool) $u);
 
         return redirect()->route("admin.list.users");
     }
@@ -181,19 +192,20 @@ class UsersAdminController extends Controller
             return $this->error($e->getMessage());
         }
         $user = User::find($id);
-        if(!$user){
+        if (!$user) {
             return $this->error('No');
         }
         //$attempt = Auth::attempt(['email' => $user['email'], 'password' => $in['old_password']]);
         $hash = new PasswordHash(8, false);
-        if(!$hash->CheckPassword($in['old_password'], $user['password'])){ return $this->error('ABBA'); }
+        if (!$hash->CheckPassword($in['old_password'], $user['password'])) {
+            return $this->error('ABBA');
+        }
         $status = $user->update(['password' => $in['password']]);
 
         Session::flash("status", $status == true);
-        Session::flash("message",$status == true
-        ?"Password changed with success.":"Something went wrong.");
+        Session::flash("message", $status == true
+            ? "Password changed with success." : "Something went wrong.");
 
         return redirect()->route("admin.list.users");
     }
-
 }

@@ -11,10 +11,10 @@
       <p><label>@lang("Email"): <input required type="email" name="email" value="{{$email ?? old('email')}}" class="form-in" /></label></p>
 <fieldset>
 
-<legend>User permission: </legend>
+<legend>@lang("User permission"): </legend>
 
 @foreach($permissions as $k => $v)
-  <p>
+  <p class="pl-4">
     <label class="select-none">
       @lang(ucfirst($k))
       <input type="checkbox" class="peer/standart" name="permissions[{{$k}}]" value="{{$v}}"/>
