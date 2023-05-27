@@ -25,7 +25,6 @@
           </fieldset>
         </div>
       @endif
-      <a class="a-btn col-span-2 sm:col-span-1 my-8" href="{{route('admin.edit.user_pass', ['id' => $user->id])}}">@lang("Change password")</a>
       <button type="submit" class="form-submit">@lang("Save")</button>
     </form>
   </div>

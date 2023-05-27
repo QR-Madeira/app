@@ -29,9 +29,14 @@ class SessionController extends Controller
         }
 
         if (Auth::attempt($in, $request->has("remember"))) {
-            if (!Auth::user()->active) {
+            /** @var \App\Models\User $u */
+            $u = Auth::user();
+            if (!$u->active) {
                 return $this->error("User not activated");
             }
+
+            $u->verification_code = null;
+            $u->save();
 
             $request->session()->regenerate();
             return redirect()->route("admin.main");

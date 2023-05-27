@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\FormValidation\Core\FormValidationException;
+use App\FormValidation\Forgor;
 use App\FormValidation\Verification as FormValidation;
+use App\Mail\Core\Mailer;
+use App\Mail\Recover;
+use App\Mail\UserCreation;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -57,6 +61,39 @@ class Verification extends Controller
                 return redirect("signout");
             default:
                 return (new Response())->setStatusCode(405);
+        }
+    }
+
+    public static function forgor(Request $r)
+    {
+        switch ($r->getMethod()) {
+            case "GET":
+                $siteInfo = Site::first();
+                $desc = $siteInfo->desc->where("language", App::currentLocale())->first() ?? $siteInfo->desc->first();
+
+                $desc = $desc?->description ?? "";
+                $siteInfo = $siteInfo->toArray();
+                $siteInfo["desc"] = $desc;
+
+                return view("viewer/forgor", [
+                    "siteInfo" => $siteInfo
+                ]);
+            case "POST":
+                try {
+                    $in = Forgor::verify($r);
+                } catch (FormValidationException $e) {
+                    return self::error($e->getMessage());
+                }
+
+                $u = User::where("email", $in["email"])->first();
+
+                if ($u === null) {
+                    return self::error("User does not even exist");
+                }
+
+                Mailer::send(new Recover($u));
+
+                return redirect("login");
         }
     }
 }

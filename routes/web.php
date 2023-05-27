@@ -110,6 +110,7 @@ Route::get('/login', [SessionController::class, 'index'])->name('login');
 Route::post('/signin', [SessionController::class, 'signin'])->name('signin');
 Route::get('/signout', [SessionController::class, 'signout'])->name('signout');
 
+Route::any("/forgor", Verification::forgor(...))->name("forgor");
 Route::any("/verify", Verification::index(...))->name("verify");
 
 Route::get('/', function () {

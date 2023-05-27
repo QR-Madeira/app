@@ -11,11 +11,13 @@ use App\Mail\Core\Mailer;
 use App\Mail\UserCreation;
 use App\Models\Attraction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 use const App\Auth\P_MANAGE_USER;
 use const App\Auth\P_VIEW_USER;
 
+use function App\Auth\check;
 use function App\Auth\getPermissionsHash;
 
 class UsersAdminController extends Controller
@@ -34,6 +36,10 @@ class UsersAdminController extends Controller
             return $this->error("User not found");
         }
 
+        if ($user->super && !Auth::user()->super) {
+            return $this->error("Non super user cannot edit super user");
+        }
+
         $this->data->set("user", $user);
         $this->data->set('permissions', getPermissionsHash());
 
@@ -42,9 +48,8 @@ class UsersAdminController extends Controller
 
     public function pass_updater($id)
     {
-        $v = $this->verify(P_MANAGE_USER);
-        if ($v !== null) {
-            return $v;
+        if (Auth::id() != $id) {
+            return $this->error("You do not have permissions to change others password");
         }
 
         Session::put('place', 'admin_usr');
@@ -80,16 +85,20 @@ class UsersAdminController extends Controller
 
     public function list()
     {
-        $v = $this->verify(P_VIEW_USER);
-        if ($v !== null) {
-            return $v;
+        if (check(Auth::user(), P_VIEW_USER)) {
+            $collection = User::where("id", "!=", Auth::id());
+            if (!Auth::user()->super) {
+                $collection = $collection->where("super", "!=", 1);
+            }
+
+            $this->data->set('users', $collection->cursorPaginate(8));
+            $this->data->set("canCreate", true);
         }
+
+        $this->data->set("you", Auth::user());
 
         Session::put('place', 'admin_usr');
 
-        $all_users = User::where('active', 1)->cursorPaginate(8);
-
-        $this->data->set('users', $all_users);
 
         return $this->view('admin.list_users');
     }
@@ -97,7 +106,7 @@ class UsersAdminController extends Controller
     public function delete($id)
     {
         $v = $this->verify(P_MANAGE_USER);
-        if ($v !== null) {
+        if ($v !== null /* && (Auth::id() != $id) */) {
             return $v;
         }
 
@@ -107,9 +116,13 @@ class UsersAdminController extends Controller
             return redirect()->back();
         }
 
-        if ($user['super'] == 1 /*|| $user['id'] == Auth::id()*/) {
+        if ($user->super && !Auth::user()->super) {
+            return $this->error("Non super user cannot delete super user");
+        }
+
+        if ($user['super'] /*|| $user['id'] == Auth::id()*/) {
             Session::flash('status', false);
-            Session::flash('message', "Can't delete Super Administrator or Your Own Self.");
+            Session::flash('message', "Can't delete Super Administrator.");
             return redirect()->back();
         }
 
@@ -181,9 +194,8 @@ class UsersAdminController extends Controller
 
     public function update_pass(Request $request, string $id = null)
     {
-        $v = $this->verify(P_MANAGE_USER);
-        if ($v !== null) {
-            return $v;
+        if (Auth::id() != $id) {
+            return $this->error("You do not have permissions to change others password");
         }
 
         try {
@@ -193,13 +205,13 @@ class UsersAdminController extends Controller
         }
         $user = User::find($id);
         if (!$user) {
-            return $this->error('No');
+            return $this->error('No user found');
         }
-        //$attempt = Auth::attempt(['email' => $user['email'], 'password' => $in['old_password']]);
-        $hash = new PasswordHash(8, false);
+        $hash = new PasswordHash(10, false);
         if (!$hash->CheckPassword($in['old_password'], $user['password'])) {
             return $this->error('ABBA');
         }
+
         $status = $user->update(['password' => $in['password']]);
 
         Session::flash("status", $status == true);
