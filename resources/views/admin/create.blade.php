@@ -39,7 +39,8 @@
 @if(isset($isPUT) && $isPUT)
 <script>
 document.getElementById("lang-select").onchange = e => {
-    console.log(e.target.form.submit());
+    e.target.value = e.target.value === "pt" ? "en" : "pt";
+    e.target.form.submit();
 }
 </script>
 @endif
@@ -169,7 +170,7 @@ document.getElementById("lang-select").onchange = e => {
     </script>
 </fieldset>
 
-<button type="submit" class="w-full col-span-2 form-submit">@lang(!empty($isPUT) ? "Save" : "Create")</button>
+<button type="submit" name="submited" value="true" class="w-full col-span-2 form-submit">@lang(!empty($isPUT) ? "Save" : "Create")</button>
 
 </form>
 

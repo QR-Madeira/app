@@ -179,11 +179,11 @@ class AttractionsAdminController extends Controller
 
         $a->update($in);
 
-        $desc = $a->description->where("language", $in["description_lang"] === "en" ? "pt" : "en")->first();
+        $desc = $a->description->where("language", $in["description_lang"])->first();
 
         $data = [
             "description" => $in["description"],
-            "language" => $in["description_lang"] === "en" ? "pt" : "en",
+            "language" => $in["description_lang"],
             "attraction_id" => $a->id,
         ];
         if ($desc === null) {
@@ -218,7 +218,9 @@ class AttractionsAdminController extends Controller
                 );
         }
 
-        return redirect(status: 204)->route("admin.edit.attraction", $id)->with("lastLang", $in["description_lang"]);
+        return redirect(status: 204)
+            ->route("admin.edit.attraction", $id)
+            ->with("lastLang", (null !== $request->post("submited")) ? $in["description_lang"] : ($in["description_lang"] === "en" ? "pt" : "en"));
     }
 
     public function delete($id)
