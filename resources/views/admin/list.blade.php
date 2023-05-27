@@ -30,8 +30,8 @@
     <tr>
       <td class="sm:table-cell hidden h-4"><a href="{{asset($a['qr-code'])}}" download="{{$a->title_compiled}}"><img src="{{ asset($a['qr-code']) }}" alt="Local Image" class='aspect-square p-4'></a></td>
       <td>{{$a->title}}</td>
-      <td class="sm:table-cell hidden max-w-[120ch]">
-        <div class="max-h-[20em] overflow-scroll">
+      <td class="sm:table-cell hidden max-w-[80ch] max-h-[80ch]">
+        <div class="overflow-scroll">
           {{$a->description}}
         </div>
       </td>

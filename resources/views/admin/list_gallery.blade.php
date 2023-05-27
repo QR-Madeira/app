@@ -15,7 +15,7 @@
           </div>
         </div>
       @endforeach
-      <div>
+      <div class="mt-14">
         <form action="{{route('admin.create.image')}}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="grid gap-4">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
   <x-header/>
 </head>
@@ -17,16 +17,17 @@
       <span class="material-symbols-rounded fs-36 xl:flex xl:justify-end">distance</span>
       <h2 class="text-2xl hidden xl:block">@lang('Map')</h2>
 
-    </a>
-  </div>
-  @if($isLogged)
-    <div class="fixed top-16 w-full">
-      <a href="{{route('admin.list.attraction')}}"><h2 class="text-2xl text-center flex flex-row items-center justify-center h-full">@lang('Admin')</h2></a>
+      </a>
     </div>
-  @endif
-  <div class="pt-24">
-    @yield('body')
-  </div>
+    @if($isLogged)
+      <div class="fixed top-16 w-full">
+        <a href="{{route('admin.list.attraction')}}"><h2 class="text-2xl text-center flex flex-row items-center justify-center h-full">@lang('Admin')</h2></a>
+      </div>
+    @endif
+    <div class="pt-24">
+      @yield('body')
+    </div>
+  </main>
   <x-footer :site="$siteInfo"/>
   @if (session('error'))
       <dialog class="bg-slate-700 p-8 rounded text-red-500 [&>*]:py-4" id="errors" open>

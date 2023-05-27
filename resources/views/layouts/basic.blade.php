@@ -5,8 +5,8 @@
     <x-header />
 </head>
 
-<body class="flex flex-col h-full">
-    <main class="pb-2">
+<body class="flex flex-col justify-between h-full">
+    <main class="pb-6">
         @yield('body')
     </main>
     <x-footer :site="$siteInfo" />
