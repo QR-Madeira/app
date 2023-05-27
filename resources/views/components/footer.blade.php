@@ -7,11 +7,11 @@
             </li>
             <li class="flex items-center gap-2">
                 <span class="material-symbols-rounded fs-14">phone</span>
-                <p><strong>TELEFONE: </strong>{{$site['footerPhone']}}</p>
+                <p><strong>TELEFONE:</strong> <a href="tel:{{$site['footerPhone']}}">{{$site['footerPhone']}}</a></p>
             </li>
             <li class="flex items-center gap-2">
                 <span class="material-symbols-rounded fs-14">mail</span>
-                <p><strong>MAIL: </strong>{{$site['footerMail']}}</p>
+                <p><strong>MAIL:</strong> <a href="mailto:{{$site['footerMail']}}">{{$site['footerMail']}}</a></p>
             </li>
         </ul>
     </address>
