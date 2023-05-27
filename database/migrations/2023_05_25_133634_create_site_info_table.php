@@ -11,16 +11,45 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('site_info', function (Blueprint $table) {
+        Schema::create("site_info", function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->longText('desc');
-            $table->string('footerSede');
-            $table->string('footerPhone');
-            $table->string('footerMail');
-            $table->string('footerCopyright');
+            $table->string("title");
+            $table->string("footerSede");
+            $table->string("footerPhone");
+            $table->string("footerMail");
+            $table->string("footerCopyright");
             $table->timestamps();
         });
+        Schema::create(
+            "site_descriptions",
+            static function (Blueprint $table) {
+                $table->id();
+                $table->text("description");
+                $table->string("language");
+                $table->unique(["language"]);
+                $table->unsignedBigInteger("site_id");
+                $table->foreign("site_id")
+                    ->references("id")
+                    ->on("site_info")
+                    ->onDelete("cascade");
+                $table->timestamps();
+            }
+        );
+        Schema::create(
+            "site_socials",
+            static function (Blueprint $table) {
+                $table->id();
+                $table->string("ico");
+                $table->text("description");
+                $table->string("uri");
+                $table->unsignedBigInteger("site_id");
+                $table->foreign("site_id")
+                    ->references("id")
+                    ->on("site_info")
+                    ->onDelete("cascade");
+                $table->timestamps();
+            }
+        );
     }
 
     /**
@@ -28,6 +57,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('site_info');
+        Schema::dropIfExists("site_info");
+        Schema::dropIfExists("site_descriptions");
+        Schema::dropIfExists("site_socials");
     }
 };

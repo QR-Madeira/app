@@ -1,5 +1,4 @@
-<footer class="flex flex-col absolute bottom-0 text-sm/[14px] w-full">
-
+<footer class="flex flex-col mt-auto text-sm/[14px] w-full">
   <div class="flex flex-col sm:flex-row bg-slate-800 text-white py-6 px-2">
     <ul class="flex flex-col sm:flex-row gap-6 justify-between align-center">
       <li class="flex items-center gap-2">

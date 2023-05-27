@@ -18,7 +18,8 @@ class AttractionLocationsController extends Controller
     {
         Session::put(static::PLACE, "admin_attr");
 
-        return Attractions_Close_Locations::where("belonged_attraction", $id)->cursorPaginate(5);
+        return Attractions_Close_Locations::where("belonged_attraction", $id)
+            ->cursorPaginate(5);
     }
 
     public function creator(string $id)
@@ -76,13 +77,13 @@ class AttractionLocationsController extends Controller
                     $status = Attractions_Close_Locations::create($in);
 
                     break;
-            }
+                }
             case "PUT": {
                     $method = "updated";
                     $status = Attractions_Close_Locations::find($id_2)->update($in);
 
                     break;
-            }
+                }
         }
 
         Session::flash("status", $status == true);

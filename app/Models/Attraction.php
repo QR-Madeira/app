@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Attraction extends Model
 {
@@ -14,7 +15,6 @@ class Attraction extends Model
     protected $fillable = [
         'title_compiled',
         'title',
-        'description',
         'image',
         'site_url',
         'qr_code_path',
@@ -22,4 +22,9 @@ class Attraction extends Model
         "lat",
         "lon",
     ];
+
+    public function description(): HasMany
+    {
+        return $this->hasMany(AttractionDescriptions::class);
+    }
 }

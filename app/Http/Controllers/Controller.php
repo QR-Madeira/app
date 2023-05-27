@@ -288,14 +288,19 @@ class Controller extends BaseController
 
         $this->data->set('userName', Auth::check() ? Auth::user()->name : null);
 
-        $this->data->set('siteInfo', Site::first()); 
+        $site = Site::first();
+        $desc = $site->desc->where("language", App::currentLocale())->first() ?? null;
+        $desc ??= $site->desc->first();
+        $site = $site->toArray();
+        $site["desc"] = $desc;
+        $this->data->set("siteInfo", $site);
 
         return view($view, $this->data->get());
     }
 
     public function __construct()
     {
-        $this->data = Data::getInstance();       
+        $this->data = Data::getInstance();
     }
 
     protected static function error(string $error): RedirectResponse

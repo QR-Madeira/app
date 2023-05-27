@@ -7,12 +7,10 @@ use App\Models\User;
 use App\FormValidation\Core\FormValidationException;
 use App\FormValidation\User_password;
 use App\FormValidation\Users as UsersValidation;
-use App\Mail\Core\EmailCreator;
 use App\Mail\Core\Mailer;
 use App\Mail\UserCreation;
 use App\Models\Attraction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 use const App\Auth\P_MANAGE_USER;

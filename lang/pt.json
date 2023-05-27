@@ -62,6 +62,11 @@
   "Change Password": "Alterar palavra passe",
   "Current Password": "Palavra passe atual",
   "New Password": "Nova palavra passe",
-  "New Password Confirmation": "Confirmação da nova palavra passe"
+  "New Password Confirmation": "Confirmação da nova palavra passe",
 
+  "Main": "Entrada",
+  "Website Information": "Informação da Página",
+  "Change Website Information": "Atualizar Informação da Página",
+  "Index Page": "Página inicial",
+  "Footer": "Rodapé"
 }
