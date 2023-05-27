@@ -24,4 +24,9 @@ class Site extends Model
     {
         return $this->hasMany(SiteDescriptions::class);
     }
+
+    public function socials(): HasMany
+    {
+        return $this->hasMany(SiteSocials::class);
+    }
 }

@@ -40,8 +40,38 @@
         </fieldset>
         <button type="submit" name="submited" value="true" class="form-submit">@lang("Save")</button>
     </form>
+
     @if(Session::has('status') && Session::has('message'))
     <x-success_error_msg :status="session('status')" :msg="session('message')" />
     @endif
+
+    <!--
+    <hr />
+
+    <div class='grid sm:grid-cols-5 gap-3 flex items-center justify-center w-full relative'>
+        <div class="sm:row-start-1"></div>
+        <h1 class='row-start-1 sm:col-span-3 text-center text-5xl py-8'>@lang('Change Website Socials')</h1>
+        <div></div>
+    </div>
+    <x-show-required :errors="$errors" />
+
+    <ul>
+        @foreach($socials as $s)
+        <li>{{$s}}</li>
+        @endforeach
+    </ul>
+
+    <form>
+
+    <p><label>@lang("Description"): <input required type="text" name="description" value="{{$description ?? old('description')}}" class="form-in" /></label></p>
+    <p><label>@lang("Link"): <input required type="url" name="uri" value="{{$uri ?? old('uri')}}" class="form-in" /></label></p>
+
+    </form>
+
+    @if(Session::has('status') && Session::has('message'))
+    <x-success_error_msg :status="session('status')" :msg="session('message')" />
+    @endif
+
+    -->
 </div>
 @endsection

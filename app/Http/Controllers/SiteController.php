@@ -30,12 +30,13 @@ class SiteController extends Controller
             return $this->error("Page not found");
         }
 
-
         $this->data->set("cur_lang", session("lastLang", App::currentLocale()));
         $this->data->set("langs", ["pt", "en"]);
         $desc = $siteInfo->desc->where("language", $this->data->get()["cur_lang"])->first() ?? null;
+        $socials = $siteInfo->socials();
         $siteInfo = $siteInfo->toArray();
         $siteInfo["desc"] = $desc?->description ?? "";
+        $siteInfo["socials"] = $socials;
         foreach ($siteInfo as $k => $v) {
             $this->data->set($k, $v);
         }
