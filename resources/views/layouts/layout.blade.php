@@ -3,7 +3,7 @@
 <head>
   <x-header/>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
   <div class="fixed h-10 top-0 grid grid-cols-3 grid-rows-1 justify-items-center w-full h-auto bg-white py-2">
     <a class="grid grid-cols-1 xl:grid-cols-2 xl:gap-6" href="{{route('view', ['title_compiled' => $title_compiled])}}" class="w-full">
       <span class="material-symbols-rounded fs-36 xl:flex xl:justify-end">dashboard</span>

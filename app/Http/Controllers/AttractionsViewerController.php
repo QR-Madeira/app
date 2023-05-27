@@ -5,25 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Attraction;
 use App\Models\Attractions_Pictures;
 use App\Models\Attractions_Close_Locations;
+use Illuminate\Support\Facades\App;
 
 class AttractionsViewerController extends Controller
 {
     public function index($title_compiled)
     {
         $a = Attraction::where('title_compiled', '=', $title_compiled)
-            ->first()
-            ?->toArray();
+            ->first();
 
         if ($a == null) {
             return $this->error('Attraction not found');
         }
+
+        $desc = $a->description->where("language", App::currentLocale())->first() ?? $a->description->first();
 
         foreach (
             [
             "image" => "storage/attractions/$a[image]",
             "title_compiled" => $title_compiled,
             "title" => $a["title"],
-            "description" => nl2br($this->translate($a["description"])),
+            "description" => nl2br($this->translate($desc?->description ?? "")),
             "qr" => asset("storage/qr-codes/$a[qr_code_path]"),
             "lat" => $a["lat"],
             "lon" => $a["lon"],
