@@ -10,7 +10,6 @@ use App\Models\Attractions_Close_Locations;
 use Illuminate\Http\Request;
 
 use const App\Auth\P_MANAGE_ATTRACTION;
-use const App\Auth\P_VIEW_ATTRACTION;
 
 class AttractionLocationsController extends Controller
 {
