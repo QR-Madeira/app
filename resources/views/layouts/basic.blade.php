@@ -6,7 +6,7 @@
 </head>
 
 <body class="flex flex-col justify-between h-full">
-    <main class="pb-6">
+    <main class="pb-4">
         @yield('body')
     </main>
     <x-footer :site="$siteInfo" />

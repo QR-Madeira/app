@@ -6,7 +6,7 @@
       <h1 class='text-center text-5xl py-8'>@lang('Edit User')</h1>
     </div>
     <x-show-required :errors="$errors"/>
-    <form class="grid grid-cols-1 gap-4" action="{{route('admin.update.user', [ 'id' => $user->id ])}}" method="POST" enctype="multipart/form-data">
+    <form class="flex flex-col gap-4" action="{{route('admin.update.user', [ 'id' => $user->id ])}}" method="POST" enctype="multipart/form-data">
       @csrf
       @method("PUT")
       <p><label>@lang("Name"): <input required type="text" name="name" value="{{$user->name ?? old('name')}}" class="form-in" /></label></p>
