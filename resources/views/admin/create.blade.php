@@ -30,7 +30,7 @@
 <div class="flex">
 <select name="description_lang" id="lang-select">
 @foreach($langs as $l)
-<option label="{{Str::upper($l)}}" value="{{$l}}" @if($l === $cur_lang) selected @endif />
+<option value="{{$l}}" @if($l === $cur_lang) selected @endif>{{Str::upper($l)}}</option>
 @endforeach
 </select>
 <textarea id="desc" required name="description" class="form-in w-full" rows="10">{{$description ?? old('description')}}</textarea>

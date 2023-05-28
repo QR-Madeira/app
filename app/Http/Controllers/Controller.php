@@ -289,9 +289,11 @@ class Controller extends BaseController
         $this->data->set('userName', Auth::check() ? Auth::user()->name : null);
 
         $site = Site::first();
+        $socials = $site->socials()->get();
         $desc = $site->desc->where("language", App::currentLocale())->first() ?? null;
         $desc ??= $site->desc->first();
         $site = $site->toArray();
+        $site["socials"] = $socials;
         $site["desc"] = $desc;
         $this->data->set("siteInfo", $site);
 
@@ -309,12 +311,12 @@ class Controller extends BaseController
         return redirect()->back();
     }
 
-    protected function verify(int $permission): ?RedirectResponse
+    protected static function verify(int $permission): ?RedirectResponse
     {
         try {
             checkOrThrow(Auth::user(), $permission);
         } catch (NoPermissionsException $e) {
-            return $this->error($e->getMessage());
+            return self::error($e->getMessage());
         }
 
         return null;
