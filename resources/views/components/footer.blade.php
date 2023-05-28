@@ -37,7 +37,7 @@
             </div>
         </div>
             @if(!empty($site["socials"]))
-        <section>
+        <section class="flex flex-row gap-4 bg-white p-4">
             <p>Social Medias:</p>
             <ul class="flex max-w-[35ch] overflow-y-auto p-4 sm:m-auto gap-4 sm:justify-center">
             @foreach($site["socials"] as $s)
