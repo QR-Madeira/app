@@ -38,7 +38,6 @@
         </div>
             @if(!empty($site["socials"]))
         <section class="flex flex-row gap-4 bg-white p-4">
-            <p>Social Medias:</p>
             <ul class="flex max-w-[35ch] overflow-y-auto p-4 sm:m-auto gap-4 sm:justify-center">
             @foreach($site["socials"] as $s)
             <li><a target="_blank" href="{{$s["uri"]}}"><img src="/images/{{$s["ico"]}}" width="32" class="w-[32px] aspect-square object-cover" alt="{{$s["description"]}}" /></a></li>
