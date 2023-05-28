@@ -73,24 +73,24 @@ Route::name('admin.')->middleware([Authenticate::class])->group(function () {
             Route::post('/location/{id}', [AttractionLocationsController::class, 'create'])->name('create.location');
         });
 
-      Route::prefix('edit')->group(function () {
-        // Pages
-          Route::get('/siteInfo', [SiteController::class, 'updater'])->name('edit.site');
-          Route::get('/user/{id}', [UsersAdminController::class, 'updater'])->name('edit.user');
-          Route::get('/user_pass/{id}', [UsersAdminController::class, 'pass_updater'])->name('edit.user_pass');
-          Route::get('/attraction/{id}', [AttractionsAdminController::class, 'updater'])->name('edit.attraction');
-          Route::get('/location/{id}/{id_2}', [AttractionLocationsController::class, 'updater'])->name('edit.location');
-          Route::get('/gallery/{id}', [GalleryAdminController::class, 'list'])->name('edit.attraction.gallery');
-      });
+        Route::prefix('edit')->group(function () {
+          // Pages
+            Route::get('/siteInfo', [SiteController::class, 'updater'])->name('edit.site');
+            Route::get('/user/{id}', [UsersAdminController::class, 'updater'])->name('edit.user');
+            Route::get('/user_pass/{id}', [UsersAdminController::class, 'pass_updater'])->name('edit.user_pass');
+            Route::get('/attraction/{id}', [AttractionsAdminController::class, 'updater'])->name('edit.attraction');
+            Route::get('/location/{id}/{id_2}', [AttractionLocationsController::class, 'updater'])->name('edit.location');
+            Route::get('/gallery/{id}', [GalleryAdminController::class, 'list'])->name('edit.attraction.gallery');
+        });
 
-      Route::prefix('update')->group(function () {
-        // Actions
-          Route::put('/siteInfo', [SiteController::class, 'update'])->name('update.site');
-          Route::put('/user/{id}', [UsersAdminController::class, 'create'])->name('update.user');
-          Route::put('/user_pass/{id}', [UsersAdminController::class, 'update_pass'])->name('update.user_pass');
-          Route::put('/attraction/{id}', [AttractionsAdminController::class, 'update'])->name('update.attraction');
-          Route::put('/location/{id}/{id_2}', [AttractionLocationsController::class, 'create'])->name('update.location');
-      });
+        Route::prefix('update')->group(function () {
+          // Actions
+            Route::put('/siteInfo', [SiteController::class, 'update'])->name('update.site');
+            Route::put('/user/{id}', [UsersAdminController::class, 'create'])->name('update.user');
+            Route::put('/user_pass/{id}', [UsersAdminController::class, 'update_pass'])->name('update.user_pass');
+            Route::put('/attraction/{id}', [AttractionsAdminController::class, 'update'])->name('update.attraction');
+            Route::put('/location/{id}/{id_2}', [AttractionLocationsController::class, 'create'])->name('update.location');
+        });
 
         Route::prefix('delete')->group(function () {
             // Actions
@@ -114,13 +114,13 @@ Route::any("/forgor", Verification::forgor(...))->name("forgor");
 Route::any("/verify", Verification::index(...))->name("verify");
 
 Route::get('/', function () {
-  $siteInfo = Site::first();
-  $desc = $siteInfo->desc->where("language", App::currentLocale())->first() ?? $siteInfo->desc->first();
+    $siteInfo = Site::first();
+    $desc = $siteInfo->desc->where("language", App::currentLocale())->first() ?? $siteInfo->desc->first();
 
-  $desc = $desc?->description ?? "";
-  $siteInfo = $siteInfo->toArray();
-  $siteInfo["desc"] = $desc;
-  return view('viewer.index', [ "siteInfo" => $siteInfo ]);
+    $desc = $desc?->description ?? "";
+    $siteInfo = $siteInfo->toArray();
+    $siteInfo["desc"] = $desc;
+    return view('viewer.index', [ "siteInfo" => $siteInfo ]);
 })->name('index');
 
 Route::get('/{title_compiled}', [AttractionsViewerController::class, 'index'])->name('view');

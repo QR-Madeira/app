@@ -1,4 +1,8 @@
-<?php use function App\Auth\check; ?>
+<?php
+
+use function App\Auth\check;
+
+?>
 @extends('layouts.admin-layout')
 @section('body')
   <div class='py-4 px-4 lg:px-24'>
@@ -18,7 +22,9 @@
               <p>
                 <label class="select-none">
                   @lang(ucfirst($k))
-                  <input type="checkbox" class="peer/standart" name="permissions[{{$k}}]" value="{{$v}}" <?php if(isset($user) && check($user, $v)) echo 'checked'?>/>
+                  <input type="checkbox" class="peer/standart" name="permissions[{{$k}}]" value="{{$v}}" <?php if (isset($user) && check($user, $v)) {
+                        echo 'checked';
+                                                                                                         }?>/>
                 </label>
               </p>
             @endforeach

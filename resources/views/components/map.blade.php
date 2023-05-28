@@ -16,7 +16,7 @@
   </style>
 
   <script>
-    const coords = [{{$lat}}, {{$lon}}];
+    const coords = [{{$lat ?? 0}}, {{$lon ?? 0}}];
     const ZOOM = 13;
 
     const map = L.map("map").setView(coords, ZOOM);
@@ -28,9 +28,20 @@
       }).addTo(map);
 
       const marker = L.marker(coords, {alt: "Attraction location"});
-      
-      marker.addTo(map);
-      marker.setLatLng({ lat: {{$lat}}, lng: {{$lon}} });
+
+      @foreach($locations as $l)
+      L.circle([{{$l->lat}}, {{$l->lon}}], {
+          color: "green",
+          radius: 50,
+          alt: "attraction close location"
+      }).addTo(map)
+      .bindPopup("The attraction location: {{$l->name}}")
+      @endforeach
+
+      marker.addTo(map)
+      .setLatLng({ lat: {{$lat}}, lng: {{$lon}} })
+      .bindPopup("The attraction location")
+      .openPopup();
     });
   </script>
 @endif

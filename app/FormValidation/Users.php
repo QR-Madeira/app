@@ -35,12 +35,12 @@ final class Users extends FormValidator
 
     public function postProcess(array $in): array
     {
-        $hash = new PasswordHash(8, False);
+        $hash = new PasswordHash(8, false);
         //$in['password'] = Hash::make($in['password']);
-        if(isset($in['password'])){
+        if (isset($in['password'])) {
             $in['password'] = $hash->HashPassword($in['password']);
         }
-        
+
         $permission = 0;
         foreach ($in['permissions'] as $perm) {
             $permission |= $perm;

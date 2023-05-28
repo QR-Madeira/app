@@ -9,7 +9,7 @@ use Illuminate\View\Component;
 class footer extends Component
 {
     public $site;
-    
+
     public function __construct($site)
     {
         $this->site = $site;

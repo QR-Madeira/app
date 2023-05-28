@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\FormValidation\Core\FormValidationException;
 use App\FormValidation\Site as SiteValidation;
-
 use Illuminate\Http\Request;
 use App\Models\Site;
 use App\Models\SiteDescriptions;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
 use const App\Auth\P_MANAGE_SITE;
-
 
 class SiteController extends Controller
 {

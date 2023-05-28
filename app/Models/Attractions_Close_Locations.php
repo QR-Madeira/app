@@ -12,12 +12,13 @@ class Attractions_Close_Locations extends Model
     protected $table = "attractions_close_locations";
 
     protected $fillable = [
-      "belonged_attraction",
-      "icon",
-      "name",
-      "location",
-      "phone",
-      "phone_country",
+        "belonged_attraction",
+        "icon",
+        "name",
+        "lat",
+        "lon",
+        "phone",
+        "phone_country",
     ];
 
     public function createPhoneNumber(): string

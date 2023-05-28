@@ -32,11 +32,11 @@ final class User_password extends FormValidator
 
     public function postProcess(array $in): array
     {
-        $hash = new PasswordHash(8, False);
+        $hash = new PasswordHash(8, false);
         //$in['password'] = Hash::make($in['password']);
         //$in['old_password'] = $hash->HashPassword($in['old_password']);
         $in['password'] = $hash->HashPassword($in['password']);
-        
+
         return $in;
     }
 }

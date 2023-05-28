@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     protected $hash;
     public function run(): void
     {
-        $hash = new PasswordHash(10, FALSE);
+        $hash = new PasswordHash(10, false);
         DB::table("users")->insert([
             "id" => 1,
             "name" => "Administrator",

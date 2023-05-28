@@ -10,13 +10,16 @@ class map extends Component
 {
     public $lat;
     public $lon;
+
+    public $locations;
     /**
      * Create a new component instance.
      */
-    public function __construct($lat, $lon)
+    public function __construct($lat, $lon, $locations)
     {
         $this->lat = $lat;
         $this->lon = $lon;
+        $this->locations = $locations;
     }
 
     /**

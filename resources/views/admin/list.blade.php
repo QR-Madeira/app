@@ -1,6 +1,6 @@
 @extends('layouts.admin-layout')
 @section('body')
-<div class='px-4 xl:px-24 py-4 grid grid-rows-auto grid-cols-1 justify-items-center'>
+<div class='px-4 xl:px-24 py-4 grid grid-rows-auto grid-cols-1 justify-center'>
 
   <nav class="py-4 grid sm:grid-cols-5 gap-3">
     <div class="sm:row-start-1"></div>
@@ -28,10 +28,10 @@
     @foreach($attractions as $a)
     <x-delete-alert :route="route('admin.delete.attraction', ['id' => $a->id])" :id="$a->id"/>
     <tr>
-      <td class="sm:table-cell hidden h-4"><a href="{{asset($a['qr-code'])}}" download="{{$a->title_compiled}}"><img src="{{ asset($a['qr-code']) }}" alt="Local Image" class='aspect-square p-4'></a></td>
-      <td>{{$a->title}}</td>
-      <td class="sm:table-cell hidden max-w-[80ch] max-h-[80ch]">
-        <div class="overflow-scroll">
+      <td class="sm:table-cell hidden h-4"><a href="{{asset($a['qr-code'])}}" download="{{$a->title_compiled}}"><img src="{{ asset($a['qr-code']) }}" alt="Local Image" class="min-w-[124px] aspect-square p-4"></a></td>
+      <td><span class="flex justify-center">{{$a->title}}</span></td>
+      <td class="sm:table-cell hidden">
+        <div class="w-[35ch] max-h-[35ch] break-words overflow-y-auto hyphens-auto" lang="{{App::currentLocale()}}">
           {{$a->description}}
         </div>
       </td>

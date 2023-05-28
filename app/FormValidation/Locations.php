@@ -22,7 +22,8 @@ final class Locations extends FormValidator
         return [
             FormRule::new("icon")->required()->string(),
             FormRule::new("name")->required()->string()->minmax(3, 80),
-            FormRule::new("location")->required()->string()->minmax(3, 80),
+            FormRule::new("lat")->required(),
+            FormRule::new("lon")->required(),
             FormRule::new("phone_country")
                 ->requiredWith("phone")
                 ->null()

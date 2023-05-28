@@ -76,13 +76,13 @@ class AttractionLocationsController extends Controller
                     $status = Attractions_Close_Locations::create($in);
 
                     break;
-                }
+            }
             case "PUT": {
                     $method = "updated";
                     $status = Attractions_Close_Locations::find($id_2)->update($in);
 
                     break;
-                }
+            }
         }
 
         Session::flash("status", $status == true);

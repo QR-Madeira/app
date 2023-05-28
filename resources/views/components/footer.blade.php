@@ -16,7 +16,7 @@
         </ul>
     </address>
     <div class="grid sm:grid-cols-2 gap-4 [&>*]:text-gray-500">
-        <div class="flex flex-row sm:flex-col gap-4 bg-white p-4">
+        <div class="flex flex-row gap-4 bg-white p-4">
             <div class="flex text-center">
                 <p>&copy; {{$site['footerCopyright']}}</p>
             </div>

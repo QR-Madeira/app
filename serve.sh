@@ -14,12 +14,15 @@ if [ "$1" = "--db" ]; then
   php artisan migrate:fresh --seed
 fi
 
-stop_commands() {
-  kill %1 %2
-}
+#stop_commands() {
+#  kill %1 %2
+#}
 
 folder=$(git rev-parse --show-toplevel)
 
-exec php "$folder"/artisan serve --host=0.0.0.0 & exec npm run dev &
-trap stop_commands INT
-wait
+cd "$folder" || exit
+npm run dev
+
+#exec php "$folder"/artisan serve --host=0.0.0.0 & exec npm run dev &
+#trap stop_commands INT
+#wait

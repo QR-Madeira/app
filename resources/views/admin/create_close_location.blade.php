@@ -20,7 +20,6 @@
   <tr>
     <th class="sm:table-cell hidden">@lang("Icon")
     <th>@lang("Name")
-    <th class="sm:table-cell hidden">@lang("Location")
     <th class="sm:table-cell hidden">@lang("Phone Number")
     <th>@lang("Manage")
   </tr>
@@ -32,7 +31,6 @@
   <tr>
     <td class="sm:table-cell hidden"><span class="material-symbols-rounded fs-36">{{$a->icon}}</span></td>
     <td>{{Str::limit($a->name, 20)}}</td>
-    <td class="sm:table-cell hidden">{{Str::limit($a->location, 60)}}</td>
     <td class="sm:table-cell hidden">{{$a->createPhoneNumber()}}</td>
     <td>
     <div class="py-4 flex flex-col gap-4 h-full">
@@ -42,6 +40,14 @@
     </td>
   </tr>
   @endforeach
+
+  <caption>
+  <details>
+  <summary>@lang("What are the Close Locations?")</summary>
+  <p>@lang("The \"close locations\" like the name says, are the closest places around the attraction selected, for example: Pharmacies, hospitals, shoppings, museums, hotels.")</p>
+  </details>
+  </caption>
+
 </table>
 
 <p>{{$attraction_locations->links()}}</p>
@@ -52,14 +58,6 @@
 
 <hr class="p-4" />
 
-<caption>
-<details>
-<summary>@lang("What are the Close Locations?")</summary>
-<p>@lang("The \"close locations\" like the name says, are the closest places around the attraction selected, for example: Pharmacies, hospitals, shoppings, museums, hotels.")</p>
-</details>
-</caption>
-<br />
-
 <x-show-required :errors="$errors" />
 
 <form class="grid grid-cols-1 gap-4" action="{{route('admin.' . (!empty($isPUT) ? 'update' : 'create') . '.location', $segs)}}" method="POST" enctype="multipart/form-data">
@@ -67,6 +65,10 @@
 @if(isset($isPUT) && $isPUT)
 @method("PUT")
 @endif
+
+<div class="grid grid-cols-2 gap-4">
+
+<div class="flex flex-col gap-4">
 
 <p><label for="close_icon">@lang("Choose an icon for your location"): </label></p>
 <select name="icon" id="close_icon" class="max-w-min h-auto material-symbols-rounded fs-36">
@@ -76,7 +78,6 @@
 </select>
 
 <p><label class="flex flex-col sm:flex-row">@lang("Name"): <input required type="text" name="name" value="{{$name ?? old('name')}}" class="form-in" /></label></p>
-<p><label class="flex flex-col sm:flex-row">@lang("Location"): <input required type="text" name="location" value="{{$location ?? old('location')}}" class="form-in" /></label></p>
 
 <fieldset>
 
@@ -102,6 +103,102 @@
 </div>
 
 </fieldset>
+
+</div>
+
+<div>
+
+<fieldset class="py-4">
+    <legend class="text-xl">@lang('Coordinates')</legend>
+
+    <input required id="lat" type="hidden" name="lat" value="{{$lat ?? old('lat') ?? ''}}" />
+    <input required id="lon" type="hidden" name="lon" value="{{$lon ?? old('lon') ?? ''}}" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+    <div id="map"></div>
+    <style>
+        #map {
+            aspect-ratio: 4/3;
+        }
+    </style>
+
+    <script>
+        let lat = {{$lat ?? old("lat") ?? $attraction->lat ?? 0}};
+        let lon = {{$lon ?? old("lon") ?? $attraction->lon ?? 0}};
+        const ZOOM = 13;
+
+        const map = L.map("map").fitWorld();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const lat_in = document.getElementById("lat");
+            const lon_in = document.getElementById("lon");
+
+            if (lat_in === null || lon_in === null) {
+                throw new Error( /* TODO */ );
+            }
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            L.circle([{{$attraction->lat}}, {{$attraction->lon}}], {
+                color: "red",
+                radius: 50,
+                alt: "attraction location"
+            }).addTo(map)
+            .bindPopup("The attraction location: {{$attraction->title}}")
+            .openPopup();
+
+            @if(isset($isPUT) && $isPUT)
+            @foreach($attraction_locations->where("id", "!=", $segs["id"]) as $l)
+            L.circle([{{$l->lat}}, {{$l->lon}}], {
+                color: "green",
+                radius: 50,
+                alt: "attraction close location"
+            }).addTo(map)
+            .bindPopup("The attraction location: {{$l->name}}")
+            @endforeach
+            @foreach($attraction_locations as $l)
+            L.circle([{{$l->lat}}, {{$l->lon}}], {
+                color: "green",
+                radius: 50,
+                alt: "attraction close location"
+            }).addTo(map)
+            .bindPopup("The attraction location: {{$l->name}}")
+            @endforeach
+            @else
+            @endif
+
+            const marker = L.marker([lat, lon], {
+                alt: "Current attraction close location"
+            });
+            let marker_added = false;
+
+            map.setView([lat, lon], ZOOM);
+            marker.addTo(map);
+
+            map.on("click", (e) => {
+                lat_in.value = e.latlng.lat;
+                lon_in.value = e.latlng.lng;
+
+                marker.setLatLng(e.latlng);
+
+                if (!marker_added) {
+                    marker.addTo(map);
+                }
+            });
+
+        });
+    </script>
+</fieldset>
+
+</div>
+
+</div>
+
 <button type="submit" class="form-submit">@lang(!empty($isPUT) ? "Save" : "Add") @lang("Location")</button>
 
 </form>
