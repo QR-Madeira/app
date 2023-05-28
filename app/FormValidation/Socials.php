@@ -22,12 +22,19 @@ final class Socials extends FormValidator
 {
     private const DEFAULT_ICO = "default_web_icon.svg";
     private const HOST_ICO = [
+        "www.facebook.com" => "facebook.svg",
         "facebook.com" => "facebook.svg",
+        "www.github.com" => "github-mark.svg",
         "github.com" => "github-mark.svg",
+        "www.linkedin.com" => "linkedin.svg",
         "linkedin.com" => "linkedin.svg",
+        "www.tiktok.com" => "tiktok.svg",
         "tiktok.com" => "tiktok.svg",
+        "www.twitch.tv" => "twitch.svg",
         "twitch.tv" => "twitch.svg",
+        "www.twitter.com" => "twitter.svg",
         "twitter.com" => "twitter.svg",
+        "www.youtube.com" => "youtube.svg",
         "youtube.com" => "youtube.svg",
     ];
 
