@@ -41,7 +41,7 @@
             <p>Social Medias:</p>
             <ul class="flex max-w-[35ch] overflow-y-auto p-4 sm:m-auto gap-4 sm:justify-center">
             @foreach($site["socials"] as $s)
-            <li><a target="_blank" href="{{$s["uri"]}}"><img src="/images/{{$s["ico"]}}" class="w-[32px] aspect-square object-cover" alt="{{$s["description"]}}" /></a></li>
+            <li><a target="_blank" href="{{$s["uri"]}}"><img src="/images/{{$s["ico"]}}" width="64" class="w-[32px] aspect-square object-cover" alt="{{$s["description"]}}" /></a></li>
             @endforeach
             </ul>
         </section>
