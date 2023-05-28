@@ -27,7 +27,7 @@
 
 @foreach($socials as $s)
 <tr data-social-id="{{$s->id}}">
-<td>{{$s->ico}}</td>
+<td><a target="_blank" href="{{$s->uri}}"><img src="/images/{{$s->ico}}" width="32" class="w-[32px] aspect-square object-cover" alt="{{$s->description}}" /></a></td>
 <td><a class="url" href="{{$s->uri}}">{{$s->description}}</a></td>
 <td>
 <menu class="flex flex-col gap-4 py-4 [&>li>button]:w-full [&>li]:mx-4">
