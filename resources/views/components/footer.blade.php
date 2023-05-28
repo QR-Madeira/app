@@ -1,4 +1,4 @@
-<footer class="flex-2 flex flex-col mt-auto text-sm/[14px] w-full">
+<footer class="flex-2 flex flex-col gap-4 mt-auto text-sm/[14px] w-full">
     <address class="flex flex-col sm:flex-row bg-slate-800 text-white py-4 px-2">
         <ul class="flex flex-col sm:flex-row text-xs gap-4 justify-between align-center">
             <li class="flex items-center gap-2">
