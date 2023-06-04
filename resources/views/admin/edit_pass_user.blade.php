@@ -12,7 +12,6 @@
       <p><label>@lang("Current Password"): <input required type="password" name="old_password" class="form-in"/></label></p>
       <p><label>@lang("New Password"): <input required type="password" name="password" class="form-in"/></label></p>
       <p><label>@lang("New Password Confirmation"): <input required type="password" name="password_confirmation" class="form-in"/></label></p>
-      <a href="{{route('admin.edit.user_pass', ['id' => $user->id])}}">@lang("I forgot my password!")</a>
       <button type="submit" class="form-submit">@lang("Change Password")</button>
     </form>
     @if(Session::has('status') && Session::has('message'))
