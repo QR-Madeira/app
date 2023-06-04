@@ -1,9 +1,0 @@
-Adds:
-  Translate
-  Email
-  Mobile version
-
-Erros:
-  Verificar se exite
-  Mensagens de erros de criação
-  Mensagens de erros de listagem

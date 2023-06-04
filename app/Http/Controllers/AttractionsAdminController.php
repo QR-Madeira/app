@@ -135,6 +135,15 @@ class AttractionsAdminController extends Controller
                     "image_path" => $store,
                 ]);
                 Storage::disk('public')->put(
+                    "gallery/$store",
+                    Image::make($picture->getRealPath())
+                        ->resize(500, 500, static function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })->stream()->detach(),
+                    "public"
+                );
+                Storage::disk('public')->put(
                     "gallery_thumbnail/$store",
                     Image::make($picture->getRealPath())
                         ->resize(150, 150, static function ($constraint) {

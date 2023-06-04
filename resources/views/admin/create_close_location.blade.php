@@ -10,6 +10,13 @@
 
 <h2 class='text-center text-3xl py-6'>@lang('Attraction'): {{$attraction->title}}</h2>
 
+<caption>
+    <details>
+    <summary>@lang("What are the Close Locations?")</summary>
+    <p>@lang("The \"close locations\" like the name says, are the closest places around the attraction selected, for example: Pharmacies, hospitals, shoppings, museums, hotels, etc.")</p>
+    </details>
+</caption>
+
 @if(is_iterable($attraction_locations) && (count($attraction_locations) > 0))
 <table class="my-4 border border-slate-500 w-full">
 
@@ -40,13 +47,6 @@
     </td>
   </tr>
   @endforeach
-
-  <caption>
-  <details>
-  <summary>@lang("What are the Close Locations?")</summary>
-  <p>@lang("The \"close locations\" like the name says, are the closest places around the attraction selected, for example: Pharmacies, hospitals, shoppings, museums, hotels.")</p>
-  </details>
-  </caption>
 
 </table>
 

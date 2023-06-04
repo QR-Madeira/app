@@ -26,24 +26,35 @@ class GalleryAdminController extends Controller
         $validated = $request->validate([
             'belonged_attraction' => 'required'
         ]);
-
+        
         $gallery = $request->file('gallery');
 
-        foreach ($gallery as $img) {
-            $store = explode("/", $img->store('gallery', 'public'))[1];
-            Attractions_Pictures::create(array(
-                'belonged_attraction' => $validated['belonged_attraction'],
-                'image_path' => $store,
-            ));
-            Storage::disk('public')->put(
-                "gallery_thumbnail/$store",
-                Image::make($img->getRealPath())
-                    ->resize(150, 150, static function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })->stream()->detach(),
-                "public"
-            );
+        if (is_iterable($gallery)) {
+            foreach ($gallery as $img) {
+                $store = explode("/", $img->store('gallery', 'public'))[1];
+                Attractions_Pictures::create(array(
+                    'belonged_attraction' => $validated['belonged_attraction'],
+                    'image_path' => $store,
+                ));
+                Storage::disk('public')->put(
+                    "gallery_resize/$store",
+                    Image::make($img->getRealPath())
+                        ->resize(500, 500, static function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })->stream()->detach(),
+                    "public"
+                );
+                Storage::disk('public')->put(
+                    "gallery_thumbnail/$store",
+                    Image::make($img->getRealPath())
+                        ->resize(150, 150, static function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })->stream()->detach(),
+                    "public"
+                );
+            }
         }
 
         return redirect()->back();
