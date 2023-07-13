@@ -11,10 +11,11 @@ use App\Classes\Data;
 use App\Models\Site;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\App;
+/*
 use TorresDeveloper\HTTPMessage\URI;
 use TorresDeveloper\Polyglot\Lang;
 use TorresDeveloper\Polyglot\Translator;
-
+*/
 use function App\Auth\checkOrThrow;
 
 class Controller extends BaseController
