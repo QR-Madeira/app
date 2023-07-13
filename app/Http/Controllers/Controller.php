@@ -323,7 +323,7 @@ class Controller extends BaseController
     }
 
     protected function translate(string $txt): string
-    {
+    {/*
         try {
             if (env("LIBRETRANSLATE_TRANSLATE", false) != true) {
                 throw new \Exception("Won't translate");
@@ -339,7 +339,7 @@ class Controller extends BaseController
         } catch (\Throwable) {
             return $txt;
         }
-
+*/
         return $txt;
     }
 }
