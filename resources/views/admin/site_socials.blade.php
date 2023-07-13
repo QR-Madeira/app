@@ -91,21 +91,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const resource = `{{route("admin.site_socials")}}/${actor}`;
 
-        fetch(resource, {
-            method: "POST",
-            body,
-        }).then(async (res) => {
-            if (!res.ok) {
-                throw new Error(await res.text());
-            }
+        try {
+            fetch(resource, {
+                method: "POST",
+                body,
+            }).then(async (res) => {
+                if (!res.ok) {
+                    throw new Error(await res.text());
+                }
 
-            return res;
-        }).then((res) => res.text())
-        .then((text) => {
-            location.reload();
-        }).catch((e) => {
+                return res;
+            }).then((res) => res.text())
+            .then((text) => {
+                location.reload();
+            }).catch((e) => {
+                console.error(e);
+            });
+        } catch (e) {
             console.error(e);
-        });
+        }
     });
 
     form.querySelector("button[type=\"reset\"]")

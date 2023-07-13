@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af026eea0d9374aaa3afd1ef88a05a3a",
+    "content-hash": "1ae71e62e428294af5a4d0ffefa3a260",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2609,6 +2609,41 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "pds/skeleton",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-pds/skeleton.git",
+                "reference": "95e476e5d629eadacbd721c5a9553e537514a231"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-pds/skeleton/zipball/95e476e5d629eadacbd721c5a9553e537514a231",
+                "reference": "95e476e5d629eadacbd721c5a9553e537514a231",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/pds-skeleton"
+            ],
+            "type": "standard",
+            "autoload": {
+                "psr-4": {
+                    "Pds\\Skeleton\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-SA-4.0"
+            ],
+            "description": "Standard for PHP package skeletons.",
+            "homepage": "https://github.com/php-pds/skeleton",
+            "support": {
+                "issues": "https://github.com/php-pds/skeleton/issues",
+                "source": "https://github.com/php-pds/skeleton/tree/1.x"
+            },
+            "time": "2017-01-25T23:30:41+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -5712,6 +5747,65 @@
             "time": "2023-01-03T09:29:04+00:00"
         },
         {
+            "name": "torres-developer/http-message-impl",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/torres-developer/http-message-impl.git",
+                "reference": "7ce9610720640e7ea70e88c055f9e87cb30ce7e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/torres-developer/http-message-impl/zipball/7ce9610720640e7ea70e88c055f9e87cb30ce7e3",
+                "reference": "7ce9610720640e7ea70e88c055f9e87cb30ce7e3",
+                "shasum": ""
+            },
+            "require": {
+                "pds/skeleton": "^1.0",
+                "php": ">=8.1.6",
+                "psr/http-factory": "^1.0@dev",
+                "psr/http-message": "^1.0@dev"
+            },
+            "provide": {
+                "psr/http-factory-implementation": "^1.0@dev",
+                "psr/http-message-implementation": "^1.0@dev"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TorresDeveloper\\HTTPMessage\\": "src/",
+                    "TorresDeveloper\\HTTPMessage\\Factories\\": "src/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "AGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "torres-developer",
+                    "email": "torres.dev@disroot.org",
+                    "homepage": "https://github.com/torres-developer",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Implemantation of the psr-7, psr-17",
+            "homepage": "https://github.com/torres-developer/http-message-impl",
+            "keywords": [
+                "implemantation",
+                "psr",
+                "psr-17",
+                "psr-7"
+            ],
+            "support": {
+                "docs": "https://www.php-fig.org/psr/",
+                "issues": "https://github.com/torres-developer/http-message-impl/issues",
+                "source": "https://github.com/torres-developer/http-message-impl/"
+            },
+            "time": "2023-01-29T00:00:00+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.5.0",
             "source": {
@@ -8356,7 +8450,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "torres-developer/http-message-impl": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -21,7 +21,7 @@ final class Site extends FormValidator
     {
         return [
             FormRule::new("title")->required()->string(),
-            FormRule::new("desc")->required()->string(),
+            FormRule::new("desc")->null()->string(),
             FormRule::new("description_lang")->required()->string(),
             FormRule::new("footerSede")->required()->string(),
             FormRule::new("footerPhone")->required()->string(),

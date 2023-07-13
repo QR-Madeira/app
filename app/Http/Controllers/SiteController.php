@@ -59,7 +59,7 @@ class SiteController extends Controller
         $desc = $siteInfo->desc->where("language", $in["description_lang"])->first();
 
         $data = [
-            "description" => $in["desc"],
+            "description" => $in["desc"] ?? "",
             "language" => $in["description_lang"],
             "site_id" => $siteInfo->id,
         ];
@@ -67,7 +67,7 @@ class SiteController extends Controller
             $siteInfo->desc()->save(new SiteDescriptions($data));
         } else {
             $desc->update([
-                "description" => $in["desc"],
+                "description" => $in["desc"] ?? "",
             ]);
         }
 
