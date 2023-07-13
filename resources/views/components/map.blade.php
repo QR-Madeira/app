@@ -11,7 +11,7 @@
   <style>
     #map {
       aspect-ratio: 4/3;
-      max-height: 35ch;
+      max-height: 35rem;
     }
   </style>
 

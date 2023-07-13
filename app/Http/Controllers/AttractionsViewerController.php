@@ -52,7 +52,7 @@ class AttractionsViewerController extends Controller
         $images = $images->toArray();
 
         for ($i = 0; $i < count($images); $i++) {
-            $images[$i]['image_path'] = '/storage/gallery_resize/' . $images[$i]['image_path'];
+            $images[$i]['image_path'] = asset('/storage/gallery/' . $images[$i]['image_path']);
         }
 
         $this->data->set('images', $images);

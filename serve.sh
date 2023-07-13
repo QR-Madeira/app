@@ -2,7 +2,7 @@
 
 if [ "$1" = "--init" ]; then
   git pull
-  composer u && npm i
+  composer i && npm i
   rm -rf public/storage
   rm -rf storage/app/public/*
   php artisan storage:link
