@@ -18,3 +18,21 @@ O site possui um design elegante e moderno, com uma interface simples e intuitiv
 ## Como funciona
 
 Quando um utilizador escaneia um código QR usando a câmera do dispositivo, o site reconhece instantaneamente o código e redireciona automaticamente o usuário para o conteúdo online associado.
+
+## Dependências
+
+- PHP 8 ou maior
+- composer
+- node.js
+- npm, yarn ou, pnpm
+
+## Começar!!!
+
+Clone este repositório git com `git clone https://github.com/QR-Madeira/app.git`.
+
+Depois:
+``` bash
+cd app
+cp env_example.txt .env # modifique o que fôr necessário
+./serve.sh --init
+```
